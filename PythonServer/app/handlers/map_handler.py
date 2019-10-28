@@ -93,10 +93,10 @@ class MapHandler:
         base.factory = Factory(
             machines = factory_machines,
             c_mixture_formulas = c_mixture_formulas,
-            c_construction_durations = {ammoType: m['factory']['c_construction_durations'][ammoType.name]
-                                            for ammoType in AmmoType},
-            c_ammo_box_sizes = {ammoType: m['factory']['c_ammo_box_sizes'][ammoType.name]
-                                            for ammoType in AmmoType}
+            c_construction_durations = { ammoType: m['factory']['c_construction_durations'][ammoType.name]
+                                            for ammoType in AmmoType },
+            c_ammo_box_sizes = { ammoType: m['factory']['c_ammo_box_sizes'][ammoType.name]
+                                            for ammoType in AmmoType }
         )
 
         # Units
@@ -108,8 +108,8 @@ class MapHandler:
                 health = mUnit['count'] * mUnit['c_individual_health'],
                 c_individual_health = mUnit['c_individual_health'],
                 c_individual_damage = mUnit['c_individual_damage'],
-                c_damage_distribution = {uType: m['units'][mUnitType]['c_damage_distribution'][uType.name]
-                                            for uType in UnitType},
+                c_damage_distribution = { uType: m['units'][mUnitType]['c_damage_distribution'][uType.name]
+                                            for uType in UnitType },
                 ammo_count = mUnit['ammo_count'],
                 reload_rem_time = mUnit['c_reload_duration'],
                 c_reload_duration = mUnit['c_reload_duration'],
@@ -121,21 +121,12 @@ class MapHandler:
         return base
 
 
-    def _calc_total_healths(self, base):
-        total_healths = 0
-
-        for unit in base.units.values():
-            total_healths += unit.health
-
-        return total_healths
-
-
     def load_map(self, config):
         with open((config['map_path']), 'r') as map_file:
             m = json.loads(map_file.read())
 
         base = self._create_base(m)
-        total_healths = self._calc_total_healths(base)
+        total_healths = sum([unit.health for unit in base.units.values()])
 
         # Create world
         world = World(
