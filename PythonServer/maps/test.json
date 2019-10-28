@@ -38,7 +38,7 @@
     },
 
     "factory": {
-        "machines_position": [ 11, 12, 13, 14 ],
+        "machine_positions": [ 11, 12, 13, 14 ],
 
         "c_mixture_formulas": {
             "RifleBullet": { "Powder": 1, "Steel": 1, "Aluminum": 1 },

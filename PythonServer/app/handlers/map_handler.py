@@ -73,7 +73,7 @@ class MapHandler:
 
         # Factory
         factory_machines = {}
-        for machine_position in m['factory']['machines_position']:
+        for machine_position in m['factory']['machine_positions']:
             position = Position(index = machine_position)
             base.c_area[position.index] = ECell.Machine
 
