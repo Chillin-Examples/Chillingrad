@@ -134,5 +134,7 @@ class MapHandler:
             bases = {side: deepcopy(base) for side in self._sides},
             total_healths = {side: total_healths for side in self._sides},
         )
+        # Extra infos
+        world.location = m['location']
 
         return world

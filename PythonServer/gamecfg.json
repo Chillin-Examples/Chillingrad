@@ -46,6 +46,6 @@
 		"max_team_commands": 100,
 		"max_agent_commands": 100,
 		"": "my configs",
-		"map_path": "maps/test.json"
+		"map_path": "maps/Chillingrad.json"
 	}
 }
