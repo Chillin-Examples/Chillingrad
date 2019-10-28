@@ -1,0 +1,149 @@
+{
+    "max_cycles": 500,
+
+    "area": {
+        "length": 15
+    },
+
+    "agents": {
+        "Repository": { "position": 1 },
+        "Factory": { "position": 10 },
+
+        "c_materials_bag_capacity": 10,
+        "c_ammos_bag_capacity": 10
+    },
+
+    "frontline_delivery": {
+        "position": 0,
+
+        "c_truck_delivery_duration": 20,
+        "c_truck_return_duration": 30
+    },
+
+    "repository": {
+        "materials": [
+            { "position": 2, "type": "Powder", "c_capacity": 10 },
+            { "position": 3, "type": "Steel", "c_capacity": 10 },
+            { "position": 4, "type": "Shell", "c_capacity": 10 },
+            { "position": 5, "type": "Nickel", "c_capacity": 10 },
+            { "position": 6, "type": "Manganese", "c_capacity": 10 },
+            { "position": 7, "type": "Chromium", "c_capacity": 10 }
+        ],
+
+        "c_materials_reload_duration": 20
+    },
+
+    "backline_delivery": {
+        "position": 9
+    },
+
+    "factory": {
+        "machines_position": [ 11, 12, 13, 14 ],
+
+        "c_mixture_formulas": {
+            "RifleBullet": { "Powder": 1, "Steel": 1, "Aluminum": 1 },
+            "TankShell": { "Powder": 1, "Shell": 1, "Nickel": 1 },
+            "Bomb": { "Powder": 1, "Nickel": 1, "Manganese": 1 },
+            "ArtilleryShell": { "Powder": 1, "Shell": 1, "Manganese": 1 },
+            "HMGBullet": { "Powder": 1, "Steel": 1, "Chromium": 1 }
+        },
+
+        "c_construction_durations": {
+            "RifleBullet": 3,
+            "TankShell": 6,
+            "Bomb": 18,
+            "ArtilleryShell": 12,
+            "HMGBullet": 4
+        },
+
+        "c_ammo_box_sizes": {
+            "RifleBullet": 100,
+            "TankShell": 10,
+            "Bomb": 2,
+            "ArtilleryShell": 5,
+            "HMGBullet": 500
+        }
+    },
+
+    "units": {
+        "Soldier": {
+            "count": 50,
+            "ammo_count": 100,
+
+            "c_individual_health": 100,
+            "c_individual_damage": 10,
+            "c_damage_distribution": {
+                "Soldier": 0.8,
+                "Tank": 0,
+                "Aircraft": 0,
+                "Artillery": 0,
+                "HeavyMachineGunner": 0.2
+            },
+            "c_reload_duration": 3
+        },
+
+        "Tank": {
+            "count": 10,
+            "ammo_count": 5,
+
+            "c_individual_health": 500,
+            "c_individual_damage": 100,
+            "c_damage_distribution": {
+                "Soldier": 0.3,
+                "Tank": 0.4,
+                "Aircraft": 0,
+                "Artillery": 0,
+                "HeavyMachineGunner": 0.3
+            },
+            "c_reload_duration": 10
+        },
+
+        "Aircraft": {
+            "count": 3,
+            "ammo_count": 0,
+
+            "c_individual_health": 200,
+            "c_individual_damage": 1000,
+            "c_damage_distribution": {
+                "Soldier": 0.2,
+                "Tank": 0.5,
+                "Aircraft": 0,
+                "Artillery": 0.1,
+                "HeavyMachineGunner": 0.2
+            },
+            "c_reload_duration": 20
+        },
+
+        "Artillery": {
+            "count": 4,
+            "ammo_count": 0,
+
+            "c_individual_health": 300,
+            "c_individual_damage": 200,
+            "c_damage_distribution": {
+                "Soldier": 0.2,
+                "Tank": 0.2,
+                "Aircraft": 0.2,
+                "Artillery": 0.2,
+                "HeavyMachineGunner": 0.2
+            },
+            "c_reload_duration": 10
+        },
+
+        "HeavyMachineGunner": {
+            "count": 2,
+            "ammo_count": 100,
+
+            "c_individual_health": 1000,
+            "c_individual_damage": 10,
+            "c_damage_distribution": {
+                "Soldier": 0.8,
+                "Tank": 0,
+                "Aircraft": 0,
+                "Artillery": 0,
+                "HeavyMachineGunner": 0.2
+            },
+            "c_reload_duration": 0
+        }
+    }
+}
