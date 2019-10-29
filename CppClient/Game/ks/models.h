@@ -80,7 +80,7 @@ enum class UnitType
 
 enum class AgentType
 {
-	Repository = 0,
+	Warehouse = 0,
 	Factory = 1,
 };
 
@@ -1047,7 +1047,7 @@ public:
 };
 
 
-class Repository : public KSObject
+class Warehouse : public KSObject
 {
 
 protected:
@@ -1156,7 +1156,7 @@ public: // has_attribute setters
 
 public:
 
-	Repository()
+	Warehouse()
 	{
 		has_materials(false);
 		has_materialsReloadRemTime(false);
@@ -1165,12 +1165,12 @@ public:
 	
 	static inline const std::string nameStatic()
 	{
-		return "Repository";
+		return "Warehouse";
 	}
 	
 	virtual inline const std::string name() const
 	{
-		return "Repository";
+		return "Warehouse";
 	}
 	
 	std::string serialize() const
@@ -2881,7 +2881,7 @@ protected:
 	std::vector<ECell> __cArea;
 	std::map<AgentType, Agent> __agents;
 	FrontlineDelivery __frontlineDelivery;
-	Repository __repository;
+	Warehouse __warehouse;
 	BacklineDelivery __backlineDelivery;
 	Factory __factory;
 	std::map<UnitType, Unit> __units;
@@ -2889,7 +2889,7 @@ protected:
 	bool __has_cArea;
 	bool __has_agents;
 	bool __has_frontlineDelivery;
-	bool __has_repository;
+	bool __has_warehouse;
 	bool __has_backlineDelivery;
 	bool __has_factory;
 	bool __has_units;
@@ -2912,9 +2912,9 @@ public: // getters
 		return __frontlineDelivery;
 	}
 	
-	inline Repository repository() const
+	inline Warehouse warehouse() const
 	{
-		return __repository;
+		return __warehouse;
 	}
 	
 	inline BacklineDelivery backlineDelivery() const
@@ -2950,9 +2950,9 @@ public: // reference getters
 		return (FrontlineDelivery&) __frontlineDelivery;
 	}
 	
-	inline Repository &ref_repository() const
+	inline Warehouse &ref_warehouse() const
 	{
-		return (Repository&) __repository;
+		return (Warehouse&) __warehouse;
 	}
 	
 	inline BacklineDelivery &ref_backlineDelivery() const
@@ -2991,10 +2991,10 @@ public: // setters
 		has_frontlineDelivery(true);
 	}
 	
-	inline void repository(const Repository &repository)
+	inline void warehouse(const Warehouse &warehouse)
 	{
-		__repository = repository;
-		has_repository(true);
+		__warehouse = warehouse;
+		has_warehouse(true);
 	}
 	
 	inline void backlineDelivery(const BacklineDelivery &backlineDelivery)
@@ -3033,9 +3033,9 @@ public: // has_attribute getters
 		return __has_frontlineDelivery;
 	}
 	
-	inline bool has_repository() const
+	inline bool has_warehouse() const
 	{
-		return __has_repository;
+		return __has_warehouse;
 	}
 	
 	inline bool has_backlineDelivery() const
@@ -3071,9 +3071,9 @@ public: // has_attribute setters
 		__has_frontlineDelivery = has_frontlineDelivery;
 	}
 	
-	inline void has_repository(const bool &has_repository)
+	inline void has_warehouse(const bool &has_warehouse)
 	{
-		__has_repository = has_repository;
+		__has_warehouse = has_warehouse;
 	}
 	
 	inline void has_backlineDelivery(const bool &has_backlineDelivery)
@@ -3099,7 +3099,7 @@ public:
 		has_cArea(false);
 		has_agents(false);
 		has_frontlineDelivery(false);
-		has_repository(false);
+		has_warehouse(false);
 		has_backlineDelivery(false);
 		has_factory(false);
 		has_units(false);
@@ -3177,11 +3177,11 @@ public:
 			s += __frontlineDelivery.serialize();
 		}
 		
-		// serialize repository
-		s += __has_repository;
-		if (__has_repository)
+		// serialize warehouse
+		s += __has_warehouse;
+		if (__has_warehouse)
 		{
-			s += __repository.serialize();
+			s += __warehouse.serialize();
 		}
 		
 		// serialize backlineDelivery
@@ -3299,12 +3299,12 @@ public:
 			offset = __frontlineDelivery.deserialize(s, offset);
 		}
 		
-		// deserialize repository
-		__has_repository = *((unsigned char*) (&s[offset]));
+		// deserialize warehouse
+		__has_warehouse = *((unsigned char*) (&s[offset]));
 		offset += sizeof(unsigned char);
-		if (__has_repository)
+		if (__has_warehouse)
 		{
-			offset = __repository.deserialize(s, offset);
+			offset = __warehouse.deserialize(s, offset);
 		}
 		
 		// deserialize backlineDelivery

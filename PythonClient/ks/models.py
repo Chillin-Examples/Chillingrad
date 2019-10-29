@@ -49,7 +49,7 @@ class UnitType(Enum):
 
 
 class AgentType(Enum):
-	Repository = 0
+	Warehouse = 0
 	Factory = 1
 
 
@@ -413,11 +413,11 @@ class FrontlineDelivery(object):
 		return offset
 
 
-class Repository(object):
+class Warehouse(object):
 
 	@staticmethod
 	def name():
-		return 'Repository'
+		return 'Warehouse'
 
 
 	def __init__(self, materials=None, materials_reload_rem_time=None, c_materials_reload_duration=None):
@@ -1281,15 +1281,15 @@ class Base(object):
 		return 'Base'
 
 
-	def __init__(self, c_area=None, agents=None, frontline_delivery=None, repository=None, backline_delivery=None, factory=None, units=None):
-		self.initialize(c_area, agents, frontline_delivery, repository, backline_delivery, factory, units)
+	def __init__(self, c_area=None, agents=None, frontline_delivery=None, warehouse=None, backline_delivery=None, factory=None, units=None):
+		self.initialize(c_area, agents, frontline_delivery, warehouse, backline_delivery, factory, units)
 	
 
-	def initialize(self, c_area=None, agents=None, frontline_delivery=None, repository=None, backline_delivery=None, factory=None, units=None):
+	def initialize(self, c_area=None, agents=None, frontline_delivery=None, warehouse=None, backline_delivery=None, factory=None, units=None):
 		self.c_area = c_area
 		self.agents = agents
 		self.frontline_delivery = frontline_delivery
-		self.repository = repository
+		self.warehouse = warehouse
 		self.backline_delivery = backline_delivery
 		self.factory = factory
 		self.units = units
@@ -1336,10 +1336,10 @@ class Base(object):
 		if self.frontline_delivery is not None:
 			s += self.frontline_delivery.serialize()
 		
-		# serialize self.repository
-		s += b'\x00' if self.repository is None else b'\x01'
-		if self.repository is not None:
-			s += self.repository.serialize()
+		# serialize self.warehouse
+		s += b'\x00' if self.warehouse is None else b'\x01'
+		if self.warehouse is not None:
+			s += self.warehouse.serialize()
 		
 		# serialize self.backline_delivery
 		s += b'\x00' if self.backline_delivery is None else b'\x01'
@@ -1439,14 +1439,14 @@ class Base(object):
 		else:
 			self.frontline_delivery = None
 		
-		# deserialize self.repository
+		# deserialize self.warehouse
 		tmp198 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
 		if tmp198:
-			self.repository = Repository()
-			offset = self.repository.deserialize(s, offset)
+			self.warehouse = Warehouse()
+			offset = self.warehouse.deserialize(s, offset)
 		else:
-			self.repository = None
+			self.warehouse = None
 		
 		# deserialize self.backline_delivery
 		tmp199 = struct.unpack('B', s[offset:offset + 1])[0]

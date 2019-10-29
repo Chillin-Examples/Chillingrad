@@ -26,7 +26,7 @@ namespace KS.Commands
 	
 	public enum CommandAgentType
 	{
-		Repository = 0,
+		Warehouse = 0,
 		Factory = 1,
 	}
 	

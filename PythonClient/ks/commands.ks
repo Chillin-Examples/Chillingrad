@@ -25,7 +25,7 @@ _def = enum <byte>
 [CommandAgentType]
 _def = enum <byte>
     {
-        Repository,
+        Warehouse,
         Factory
     }
 

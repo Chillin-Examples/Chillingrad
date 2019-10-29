@@ -56,7 +56,7 @@ _def = enum <byte>
 [AgentType]
 _def = enum <byte>
     {
-        Repository,
+        Warehouse,
         Factory
     }
 
@@ -96,7 +96,7 @@ truck_return_rem_time = int
 c_truck_return_duration = int
 
 
-[Repository]
+[Warehouse]
 _def = class
 materials = map<Position, Material>
 materials_reload_rem_time = int
@@ -146,7 +146,7 @@ _def = class
 c_area = list<ECell>
 agents = map<AgentType, Agent>
 frontline_delivery = FrontlineDelivery
-repository = Repository
+warehouse = Warehouse
 backline_delivery = BacklineDelivery
 factory = Factory
 units = map<UnitType, Unit>

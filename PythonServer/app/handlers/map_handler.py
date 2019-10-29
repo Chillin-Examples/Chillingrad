@@ -14,7 +14,8 @@ class MapHandler:
         self._sides = sides
 
 
-    def _create_base(self, m):
+    def _create_base(self, map_info):
+        m = map_info
         base = Base()
 
         # Area
@@ -22,13 +23,13 @@ class MapHandler:
 
         # Agents
         base.agents = {}
-        for agentType in AgentType:
-            base.agents[agentType] = Agent(
-                type = agentType,
-                position = Position(index = m['agents'][agentType.name]['position']),
-                materials_bag = { materialType: 0 for materialType in MaterialType },
+        for agent_type in AgentType:
+            base.agents[agent_type] = Agent(
+                type = agent_type,
+                position = Position(index = m['agents'][agent_type.name]['position']),
+                materials_bag = { material_type: 0 for material_type in MaterialType },
                 c_materials_bag_capacity = m['agents']['c_materials_bag_capacity'],
-                ammos_bag = { ammoType: 0 for ammoType in AmmoType },
+                ammos_bag = { ammo_type: 0 for ammo_type in AmmoType },
                 c_ammos_bag_capacity = m['agents']['c_ammos_bag_capacity'],
             )
 
@@ -37,38 +38,38 @@ class MapHandler:
 
         base.frontline_delivery = FrontlineDelivery(
             is_available = True,
-            ammos = { ammoType: 0 for ammoType in AmmoType },
+            ammos = { ammo_type: 0 for ammo_type in AmmoType },
             truck_delivery_rem_time = 0,
             c_truck_delivery_duration = m['frontline_delivery']['c_truck_delivery_duration'],
             truck_return_rem_time = 0,
             c_truck_return_duration = m['frontline_delivery']['c_truck_return_duration'],
         )
 
-        # Repository
-        repo_materials = {}
-        for material in m['repository']['materials']:
+        # Warehouse
+        warehouse_materials = {}
+        for material in m['warehouse']['materials']:
             position = Position(index = material['position'])
             base.c_area[position.index] = ECell.Material
 
-            repo_materials[position] = Material(
+            warehouse_materials[position] = Material(
                 type = MaterialType[material['type']],
                 position = position,
                 count = material['c_capacity'],
                 c_capacity = material['c_capacity'],
             )
 
-        base.repository = Repository(
-            materials = repo_materials,
-            materials_reload_rem_time = m['repository']['c_materials_reload_duration'],
-            c_materials_reload_duration = m['repository']['c_materials_reload_duration'],
+        base.warehouse = Warehouse(
+            materials = warehouse_materials,
+            materials_reload_rem_time = m['warehouse']['c_materials_reload_duration'],
+            c_materials_reload_duration = m['warehouse']['c_materials_reload_duration'],
         )
 
         # Backline Delivery
         base.c_area[m['backline_delivery']['position']] = ECell.BacklineDelivery
 
         base.backline_delivery = BacklineDelivery(
-            materials = { materialType: 0 for materialType in MaterialType },
-            ammos = { ammoType: 0 for ammoType in AmmoType },
+            materials = { material_type: 0 for material_type in MaterialType },
+            ammos = { ammo_type: 0 for ammo_type in AmmoType },
         )
 
         # Factory
@@ -85,37 +86,42 @@ class MapHandler:
             )
 
         c_mixture_formulas = {}
-        for ammoType in AmmoType:
-            c_mixture_formulas[ammoType] = {}
-            for materialType, count in m['factory']['c_mixture_formulas'][ammoType.name].items():
-                c_mixture_formulas[ammoType][MaterialType[materialType]] = count
+        for ammo_type in AmmoType:
+            c_mixture_formulas[ammo_type] = {}
+            for material_type, count in m['factory']['c_mixture_formulas'][ammo_type.name].items():
+                c_mixture_formulas[ammo_type][MaterialType[material_type]] = count
 
         base.factory = Factory(
             machines = factory_machines,
             c_mixture_formulas = c_mixture_formulas,
-            c_construction_durations = { ammoType: m['factory']['c_construction_durations'][ammoType.name]
-                                            for ammoType in AmmoType },
-            c_ammo_box_sizes = { ammoType: m['factory']['c_ammo_box_sizes'][ammoType.name]
-                                            for ammoType in AmmoType }
+            c_construction_durations = {
+                ammo_type: m['factory']['c_construction_durations'][ammo_type.name]
+                for ammo_type in AmmoType
+            },
+            c_ammo_box_sizes = {
+                ammo_type: m['factory']['c_ammo_box_sizes'][ammo_type.name] for ammo_type in AmmoType
+            }
         )
 
         # Units
         base.units = {}
-        for mUnitType, mUnit in m['units'].items():
-            unitType = UnitType[mUnitType]
-            base.units[unitType] = Unit(
-                type = unitType,
-                health = mUnit['count'] * mUnit['c_individual_health'],
-                c_individual_health = mUnit['c_individual_health'],
-                c_individual_damage = mUnit['c_individual_damage'],
-                c_damage_distribution = { uType: m['units'][mUnitType]['c_damage_distribution'][uType.name]
-                                            for uType in UnitType },
-                ammo_count = mUnit['ammo_count'],
-                reload_rem_time = mUnit['c_reload_duration'],
-                c_reload_duration = mUnit['c_reload_duration'],
+        for unit_type_name, unit_info in m['units'].items():
+            unit_type = UnitType[unit_type_name]
+            base.units[unit_type] = Unit(
+                type = unit_type,
+                health = unit_info['count'] * unit_info['c_individual_health'],
+                c_individual_health = unit_info['c_individual_health'],
+                c_individual_damage = unit_info['c_individual_damage'],
+                c_damage_distribution = {
+                    ut: m['units'][unit_type_name]['c_damage_distribution'][ut.name] for ut in UnitType
+                },
+                ammo_count = unit_info['ammo_count'],
+                reload_rem_time = unit_info['c_reload_duration'],
+                c_reload_duration = unit_info['c_reload_duration'],
             )
-            # Extra infos
-            base.units[unitType].count = mUnit['count']
+
+            # Extra info
+            base.units[unit_type].count = unit_info['count']
 
         # return
         return base
@@ -123,18 +129,19 @@ class MapHandler:
 
     def load_map(self, config):
         with open((config['map_path']), 'r') as map_file:
-            m = json.loads(map_file.read())
+            map_info = json.loads(map_file.read())
 
-        base = self._create_base(m)
+        base = self._create_base(map_info)
         total_healths = sum([unit.health for unit in base.units.values()])
 
         # Create world
         world = World(
-            max_cycles = m['max_cycles'],
+            max_cycles = map_info['max_cycles'],
             bases = {side: deepcopy(base) for side in self._sides},
             total_healths = {side: total_healths for side in self._sides},
         )
-        # Extra infos
-        world.location = m['location']
+
+        # Extra info
+        world.location = map_info['location']
 
         return world

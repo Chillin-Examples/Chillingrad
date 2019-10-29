@@ -51,7 +51,7 @@ namespace KS.Models
 	
 	public enum AgentType
 	{
-		Repository = 0,
+		Warehouse = 0,
 		Factory = 1,
 	}
 	
@@ -519,20 +519,20 @@ namespace KS.Models
 		}
 	}
 	
-	public partial class Repository : KSObject
+	public partial class Warehouse : KSObject
 	{
 		public Dictionary<Position, Material> Materials { get; set; }
 		public int? MaterialsReloadRemTime { get; set; }
 		public int? CMaterialsReloadDuration { get; set; }
 		
 
-		public Repository()
+		public Warehouse()
 		{
 		}
 		
-		public new const string NameStatic = "Repository";
+		public new const string NameStatic = "Warehouse";
 		
-		public override string Name() => "Repository";
+		public override string Name() => "Warehouse";
 		
 		public override byte[] Serialize()
 		{
@@ -1747,7 +1747,7 @@ namespace KS.Models
 		public List<ECell?> CArea { get; set; }
 		public Dictionary<AgentType?, Agent> Agents { get; set; }
 		public FrontlineDelivery FrontlineDelivery { get; set; }
-		public Repository Repository { get; set; }
+		public Warehouse Warehouse { get; set; }
 		public BacklineDelivery BacklineDelivery { get; set; }
 		public Factory Factory { get; set; }
 		public Dictionary<UnitType?, Unit> Units { get; set; }
@@ -1820,11 +1820,11 @@ namespace KS.Models
 				s.AddRange(FrontlineDelivery.Serialize());
 			}
 			
-			// serialize Repository
-			s.Add((byte)((Repository == null) ? 0 : 1));
-			if (Repository != null)
+			// serialize Warehouse
+			s.Add((byte)((Warehouse == null) ? 0 : 1));
+			if (Warehouse != null)
 			{
-				s.AddRange(Repository.Serialize());
+				s.AddRange(Warehouse.Serialize());
 			}
 			
 			// serialize BacklineDelivery
@@ -1972,17 +1972,17 @@ namespace KS.Models
 			else
 				FrontlineDelivery = null;
 			
-			// deserialize Repository
+			// deserialize Warehouse
 			byte tmp198;
 			tmp198 = (byte)s[(int)offset];
 			offset += sizeof(byte);
 			if (tmp198 == 1)
 			{
-				Repository = new Repository();
-				offset = Repository.Deserialize(s, offset);
+				Warehouse = new Warehouse();
+				offset = Warehouse.Deserialize(s, offset);
 			}
 			else
-				Repository = null;
+				Warehouse = null;
 			
 			// deserialize BacklineDelivery
 			byte tmp199;

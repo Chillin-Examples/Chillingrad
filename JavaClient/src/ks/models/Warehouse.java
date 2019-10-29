@@ -7,7 +7,7 @@ import java.nio.charset.Charset;
 
 import ks.KSObject;
 
-public class Repository extends KSObject
+public class Warehouse extends KSObject
 {
 	protected Map<Position, Material> materials;
 	protected Integer materialsReloadRemTime;
@@ -49,14 +49,14 @@ public class Repository extends KSObject
 	}
 	
 	
-	public Repository()
+	public Warehouse()
 	{
 	}
 	
-	public static final String nameStatic = "Repository";
+	public static final String nameStatic = "Warehouse";
 	
 	@Override
-	public String name() { return "Repository"; }
+	public String name() { return "Warehouse"; }
 	
 	@Override
 	public byte[] serialize()

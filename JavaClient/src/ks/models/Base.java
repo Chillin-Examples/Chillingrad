@@ -12,7 +12,7 @@ public class Base extends KSObject
 	protected List<ECell> cArea;
 	protected Map<AgentType, Agent> agents;
 	protected FrontlineDelivery frontlineDelivery;
-	protected Repository repository;
+	protected Warehouse warehouse;
 	protected BacklineDelivery backlineDelivery;
 	protected Factory factory;
 	protected Map<UnitType, Unit> units;
@@ -34,9 +34,9 @@ public class Base extends KSObject
 		return this.frontlineDelivery;
 	}
 	
-	public Repository getRepository()
+	public Warehouse getWarehouse()
 	{
-		return this.repository;
+		return this.warehouse;
 	}
 	
 	public BacklineDelivery getBacklineDelivery()
@@ -72,9 +72,9 @@ public class Base extends KSObject
 		this.frontlineDelivery = frontlineDelivery;
 	}
 	
-	public void setRepository(Repository repository)
+	public void setWarehouse(Warehouse warehouse)
 	{
-		this.repository = repository;
+		this.warehouse = warehouse;
 	}
 	
 	public void setBacklineDelivery(BacklineDelivery backlineDelivery)
@@ -162,11 +162,11 @@ public class Base extends KSObject
 			s.addAll(b2B(frontlineDelivery.serialize()));
 		}
 		
-		// serialize repository
-		s.add((byte) ((repository == null) ? 0 : 1));
-		if (repository != null)
+		// serialize warehouse
+		s.add((byte) ((warehouse == null) ? 0 : 1));
+		if (warehouse != null)
 		{
-			s.addAll(b2B(repository.serialize()));
+			s.addAll(b2B(warehouse.serialize()));
 		}
 		
 		// serialize backlineDelivery
@@ -313,17 +313,17 @@ public class Base extends KSObject
 		else
 			frontlineDelivery = null;
 		
-		// deserialize repository
+		// deserialize warehouse
 		byte tmp25;
 		tmp25 = s[offset];
 		offset += Byte.BYTES;
 		if (tmp25 == 1)
 		{
-			repository = new Repository();
-			offset = repository.deserialize(s, offset);
+			warehouse = new Warehouse();
+			offset = warehouse.deserialize(s, offset);
 		}
 		else
-			repository = null;
+			warehouse = null;
 		
 		// deserialize backlineDelivery
 		byte tmp26;

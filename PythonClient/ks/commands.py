@@ -27,7 +27,7 @@ class CommandAmmoType(Enum):
 
 
 class CommandAgentType(Enum):
-	Repository = 0
+	Warehouse = 0
 	Factory = 1
 
 

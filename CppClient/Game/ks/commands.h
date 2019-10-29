@@ -52,7 +52,7 @@ enum class CommandAmmoType
 
 enum class CommandAgentType
 {
-	Repository = 0,
+	Warehouse = 0,
 	Factory = 1,
 };
 

@@ -7,7 +7,7 @@
     },
 
     "agents": {
-        "Repository": { "position": 1 },
+        "Warehouse": { "position": 1 },
         "Factory": { "position": 10 },
 
         "c_materials_bag_capacity": 10,
@@ -21,7 +21,7 @@
         "c_truck_return_duration": 30
     },
 
-    "repository": {
+    "warehouse": {
         "materials": [
             { "position": 2, "type": "Powder", "c_capacity": 10 },
             { "position": 3, "type": "Steel", "c_capacity": 10 },

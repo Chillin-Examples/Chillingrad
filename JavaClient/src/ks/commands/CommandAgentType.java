@@ -9,7 +9,7 @@ import ks.KSObject;
 
 public enum CommandAgentType
 {
-	Repository((byte) 0),
+	Warehouse((byte) 0),
 	Factory((byte) 1),
 	;
 
