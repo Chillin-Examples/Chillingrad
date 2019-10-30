@@ -318,12 +318,9 @@ namespace KS.Models
 	
 	public partial class FrontlineDelivery : KSObject
 	{
-		public bool? IsAvailable { get; set; }
 		public Dictionary<AmmoType?, int?> Ammos { get; set; }
-		public int? TruckDeliveryRemTime { get; set; }
-		public int? CTruckDeliveryDuration { get; set; }
-		public int? TruckReturnRemTime { get; set; }
-		public int? CTruckReturnDuration { get; set; }
+		public int? DeliveryRemTime { get; set; }
+		public int? CDeliveryDuration { get; set; }
 		
 
 		public FrontlineDelivery()
@@ -337,13 +334,6 @@ namespace KS.Models
 		public override byte[] Serialize()
 		{
 			List<byte> s = new List<byte>();
-			
-			// serialize IsAvailable
-			s.Add((byte)((IsAvailable == null) ? 0 : 1));
-			if (IsAvailable != null)
-			{
-				s.AddRange(BitConverter.GetBytes((bool)IsAvailable));
-			}
 			
 			// serialize Ammos
 			s.Add((byte)((Ammos == null) ? 0 : 1));
@@ -372,32 +362,18 @@ namespace KS.Models
 				}
 			}
 			
-			// serialize TruckDeliveryRemTime
-			s.Add((byte)((TruckDeliveryRemTime == null) ? 0 : 1));
-			if (TruckDeliveryRemTime != null)
+			// serialize DeliveryRemTime
+			s.Add((byte)((DeliveryRemTime == null) ? 0 : 1));
+			if (DeliveryRemTime != null)
 			{
-				s.AddRange(BitConverter.GetBytes((int)TruckDeliveryRemTime));
+				s.AddRange(BitConverter.GetBytes((int)DeliveryRemTime));
 			}
 			
-			// serialize CTruckDeliveryDuration
-			s.Add((byte)((CTruckDeliveryDuration == null) ? 0 : 1));
-			if (CTruckDeliveryDuration != null)
+			// serialize CDeliveryDuration
+			s.Add((byte)((CDeliveryDuration == null) ? 0 : 1));
+			if (CDeliveryDuration != null)
 			{
-				s.AddRange(BitConverter.GetBytes((int)CTruckDeliveryDuration));
-			}
-			
-			// serialize TruckReturnRemTime
-			s.Add((byte)((TruckReturnRemTime == null) ? 0 : 1));
-			if (TruckReturnRemTime != null)
-			{
-				s.AddRange(BitConverter.GetBytes((int)TruckReturnRemTime));
-			}
-			
-			// serialize CTruckReturnDuration
-			s.Add((byte)((CTruckReturnDuration == null) ? 0 : 1));
-			if (CTruckReturnDuration != null)
-			{
-				s.AddRange(BitConverter.GetBytes((int)CTruckReturnDuration));
+				s.AddRange(BitConverter.GetBytes((int)CDeliveryDuration));
 			}
 			
 			return s.ToArray();
@@ -405,115 +381,79 @@ namespace KS.Models
 		
 		public override uint Deserialize(byte[] s, uint offset = 0)
 		{
-			// deserialize IsAvailable
+			// deserialize Ammos
 			byte tmp14;
 			tmp14 = (byte)s[(int)offset];
 			offset += sizeof(byte);
 			if (tmp14 == 1)
 			{
-				IsAvailable = BitConverter.ToBoolean(s, (int)offset);
-				offset += sizeof(bool);
-			}
-			else
-				IsAvailable = null;
-			
-			// deserialize Ammos
-			byte tmp15;
-			tmp15 = (byte)s[(int)offset];
-			offset += sizeof(byte);
-			if (tmp15 == 1)
-			{
-				byte tmp16;
-				tmp16 = (byte)s[(int)offset];
+				byte tmp15;
+				tmp15 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp17 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp17, 0, tmp16);
-				offset += tmp16;
-				uint tmp18;
-				tmp18 = BitConverter.ToUInt32(tmp17, (int)0);
+				byte[] tmp16 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp16, 0, tmp15);
+				offset += tmp15;
+				uint tmp17;
+				tmp17 = BitConverter.ToUInt32(tmp16, (int)0);
 				
 				Ammos = new Dictionary<AmmoType?, int?>();
-				for (uint tmp19 = 0; tmp19 < tmp18; tmp19++)
+				for (uint tmp18 = 0; tmp18 < tmp17; tmp18++)
 				{
-					AmmoType? tmp20;
-					byte tmp22;
-					tmp22 = (byte)s[(int)offset];
+					AmmoType? tmp19;
+					byte tmp21;
+					tmp21 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp22 == 1)
+					if (tmp21 == 1)
 					{
-						sbyte tmp23;
-						tmp23 = (sbyte)s[(int)offset];
+						sbyte tmp22;
+						tmp22 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp20 = (AmmoType)tmp23;
+						tmp19 = (AmmoType)tmp22;
+					}
+					else
+						tmp19 = null;
+					
+					int? tmp20;
+					byte tmp23;
+					tmp23 = (byte)s[(int)offset];
+					offset += sizeof(byte);
+					if (tmp23 == 1)
+					{
+						tmp20 = BitConverter.ToInt32(s, (int)offset);
+						offset += sizeof(int);
 					}
 					else
 						tmp20 = null;
 					
-					int? tmp21;
-					byte tmp24;
-					tmp24 = (byte)s[(int)offset];
-					offset += sizeof(byte);
-					if (tmp24 == 1)
-					{
-						tmp21 = BitConverter.ToInt32(s, (int)offset);
-						offset += sizeof(int);
-					}
-					else
-						tmp21 = null;
-					
-					Ammos[tmp20] = tmp21;
+					Ammos[tmp19] = tmp20;
 				}
 			}
 			else
 				Ammos = null;
 			
-			// deserialize TruckDeliveryRemTime
+			// deserialize DeliveryRemTime
+			byte tmp24;
+			tmp24 = (byte)s[(int)offset];
+			offset += sizeof(byte);
+			if (tmp24 == 1)
+			{
+				DeliveryRemTime = BitConverter.ToInt32(s, (int)offset);
+				offset += sizeof(int);
+			}
+			else
+				DeliveryRemTime = null;
+			
+			// deserialize CDeliveryDuration
 			byte tmp25;
 			tmp25 = (byte)s[(int)offset];
 			offset += sizeof(byte);
 			if (tmp25 == 1)
 			{
-				TruckDeliveryRemTime = BitConverter.ToInt32(s, (int)offset);
+				CDeliveryDuration = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
 			}
 			else
-				TruckDeliveryRemTime = null;
-			
-			// deserialize CTruckDeliveryDuration
-			byte tmp26;
-			tmp26 = (byte)s[(int)offset];
-			offset += sizeof(byte);
-			if (tmp26 == 1)
-			{
-				CTruckDeliveryDuration = BitConverter.ToInt32(s, (int)offset);
-				offset += sizeof(int);
-			}
-			else
-				CTruckDeliveryDuration = null;
-			
-			// deserialize TruckReturnRemTime
-			byte tmp27;
-			tmp27 = (byte)s[(int)offset];
-			offset += sizeof(byte);
-			if (tmp27 == 1)
-			{
-				TruckReturnRemTime = BitConverter.ToInt32(s, (int)offset);
-				offset += sizeof(int);
-			}
-			else
-				TruckReturnRemTime = null;
-			
-			// deserialize CTruckReturnDuration
-			byte tmp28;
-			tmp28 = (byte)s[(int)offset];
-			offset += sizeof(byte);
-			if (tmp28 == 1)
-			{
-				CTruckReturnDuration = BitConverter.ToInt32(s, (int)offset);
-				offset += sizeof(int);
-			}
-			else
-				CTruckReturnDuration = null;
+				CDeliveryDuration = null;
 			
 			return offset;
 		}
@@ -542,25 +482,25 @@ namespace KS.Models
 			s.Add((byte)((Materials == null) ? 0 : 1));
 			if (Materials != null)
 			{
-				List<byte> tmp29 = new List<byte>();
-				tmp29.AddRange(BitConverter.GetBytes((uint)Materials.Count()));
-				while (tmp29.Count > 0 && tmp29.Last() == 0)
-					tmp29.RemoveAt(tmp29.Count - 1);
-				s.Add((byte)tmp29.Count);
-				s.AddRange(tmp29);
+				List<byte> tmp26 = new List<byte>();
+				tmp26.AddRange(BitConverter.GetBytes((uint)Materials.Count()));
+				while (tmp26.Count > 0 && tmp26.Last() == 0)
+					tmp26.RemoveAt(tmp26.Count - 1);
+				s.Add((byte)tmp26.Count);
+				s.AddRange(tmp26);
 				
-				foreach (var tmp30 in Materials)
+				foreach (var tmp27 in Materials)
 				{
-					s.Add((byte)((tmp30.Key == null) ? 0 : 1));
-					if (tmp30.Key != null)
+					s.Add((byte)((tmp27.Key == null) ? 0 : 1));
+					if (tmp27.Key != null)
 					{
-						s.AddRange(tmp30.Key.Serialize());
+						s.AddRange(tmp27.Key.Serialize());
 					}
 					
-					s.Add((byte)((tmp30.Value == null) ? 0 : 1));
-					if (tmp30.Value != null)
+					s.Add((byte)((tmp27.Value == null) ? 0 : 1));
+					if (tmp27.Value != null)
 					{
-						s.AddRange(tmp30.Value.Serialize());
+						s.AddRange(tmp27.Value.Serialize());
 					}
 				}
 			}
@@ -585,58 +525,58 @@ namespace KS.Models
 		public override uint Deserialize(byte[] s, uint offset = 0)
 		{
 			// deserialize Materials
-			byte tmp31;
-			tmp31 = (byte)s[(int)offset];
+			byte tmp28;
+			tmp28 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp31 == 1)
+			if (tmp28 == 1)
 			{
-				byte tmp32;
-				tmp32 = (byte)s[(int)offset];
+				byte tmp29;
+				tmp29 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp33 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp33, 0, tmp32);
-				offset += tmp32;
-				uint tmp34;
-				tmp34 = BitConverter.ToUInt32(tmp33, (int)0);
+				byte[] tmp30 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp30, 0, tmp29);
+				offset += tmp29;
+				uint tmp31;
+				tmp31 = BitConverter.ToUInt32(tmp30, (int)0);
 				
 				Materials = new Dictionary<Position, Material>();
-				for (uint tmp35 = 0; tmp35 < tmp34; tmp35++)
+				for (uint tmp32 = 0; tmp32 < tmp31; tmp32++)
 				{
-					Position tmp36;
-					byte tmp38;
-					tmp38 = (byte)s[(int)offset];
+					Position tmp33;
+					byte tmp35;
+					tmp35 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp38 == 1)
+					if (tmp35 == 1)
 					{
-						tmp36 = new Position();
-						offset = tmp36.Deserialize(s, offset);
+						tmp33 = new Position();
+						offset = tmp33.Deserialize(s, offset);
 					}
 					else
-						tmp36 = null;
+						tmp33 = null;
 					
-					Material tmp37;
-					byte tmp39;
-					tmp39 = (byte)s[(int)offset];
+					Material tmp34;
+					byte tmp36;
+					tmp36 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp39 == 1)
+					if (tmp36 == 1)
 					{
-						tmp37 = new Material();
-						offset = tmp37.Deserialize(s, offset);
+						tmp34 = new Material();
+						offset = tmp34.Deserialize(s, offset);
 					}
 					else
-						tmp37 = null;
+						tmp34 = null;
 					
-					Materials[tmp36] = tmp37;
+					Materials[tmp33] = tmp34;
 				}
 			}
 			else
 				Materials = null;
 			
 			// deserialize MaterialsReloadRemTime
-			byte tmp40;
-			tmp40 = (byte)s[(int)offset];
+			byte tmp37;
+			tmp37 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp40 == 1)
+			if (tmp37 == 1)
 			{
 				MaterialsReloadRemTime = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -645,10 +585,10 @@ namespace KS.Models
 				MaterialsReloadRemTime = null;
 			
 			// deserialize CMaterialsReloadDuration
-			byte tmp41;
-			tmp41 = (byte)s[(int)offset];
+			byte tmp38;
+			tmp38 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp41 == 1)
+			if (tmp38 == 1)
 			{
 				CMaterialsReloadDuration = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -682,25 +622,25 @@ namespace KS.Models
 			s.Add((byte)((Materials == null) ? 0 : 1));
 			if (Materials != null)
 			{
-				List<byte> tmp42 = new List<byte>();
-				tmp42.AddRange(BitConverter.GetBytes((uint)Materials.Count()));
-				while (tmp42.Count > 0 && tmp42.Last() == 0)
-					tmp42.RemoveAt(tmp42.Count - 1);
-				s.Add((byte)tmp42.Count);
-				s.AddRange(tmp42);
+				List<byte> tmp39 = new List<byte>();
+				tmp39.AddRange(BitConverter.GetBytes((uint)Materials.Count()));
+				while (tmp39.Count > 0 && tmp39.Last() == 0)
+					tmp39.RemoveAt(tmp39.Count - 1);
+				s.Add((byte)tmp39.Count);
+				s.AddRange(tmp39);
 				
-				foreach (var tmp43 in Materials)
+				foreach (var tmp40 in Materials)
 				{
-					s.Add((byte)((tmp43.Key == null) ? 0 : 1));
-					if (tmp43.Key != null)
+					s.Add((byte)((tmp40.Key == null) ? 0 : 1));
+					if (tmp40.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp43.Key));
+						s.Add((byte)((sbyte)tmp40.Key));
 					}
 					
-					s.Add((byte)((tmp43.Value == null) ? 0 : 1));
-					if (tmp43.Value != null)
+					s.Add((byte)((tmp40.Value == null) ? 0 : 1));
+					if (tmp40.Value != null)
 					{
-						s.AddRange(BitConverter.GetBytes((int)tmp43.Value));
+						s.AddRange(BitConverter.GetBytes((int)tmp40.Value));
 					}
 				}
 			}
@@ -709,25 +649,25 @@ namespace KS.Models
 			s.Add((byte)((Ammos == null) ? 0 : 1));
 			if (Ammos != null)
 			{
-				List<byte> tmp44 = new List<byte>();
-				tmp44.AddRange(BitConverter.GetBytes((uint)Ammos.Count()));
-				while (tmp44.Count > 0 && tmp44.Last() == 0)
-					tmp44.RemoveAt(tmp44.Count - 1);
-				s.Add((byte)tmp44.Count);
-				s.AddRange(tmp44);
+				List<byte> tmp41 = new List<byte>();
+				tmp41.AddRange(BitConverter.GetBytes((uint)Ammos.Count()));
+				while (tmp41.Count > 0 && tmp41.Last() == 0)
+					tmp41.RemoveAt(tmp41.Count - 1);
+				s.Add((byte)tmp41.Count);
+				s.AddRange(tmp41);
 				
-				foreach (var tmp45 in Ammos)
+				foreach (var tmp42 in Ammos)
 				{
-					s.Add((byte)((tmp45.Key == null) ? 0 : 1));
-					if (tmp45.Key != null)
+					s.Add((byte)((tmp42.Key == null) ? 0 : 1));
+					if (tmp42.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp45.Key));
+						s.Add((byte)((sbyte)tmp42.Key));
 					}
 					
-					s.Add((byte)((tmp45.Value == null) ? 0 : 1));
-					if (tmp45.Value != null)
+					s.Add((byte)((tmp42.Value == null) ? 0 : 1));
+					if (tmp42.Value != null)
 					{
-						s.AddRange(BitConverter.GetBytes((int)tmp45.Value));
+						s.AddRange(BitConverter.GetBytes((int)tmp42.Value));
 					}
 				}
 			}
@@ -738,100 +678,100 @@ namespace KS.Models
 		public override uint Deserialize(byte[] s, uint offset = 0)
 		{
 			// deserialize Materials
-			byte tmp46;
-			tmp46 = (byte)s[(int)offset];
+			byte tmp43;
+			tmp43 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp46 == 1)
+			if (tmp43 == 1)
 			{
-				byte tmp47;
-				tmp47 = (byte)s[(int)offset];
+				byte tmp44;
+				tmp44 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp48 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp48, 0, tmp47);
-				offset += tmp47;
-				uint tmp49;
-				tmp49 = BitConverter.ToUInt32(tmp48, (int)0);
+				byte[] tmp45 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp45, 0, tmp44);
+				offset += tmp44;
+				uint tmp46;
+				tmp46 = BitConverter.ToUInt32(tmp45, (int)0);
 				
 				Materials = new Dictionary<MaterialType?, int?>();
-				for (uint tmp50 = 0; tmp50 < tmp49; tmp50++)
+				for (uint tmp47 = 0; tmp47 < tmp46; tmp47++)
 				{
-					MaterialType? tmp51;
-					byte tmp53;
-					tmp53 = (byte)s[(int)offset];
+					MaterialType? tmp48;
+					byte tmp50;
+					tmp50 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp53 == 1)
+					if (tmp50 == 1)
 					{
-						sbyte tmp54;
-						tmp54 = (sbyte)s[(int)offset];
+						sbyte tmp51;
+						tmp51 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp51 = (MaterialType)tmp54;
+						tmp48 = (MaterialType)tmp51;
 					}
 					else
-						tmp51 = null;
+						tmp48 = null;
 					
-					int? tmp52;
-					byte tmp55;
-					tmp55 = (byte)s[(int)offset];
+					int? tmp49;
+					byte tmp52;
+					tmp52 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp55 == 1)
+					if (tmp52 == 1)
 					{
-						tmp52 = BitConverter.ToInt32(s, (int)offset);
+						tmp49 = BitConverter.ToInt32(s, (int)offset);
 						offset += sizeof(int);
 					}
 					else
-						tmp52 = null;
+						tmp49 = null;
 					
-					Materials[tmp51] = tmp52;
+					Materials[tmp48] = tmp49;
 				}
 			}
 			else
 				Materials = null;
 			
 			// deserialize Ammos
-			byte tmp56;
-			tmp56 = (byte)s[(int)offset];
+			byte tmp53;
+			tmp53 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp56 == 1)
+			if (tmp53 == 1)
 			{
-				byte tmp57;
-				tmp57 = (byte)s[(int)offset];
+				byte tmp54;
+				tmp54 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp58 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp58, 0, tmp57);
-				offset += tmp57;
-				uint tmp59;
-				tmp59 = BitConverter.ToUInt32(tmp58, (int)0);
+				byte[] tmp55 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp55, 0, tmp54);
+				offset += tmp54;
+				uint tmp56;
+				tmp56 = BitConverter.ToUInt32(tmp55, (int)0);
 				
 				Ammos = new Dictionary<AmmoType?, int?>();
-				for (uint tmp60 = 0; tmp60 < tmp59; tmp60++)
+				for (uint tmp57 = 0; tmp57 < tmp56; tmp57++)
 				{
-					AmmoType? tmp61;
-					byte tmp63;
-					tmp63 = (byte)s[(int)offset];
+					AmmoType? tmp58;
+					byte tmp60;
+					tmp60 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp63 == 1)
+					if (tmp60 == 1)
 					{
-						sbyte tmp64;
-						tmp64 = (sbyte)s[(int)offset];
+						sbyte tmp61;
+						tmp61 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp61 = (AmmoType)tmp64;
+						tmp58 = (AmmoType)tmp61;
 					}
 					else
-						tmp61 = null;
+						tmp58 = null;
 					
-					int? tmp62;
-					byte tmp65;
-					tmp65 = (byte)s[(int)offset];
+					int? tmp59;
+					byte tmp62;
+					tmp62 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp65 == 1)
+					if (tmp62 == 1)
 					{
-						tmp62 = BitConverter.ToInt32(s, (int)offset);
+						tmp59 = BitConverter.ToInt32(s, (int)offset);
 						offset += sizeof(int);
 					}
 					else
-						tmp62 = null;
+						tmp59 = null;
 					
-					Ammos[tmp61] = tmp62;
+					Ammos[tmp58] = tmp59;
 				}
 			}
 			else
@@ -865,25 +805,25 @@ namespace KS.Models
 			s.Add((byte)((Machines == null) ? 0 : 1));
 			if (Machines != null)
 			{
-				List<byte> tmp66 = new List<byte>();
-				tmp66.AddRange(BitConverter.GetBytes((uint)Machines.Count()));
-				while (tmp66.Count > 0 && tmp66.Last() == 0)
-					tmp66.RemoveAt(tmp66.Count - 1);
-				s.Add((byte)tmp66.Count);
-				s.AddRange(tmp66);
+				List<byte> tmp63 = new List<byte>();
+				tmp63.AddRange(BitConverter.GetBytes((uint)Machines.Count()));
+				while (tmp63.Count > 0 && tmp63.Last() == 0)
+					tmp63.RemoveAt(tmp63.Count - 1);
+				s.Add((byte)tmp63.Count);
+				s.AddRange(tmp63);
 				
-				foreach (var tmp67 in Machines)
+				foreach (var tmp64 in Machines)
 				{
-					s.Add((byte)((tmp67.Key == null) ? 0 : 1));
-					if (tmp67.Key != null)
+					s.Add((byte)((tmp64.Key == null) ? 0 : 1));
+					if (tmp64.Key != null)
 					{
-						s.AddRange(tmp67.Key.Serialize());
+						s.AddRange(tmp64.Key.Serialize());
 					}
 					
-					s.Add((byte)((tmp67.Value == null) ? 0 : 1));
-					if (tmp67.Value != null)
+					s.Add((byte)((tmp64.Value == null) ? 0 : 1));
+					if (tmp64.Value != null)
 					{
-						s.AddRange(tmp67.Value.Serialize());
+						s.AddRange(tmp64.Value.Serialize());
 					}
 				}
 			}
@@ -892,43 +832,43 @@ namespace KS.Models
 			s.Add((byte)((CMixtureFormulas == null) ? 0 : 1));
 			if (CMixtureFormulas != null)
 			{
-				List<byte> tmp68 = new List<byte>();
-				tmp68.AddRange(BitConverter.GetBytes((uint)CMixtureFormulas.Count()));
-				while (tmp68.Count > 0 && tmp68.Last() == 0)
-					tmp68.RemoveAt(tmp68.Count - 1);
-				s.Add((byte)tmp68.Count);
-				s.AddRange(tmp68);
+				List<byte> tmp65 = new List<byte>();
+				tmp65.AddRange(BitConverter.GetBytes((uint)CMixtureFormulas.Count()));
+				while (tmp65.Count > 0 && tmp65.Last() == 0)
+					tmp65.RemoveAt(tmp65.Count - 1);
+				s.Add((byte)tmp65.Count);
+				s.AddRange(tmp65);
 				
-				foreach (var tmp69 in CMixtureFormulas)
+				foreach (var tmp66 in CMixtureFormulas)
 				{
-					s.Add((byte)((tmp69.Key == null) ? 0 : 1));
-					if (tmp69.Key != null)
+					s.Add((byte)((tmp66.Key == null) ? 0 : 1));
+					if (tmp66.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp69.Key));
+						s.Add((byte)((sbyte)tmp66.Key));
 					}
 					
-					s.Add((byte)((tmp69.Value == null) ? 0 : 1));
-					if (tmp69.Value != null)
+					s.Add((byte)((tmp66.Value == null) ? 0 : 1));
+					if (tmp66.Value != null)
 					{
-						List<byte> tmp70 = new List<byte>();
-						tmp70.AddRange(BitConverter.GetBytes((uint)tmp69.Value.Count()));
-						while (tmp70.Count > 0 && tmp70.Last() == 0)
-							tmp70.RemoveAt(tmp70.Count - 1);
-						s.Add((byte)tmp70.Count);
-						s.AddRange(tmp70);
+						List<byte> tmp67 = new List<byte>();
+						tmp67.AddRange(BitConverter.GetBytes((uint)tmp66.Value.Count()));
+						while (tmp67.Count > 0 && tmp67.Last() == 0)
+							tmp67.RemoveAt(tmp67.Count - 1);
+						s.Add((byte)tmp67.Count);
+						s.AddRange(tmp67);
 						
-						foreach (var tmp71 in tmp69.Value)
+						foreach (var tmp68 in tmp66.Value)
 						{
-							s.Add((byte)((tmp71.Key == null) ? 0 : 1));
-							if (tmp71.Key != null)
+							s.Add((byte)((tmp68.Key == null) ? 0 : 1));
+							if (tmp68.Key != null)
 							{
-								s.Add((byte)((sbyte)tmp71.Key));
+								s.Add((byte)((sbyte)tmp68.Key));
 							}
 							
-							s.Add((byte)((tmp71.Value == null) ? 0 : 1));
-							if (tmp71.Value != null)
+							s.Add((byte)((tmp68.Value == null) ? 0 : 1));
+							if (tmp68.Value != null)
 							{
-								s.AddRange(BitConverter.GetBytes((int)tmp71.Value));
+								s.AddRange(BitConverter.GetBytes((int)tmp68.Value));
 							}
 						}
 					}
@@ -939,25 +879,25 @@ namespace KS.Models
 			s.Add((byte)((CConstructionDurations == null) ? 0 : 1));
 			if (CConstructionDurations != null)
 			{
-				List<byte> tmp72 = new List<byte>();
-				tmp72.AddRange(BitConverter.GetBytes((uint)CConstructionDurations.Count()));
-				while (tmp72.Count > 0 && tmp72.Last() == 0)
-					tmp72.RemoveAt(tmp72.Count - 1);
-				s.Add((byte)tmp72.Count);
-				s.AddRange(tmp72);
+				List<byte> tmp69 = new List<byte>();
+				tmp69.AddRange(BitConverter.GetBytes((uint)CConstructionDurations.Count()));
+				while (tmp69.Count > 0 && tmp69.Last() == 0)
+					tmp69.RemoveAt(tmp69.Count - 1);
+				s.Add((byte)tmp69.Count);
+				s.AddRange(tmp69);
 				
-				foreach (var tmp73 in CConstructionDurations)
+				foreach (var tmp70 in CConstructionDurations)
 				{
-					s.Add((byte)((tmp73.Key == null) ? 0 : 1));
-					if (tmp73.Key != null)
+					s.Add((byte)((tmp70.Key == null) ? 0 : 1));
+					if (tmp70.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp73.Key));
+						s.Add((byte)((sbyte)tmp70.Key));
 					}
 					
-					s.Add((byte)((tmp73.Value == null) ? 0 : 1));
-					if (tmp73.Value != null)
+					s.Add((byte)((tmp70.Value == null) ? 0 : 1));
+					if (tmp70.Value != null)
 					{
-						s.AddRange(BitConverter.GetBytes((int)tmp73.Value));
+						s.AddRange(BitConverter.GetBytes((int)tmp70.Value));
 					}
 				}
 			}
@@ -966,25 +906,25 @@ namespace KS.Models
 			s.Add((byte)((CAmmoBoxSizes == null) ? 0 : 1));
 			if (CAmmoBoxSizes != null)
 			{
-				List<byte> tmp74 = new List<byte>();
-				tmp74.AddRange(BitConverter.GetBytes((uint)CAmmoBoxSizes.Count()));
-				while (tmp74.Count > 0 && tmp74.Last() == 0)
-					tmp74.RemoveAt(tmp74.Count - 1);
-				s.Add((byte)tmp74.Count);
-				s.AddRange(tmp74);
+				List<byte> tmp71 = new List<byte>();
+				tmp71.AddRange(BitConverter.GetBytes((uint)CAmmoBoxSizes.Count()));
+				while (tmp71.Count > 0 && tmp71.Last() == 0)
+					tmp71.RemoveAt(tmp71.Count - 1);
+				s.Add((byte)tmp71.Count);
+				s.AddRange(tmp71);
 				
-				foreach (var tmp75 in CAmmoBoxSizes)
+				foreach (var tmp72 in CAmmoBoxSizes)
 				{
-					s.Add((byte)((tmp75.Key == null) ? 0 : 1));
-					if (tmp75.Key != null)
+					s.Add((byte)((tmp72.Key == null) ? 0 : 1));
+					if (tmp72.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp75.Key));
+						s.Add((byte)((sbyte)tmp72.Key));
 					}
 					
-					s.Add((byte)((tmp75.Value == null) ? 0 : 1));
-					if (tmp75.Value != null)
+					s.Add((byte)((tmp72.Value == null) ? 0 : 1));
+					if (tmp72.Value != null)
 					{
-						s.AddRange(BitConverter.GetBytes((int)tmp75.Value));
+						s.AddRange(BitConverter.GetBytes((int)tmp72.Value));
 					}
 				}
 			}
@@ -995,236 +935,236 @@ namespace KS.Models
 		public override uint Deserialize(byte[] s, uint offset = 0)
 		{
 			// deserialize Machines
-			byte tmp76;
-			tmp76 = (byte)s[(int)offset];
+			byte tmp73;
+			tmp73 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp76 == 1)
+			if (tmp73 == 1)
 			{
-				byte tmp77;
-				tmp77 = (byte)s[(int)offset];
+				byte tmp74;
+				tmp74 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp78 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp78, 0, tmp77);
-				offset += tmp77;
-				uint tmp79;
-				tmp79 = BitConverter.ToUInt32(tmp78, (int)0);
+				byte[] tmp75 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp75, 0, tmp74);
+				offset += tmp74;
+				uint tmp76;
+				tmp76 = BitConverter.ToUInt32(tmp75, (int)0);
 				
 				Machines = new Dictionary<Position, Machine>();
-				for (uint tmp80 = 0; tmp80 < tmp79; tmp80++)
+				for (uint tmp77 = 0; tmp77 < tmp76; tmp77++)
 				{
-					Position tmp81;
-					byte tmp83;
-					tmp83 = (byte)s[(int)offset];
+					Position tmp78;
+					byte tmp80;
+					tmp80 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp83 == 1)
+					if (tmp80 == 1)
 					{
-						tmp81 = new Position();
-						offset = tmp81.Deserialize(s, offset);
+						tmp78 = new Position();
+						offset = tmp78.Deserialize(s, offset);
 					}
 					else
-						tmp81 = null;
+						tmp78 = null;
 					
-					Machine tmp82;
-					byte tmp84;
-					tmp84 = (byte)s[(int)offset];
+					Machine tmp79;
+					byte tmp81;
+					tmp81 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp84 == 1)
+					if (tmp81 == 1)
 					{
-						tmp82 = new Machine();
-						offset = tmp82.Deserialize(s, offset);
+						tmp79 = new Machine();
+						offset = tmp79.Deserialize(s, offset);
 					}
 					else
-						tmp82 = null;
+						tmp79 = null;
 					
-					Machines[tmp81] = tmp82;
+					Machines[tmp78] = tmp79;
 				}
 			}
 			else
 				Machines = null;
 			
 			// deserialize CMixtureFormulas
-			byte tmp85;
-			tmp85 = (byte)s[(int)offset];
+			byte tmp82;
+			tmp82 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp85 == 1)
+			if (tmp82 == 1)
 			{
-				byte tmp86;
-				tmp86 = (byte)s[(int)offset];
+				byte tmp83;
+				tmp83 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp87 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp87, 0, tmp86);
-				offset += tmp86;
-				uint tmp88;
-				tmp88 = BitConverter.ToUInt32(tmp87, (int)0);
+				byte[] tmp84 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp84, 0, tmp83);
+				offset += tmp83;
+				uint tmp85;
+				tmp85 = BitConverter.ToUInt32(tmp84, (int)0);
 				
 				CMixtureFormulas = new Dictionary<AmmoType?, Dictionary<MaterialType?, int?>>();
-				for (uint tmp89 = 0; tmp89 < tmp88; tmp89++)
+				for (uint tmp86 = 0; tmp86 < tmp85; tmp86++)
 				{
-					AmmoType? tmp90;
-					byte tmp92;
-					tmp92 = (byte)s[(int)offset];
+					AmmoType? tmp87;
+					byte tmp89;
+					tmp89 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp92 == 1)
+					if (tmp89 == 1)
 					{
-						sbyte tmp93;
-						tmp93 = (sbyte)s[(int)offset];
+						sbyte tmp90;
+						tmp90 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp90 = (AmmoType)tmp93;
+						tmp87 = (AmmoType)tmp90;
 					}
 					else
-						tmp90 = null;
+						tmp87 = null;
 					
-					Dictionary<MaterialType?, int?> tmp91;
-					byte tmp94;
-					tmp94 = (byte)s[(int)offset];
+					Dictionary<MaterialType?, int?> tmp88;
+					byte tmp91;
+					tmp91 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp94 == 1)
+					if (tmp91 == 1)
 					{
-						byte tmp95;
-						tmp95 = (byte)s[(int)offset];
+						byte tmp92;
+						tmp92 = (byte)s[(int)offset];
 						offset += sizeof(byte);
-						byte[] tmp96 = new byte[sizeof(uint)];
-						Array.Copy(s, offset, tmp96, 0, tmp95);
-						offset += tmp95;
-						uint tmp97;
-						tmp97 = BitConverter.ToUInt32(tmp96, (int)0);
+						byte[] tmp93 = new byte[sizeof(uint)];
+						Array.Copy(s, offset, tmp93, 0, tmp92);
+						offset += tmp92;
+						uint tmp94;
+						tmp94 = BitConverter.ToUInt32(tmp93, (int)0);
 						
-						tmp91 = new Dictionary<MaterialType?, int?>();
-						for (uint tmp98 = 0; tmp98 < tmp97; tmp98++)
+						tmp88 = new Dictionary<MaterialType?, int?>();
+						for (uint tmp95 = 0; tmp95 < tmp94; tmp95++)
 						{
-							MaterialType? tmp99;
-							byte tmp101;
-							tmp101 = (byte)s[(int)offset];
+							MaterialType? tmp96;
+							byte tmp98;
+							tmp98 = (byte)s[(int)offset];
 							offset += sizeof(byte);
-							if (tmp101 == 1)
+							if (tmp98 == 1)
 							{
-								sbyte tmp102;
-								tmp102 = (sbyte)s[(int)offset];
+								sbyte tmp99;
+								tmp99 = (sbyte)s[(int)offset];
 								offset += sizeof(sbyte);
-								tmp99 = (MaterialType)tmp102;
+								tmp96 = (MaterialType)tmp99;
 							}
 							else
-								tmp99 = null;
+								tmp96 = null;
 							
-							int? tmp100;
-							byte tmp103;
-							tmp103 = (byte)s[(int)offset];
+							int? tmp97;
+							byte tmp100;
+							tmp100 = (byte)s[(int)offset];
 							offset += sizeof(byte);
-							if (tmp103 == 1)
+							if (tmp100 == 1)
 							{
-								tmp100 = BitConverter.ToInt32(s, (int)offset);
+								tmp97 = BitConverter.ToInt32(s, (int)offset);
 								offset += sizeof(int);
 							}
 							else
-								tmp100 = null;
+								tmp97 = null;
 							
-							tmp91[tmp99] = tmp100;
+							tmp88[tmp96] = tmp97;
 						}
 					}
 					else
-						tmp91 = null;
+						tmp88 = null;
 					
-					CMixtureFormulas[tmp90] = tmp91;
+					CMixtureFormulas[tmp87] = tmp88;
 				}
 			}
 			else
 				CMixtureFormulas = null;
 			
 			// deserialize CConstructionDurations
-			byte tmp104;
-			tmp104 = (byte)s[(int)offset];
+			byte tmp101;
+			tmp101 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp104 == 1)
+			if (tmp101 == 1)
 			{
-				byte tmp105;
-				tmp105 = (byte)s[(int)offset];
+				byte tmp102;
+				tmp102 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp106 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp106, 0, tmp105);
-				offset += tmp105;
-				uint tmp107;
-				tmp107 = BitConverter.ToUInt32(tmp106, (int)0);
+				byte[] tmp103 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp103, 0, tmp102);
+				offset += tmp102;
+				uint tmp104;
+				tmp104 = BitConverter.ToUInt32(tmp103, (int)0);
 				
 				CConstructionDurations = new Dictionary<AmmoType?, int?>();
-				for (uint tmp108 = 0; tmp108 < tmp107; tmp108++)
+				for (uint tmp105 = 0; tmp105 < tmp104; tmp105++)
 				{
-					AmmoType? tmp109;
-					byte tmp111;
-					tmp111 = (byte)s[(int)offset];
+					AmmoType? tmp106;
+					byte tmp108;
+					tmp108 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp111 == 1)
+					if (tmp108 == 1)
 					{
-						sbyte tmp112;
-						tmp112 = (sbyte)s[(int)offset];
+						sbyte tmp109;
+						tmp109 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp109 = (AmmoType)tmp112;
+						tmp106 = (AmmoType)tmp109;
 					}
 					else
-						tmp109 = null;
+						tmp106 = null;
 					
-					int? tmp110;
-					byte tmp113;
-					tmp113 = (byte)s[(int)offset];
+					int? tmp107;
+					byte tmp110;
+					tmp110 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp113 == 1)
+					if (tmp110 == 1)
 					{
-						tmp110 = BitConverter.ToInt32(s, (int)offset);
+						tmp107 = BitConverter.ToInt32(s, (int)offset);
 						offset += sizeof(int);
 					}
 					else
-						tmp110 = null;
+						tmp107 = null;
 					
-					CConstructionDurations[tmp109] = tmp110;
+					CConstructionDurations[tmp106] = tmp107;
 				}
 			}
 			else
 				CConstructionDurations = null;
 			
 			// deserialize CAmmoBoxSizes
-			byte tmp114;
-			tmp114 = (byte)s[(int)offset];
+			byte tmp111;
+			tmp111 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp114 == 1)
+			if (tmp111 == 1)
 			{
-				byte tmp115;
-				tmp115 = (byte)s[(int)offset];
+				byte tmp112;
+				tmp112 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp116 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp116, 0, tmp115);
-				offset += tmp115;
-				uint tmp117;
-				tmp117 = BitConverter.ToUInt32(tmp116, (int)0);
+				byte[] tmp113 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp113, 0, tmp112);
+				offset += tmp112;
+				uint tmp114;
+				tmp114 = BitConverter.ToUInt32(tmp113, (int)0);
 				
 				CAmmoBoxSizes = new Dictionary<AmmoType?, int?>();
-				for (uint tmp118 = 0; tmp118 < tmp117; tmp118++)
+				for (uint tmp115 = 0; tmp115 < tmp114; tmp115++)
 				{
-					AmmoType? tmp119;
-					byte tmp121;
-					tmp121 = (byte)s[(int)offset];
+					AmmoType? tmp116;
+					byte tmp118;
+					tmp118 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp121 == 1)
+					if (tmp118 == 1)
 					{
-						sbyte tmp122;
-						tmp122 = (sbyte)s[(int)offset];
+						sbyte tmp119;
+						tmp119 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp119 = (AmmoType)tmp122;
+						tmp116 = (AmmoType)tmp119;
 					}
 					else
-						tmp119 = null;
+						tmp116 = null;
 					
-					int? tmp120;
-					byte tmp123;
-					tmp123 = (byte)s[(int)offset];
+					int? tmp117;
+					byte tmp120;
+					tmp120 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp123 == 1)
+					if (tmp120 == 1)
 					{
-						tmp120 = BitConverter.ToInt32(s, (int)offset);
+						tmp117 = BitConverter.ToInt32(s, (int)offset);
 						offset += sizeof(int);
 					}
 					else
-						tmp120 = null;
+						tmp117 = null;
 					
-					CAmmoBoxSizes[tmp119] = tmp120;
+					CAmmoBoxSizes[tmp116] = tmp117;
 				}
 			}
 			else
@@ -1274,25 +1214,25 @@ namespace KS.Models
 			s.Add((byte)((MaterialsBag == null) ? 0 : 1));
 			if (MaterialsBag != null)
 			{
-				List<byte> tmp124 = new List<byte>();
-				tmp124.AddRange(BitConverter.GetBytes((uint)MaterialsBag.Count()));
-				while (tmp124.Count > 0 && tmp124.Last() == 0)
-					tmp124.RemoveAt(tmp124.Count - 1);
-				s.Add((byte)tmp124.Count);
-				s.AddRange(tmp124);
+				List<byte> tmp121 = new List<byte>();
+				tmp121.AddRange(BitConverter.GetBytes((uint)MaterialsBag.Count()));
+				while (tmp121.Count > 0 && tmp121.Last() == 0)
+					tmp121.RemoveAt(tmp121.Count - 1);
+				s.Add((byte)tmp121.Count);
+				s.AddRange(tmp121);
 				
-				foreach (var tmp125 in MaterialsBag)
+				foreach (var tmp122 in MaterialsBag)
 				{
-					s.Add((byte)((tmp125.Key == null) ? 0 : 1));
-					if (tmp125.Key != null)
+					s.Add((byte)((tmp122.Key == null) ? 0 : 1));
+					if (tmp122.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp125.Key));
+						s.Add((byte)((sbyte)tmp122.Key));
 					}
 					
-					s.Add((byte)((tmp125.Value == null) ? 0 : 1));
-					if (tmp125.Value != null)
+					s.Add((byte)((tmp122.Value == null) ? 0 : 1));
+					if (tmp122.Value != null)
 					{
-						s.AddRange(BitConverter.GetBytes((int)tmp125.Value));
+						s.AddRange(BitConverter.GetBytes((int)tmp122.Value));
 					}
 				}
 			}
@@ -1308,25 +1248,25 @@ namespace KS.Models
 			s.Add((byte)((AmmosBag == null) ? 0 : 1));
 			if (AmmosBag != null)
 			{
-				List<byte> tmp126 = new List<byte>();
-				tmp126.AddRange(BitConverter.GetBytes((uint)AmmosBag.Count()));
-				while (tmp126.Count > 0 && tmp126.Last() == 0)
-					tmp126.RemoveAt(tmp126.Count - 1);
-				s.Add((byte)tmp126.Count);
-				s.AddRange(tmp126);
+				List<byte> tmp123 = new List<byte>();
+				tmp123.AddRange(BitConverter.GetBytes((uint)AmmosBag.Count()));
+				while (tmp123.Count > 0 && tmp123.Last() == 0)
+					tmp123.RemoveAt(tmp123.Count - 1);
+				s.Add((byte)tmp123.Count);
+				s.AddRange(tmp123);
 				
-				foreach (var tmp127 in AmmosBag)
+				foreach (var tmp124 in AmmosBag)
 				{
-					s.Add((byte)((tmp127.Key == null) ? 0 : 1));
-					if (tmp127.Key != null)
+					s.Add((byte)((tmp124.Key == null) ? 0 : 1));
+					if (tmp124.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp127.Key));
+						s.Add((byte)((sbyte)tmp124.Key));
 					}
 					
-					s.Add((byte)((tmp127.Value == null) ? 0 : 1));
-					if (tmp127.Value != null)
+					s.Add((byte)((tmp124.Value == null) ? 0 : 1));
+					if (tmp124.Value != null)
 					{
-						s.AddRange(BitConverter.GetBytes((int)tmp127.Value));
+						s.AddRange(BitConverter.GetBytes((int)tmp124.Value));
 					}
 				}
 			}
@@ -1344,24 +1284,24 @@ namespace KS.Models
 		public override uint Deserialize(byte[] s, uint offset = 0)
 		{
 			// deserialize Type
-			byte tmp128;
-			tmp128 = (byte)s[(int)offset];
+			byte tmp125;
+			tmp125 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp128 == 1)
+			if (tmp125 == 1)
 			{
-				sbyte tmp129;
-				tmp129 = (sbyte)s[(int)offset];
+				sbyte tmp126;
+				tmp126 = (sbyte)s[(int)offset];
 				offset += sizeof(sbyte);
-				Type = (AgentType)tmp129;
+				Type = (AgentType)tmp126;
 			}
 			else
 				Type = null;
 			
 			// deserialize Position
-			byte tmp130;
-			tmp130 = (byte)s[(int)offset];
+			byte tmp127;
+			tmp127 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp130 == 1)
+			if (tmp127 == 1)
 			{
 				Position = new Position();
 				offset = Position.Deserialize(s, offset);
@@ -1370,60 +1310,60 @@ namespace KS.Models
 				Position = null;
 			
 			// deserialize MaterialsBag
-			byte tmp131;
-			tmp131 = (byte)s[(int)offset];
+			byte tmp128;
+			tmp128 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp131 == 1)
+			if (tmp128 == 1)
 			{
-				byte tmp132;
-				tmp132 = (byte)s[(int)offset];
+				byte tmp129;
+				tmp129 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp133 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp133, 0, tmp132);
-				offset += tmp132;
-				uint tmp134;
-				tmp134 = BitConverter.ToUInt32(tmp133, (int)0);
+				byte[] tmp130 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp130, 0, tmp129);
+				offset += tmp129;
+				uint tmp131;
+				tmp131 = BitConverter.ToUInt32(tmp130, (int)0);
 				
 				MaterialsBag = new Dictionary<MaterialType?, int?>();
-				for (uint tmp135 = 0; tmp135 < tmp134; tmp135++)
+				for (uint tmp132 = 0; tmp132 < tmp131; tmp132++)
 				{
-					MaterialType? tmp136;
-					byte tmp138;
-					tmp138 = (byte)s[(int)offset];
+					MaterialType? tmp133;
+					byte tmp135;
+					tmp135 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp138 == 1)
+					if (tmp135 == 1)
 					{
-						sbyte tmp139;
-						tmp139 = (sbyte)s[(int)offset];
+						sbyte tmp136;
+						tmp136 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp136 = (MaterialType)tmp139;
+						tmp133 = (MaterialType)tmp136;
 					}
 					else
-						tmp136 = null;
+						tmp133 = null;
 					
-					int? tmp137;
-					byte tmp140;
-					tmp140 = (byte)s[(int)offset];
+					int? tmp134;
+					byte tmp137;
+					tmp137 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp140 == 1)
+					if (tmp137 == 1)
 					{
-						tmp137 = BitConverter.ToInt32(s, (int)offset);
+						tmp134 = BitConverter.ToInt32(s, (int)offset);
 						offset += sizeof(int);
 					}
 					else
-						tmp137 = null;
+						tmp134 = null;
 					
-					MaterialsBag[tmp136] = tmp137;
+					MaterialsBag[tmp133] = tmp134;
 				}
 			}
 			else
 				MaterialsBag = null;
 			
 			// deserialize CMaterialsBagCapacity
-			byte tmp141;
-			tmp141 = (byte)s[(int)offset];
+			byte tmp138;
+			tmp138 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp141 == 1)
+			if (tmp138 == 1)
 			{
 				CMaterialsBagCapacity = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -1432,60 +1372,60 @@ namespace KS.Models
 				CMaterialsBagCapacity = null;
 			
 			// deserialize AmmosBag
-			byte tmp142;
-			tmp142 = (byte)s[(int)offset];
+			byte tmp139;
+			tmp139 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp142 == 1)
+			if (tmp139 == 1)
 			{
-				byte tmp143;
-				tmp143 = (byte)s[(int)offset];
+				byte tmp140;
+				tmp140 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp144 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp144, 0, tmp143);
-				offset += tmp143;
-				uint tmp145;
-				tmp145 = BitConverter.ToUInt32(tmp144, (int)0);
+				byte[] tmp141 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp141, 0, tmp140);
+				offset += tmp140;
+				uint tmp142;
+				tmp142 = BitConverter.ToUInt32(tmp141, (int)0);
 				
 				AmmosBag = new Dictionary<AmmoType?, int?>();
-				for (uint tmp146 = 0; tmp146 < tmp145; tmp146++)
+				for (uint tmp143 = 0; tmp143 < tmp142; tmp143++)
 				{
-					AmmoType? tmp147;
-					byte tmp149;
-					tmp149 = (byte)s[(int)offset];
+					AmmoType? tmp144;
+					byte tmp146;
+					tmp146 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp149 == 1)
+					if (tmp146 == 1)
 					{
-						sbyte tmp150;
-						tmp150 = (sbyte)s[(int)offset];
+						sbyte tmp147;
+						tmp147 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp147 = (AmmoType)tmp150;
+						tmp144 = (AmmoType)tmp147;
 					}
 					else
-						tmp147 = null;
+						tmp144 = null;
 					
-					int? tmp148;
-					byte tmp151;
-					tmp151 = (byte)s[(int)offset];
+					int? tmp145;
+					byte tmp148;
+					tmp148 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp151 == 1)
+					if (tmp148 == 1)
 					{
-						tmp148 = BitConverter.ToInt32(s, (int)offset);
+						tmp145 = BitConverter.ToInt32(s, (int)offset);
 						offset += sizeof(int);
 					}
 					else
-						tmp148 = null;
+						tmp145 = null;
 					
-					AmmosBag[tmp147] = tmp148;
+					AmmosBag[tmp144] = tmp145;
 				}
 			}
 			else
 				AmmosBag = null;
 			
 			// deserialize CAmmosBagCapacity
-			byte tmp152;
-			tmp152 = (byte)s[(int)offset];
+			byte tmp149;
+			tmp149 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp152 == 1)
+			if (tmp149 == 1)
 			{
 				CAmmosBagCapacity = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -1553,25 +1493,25 @@ namespace KS.Models
 			s.Add((byte)((CDamageDistribution == null) ? 0 : 1));
 			if (CDamageDistribution != null)
 			{
-				List<byte> tmp153 = new List<byte>();
-				tmp153.AddRange(BitConverter.GetBytes((uint)CDamageDistribution.Count()));
-				while (tmp153.Count > 0 && tmp153.Last() == 0)
-					tmp153.RemoveAt(tmp153.Count - 1);
-				s.Add((byte)tmp153.Count);
-				s.AddRange(tmp153);
+				List<byte> tmp150 = new List<byte>();
+				tmp150.AddRange(BitConverter.GetBytes((uint)CDamageDistribution.Count()));
+				while (tmp150.Count > 0 && tmp150.Last() == 0)
+					tmp150.RemoveAt(tmp150.Count - 1);
+				s.Add((byte)tmp150.Count);
+				s.AddRange(tmp150);
 				
-				foreach (var tmp154 in CDamageDistribution)
+				foreach (var tmp151 in CDamageDistribution)
 				{
-					s.Add((byte)((tmp154.Key == null) ? 0 : 1));
-					if (tmp154.Key != null)
+					s.Add((byte)((tmp151.Key == null) ? 0 : 1));
+					if (tmp151.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp154.Key));
+						s.Add((byte)((sbyte)tmp151.Key));
 					}
 					
-					s.Add((byte)((tmp154.Value == null) ? 0 : 1));
-					if (tmp154.Value != null)
+					s.Add((byte)((tmp151.Value == null) ? 0 : 1));
+					if (tmp151.Value != null)
 					{
-						s.AddRange(BitConverter.GetBytes((float)tmp154.Value));
+						s.AddRange(BitConverter.GetBytes((float)tmp151.Value));
 					}
 				}
 			}
@@ -1603,24 +1543,24 @@ namespace KS.Models
 		public override uint Deserialize(byte[] s, uint offset = 0)
 		{
 			// deserialize Type
-			byte tmp155;
-			tmp155 = (byte)s[(int)offset];
+			byte tmp152;
+			tmp152 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp155 == 1)
+			if (tmp152 == 1)
 			{
-				sbyte tmp156;
-				tmp156 = (sbyte)s[(int)offset];
+				sbyte tmp153;
+				tmp153 = (sbyte)s[(int)offset];
 				offset += sizeof(sbyte);
-				Type = (UnitType)tmp156;
+				Type = (UnitType)tmp153;
 			}
 			else
 				Type = null;
 			
 			// deserialize Health
-			byte tmp157;
-			tmp157 = (byte)s[(int)offset];
+			byte tmp154;
+			tmp154 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp157 == 1)
+			if (tmp154 == 1)
 			{
 				Health = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -1629,10 +1569,10 @@ namespace KS.Models
 				Health = null;
 			
 			// deserialize CIndividualHealth
-			byte tmp158;
-			tmp158 = (byte)s[(int)offset];
+			byte tmp155;
+			tmp155 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp158 == 1)
+			if (tmp155 == 1)
 			{
 				CIndividualHealth = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -1641,10 +1581,10 @@ namespace KS.Models
 				CIndividualHealth = null;
 			
 			// deserialize CIndividualDamage
-			byte tmp159;
-			tmp159 = (byte)s[(int)offset];
+			byte tmp156;
+			tmp156 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp159 == 1)
+			if (tmp156 == 1)
 			{
 				CIndividualDamage = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -1653,60 +1593,60 @@ namespace KS.Models
 				CIndividualDamage = null;
 			
 			// deserialize CDamageDistribution
-			byte tmp160;
-			tmp160 = (byte)s[(int)offset];
+			byte tmp157;
+			tmp157 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp160 == 1)
+			if (tmp157 == 1)
 			{
-				byte tmp161;
-				tmp161 = (byte)s[(int)offset];
+				byte tmp158;
+				tmp158 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp162 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp162, 0, tmp161);
-				offset += tmp161;
-				uint tmp163;
-				tmp163 = BitConverter.ToUInt32(tmp162, (int)0);
+				byte[] tmp159 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp159, 0, tmp158);
+				offset += tmp158;
+				uint tmp160;
+				tmp160 = BitConverter.ToUInt32(tmp159, (int)0);
 				
 				CDamageDistribution = new Dictionary<UnitType?, float?>();
-				for (uint tmp164 = 0; tmp164 < tmp163; tmp164++)
+				for (uint tmp161 = 0; tmp161 < tmp160; tmp161++)
 				{
-					UnitType? tmp165;
-					byte tmp167;
-					tmp167 = (byte)s[(int)offset];
+					UnitType? tmp162;
+					byte tmp164;
+					tmp164 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp167 == 1)
+					if (tmp164 == 1)
 					{
-						sbyte tmp168;
-						tmp168 = (sbyte)s[(int)offset];
+						sbyte tmp165;
+						tmp165 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp165 = (UnitType)tmp168;
+						tmp162 = (UnitType)tmp165;
 					}
 					else
-						tmp165 = null;
+						tmp162 = null;
 					
-					float? tmp166;
-					byte tmp169;
-					tmp169 = (byte)s[(int)offset];
+					float? tmp163;
+					byte tmp166;
+					tmp166 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp169 == 1)
+					if (tmp166 == 1)
 					{
-						tmp166 = BitConverter.ToSingle(s, (int)offset);
+						tmp163 = BitConverter.ToSingle(s, (int)offset);
 						offset += sizeof(float);
 					}
 					else
-						tmp166 = null;
+						tmp163 = null;
 					
-					CDamageDistribution[tmp165] = tmp166;
+					CDamageDistribution[tmp162] = tmp163;
 				}
 			}
 			else
 				CDamageDistribution = null;
 			
 			// deserialize AmmoCount
-			byte tmp170;
-			tmp170 = (byte)s[(int)offset];
+			byte tmp167;
+			tmp167 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp170 == 1)
+			if (tmp167 == 1)
 			{
 				AmmoCount = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -1715,10 +1655,10 @@ namespace KS.Models
 				AmmoCount = null;
 			
 			// deserialize ReloadRemTime
-			byte tmp171;
-			tmp171 = (byte)s[(int)offset];
+			byte tmp168;
+			tmp168 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp171 == 1)
+			if (tmp168 == 1)
 			{
 				ReloadRemTime = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -1727,10 +1667,10 @@ namespace KS.Models
 				ReloadRemTime = null;
 			
 			// deserialize CReloadDuration
-			byte tmp172;
-			tmp172 = (byte)s[(int)offset];
+			byte tmp169;
+			tmp169 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp172 == 1)
+			if (tmp169 == 1)
 			{
 				CReloadDuration = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -1746,7 +1686,7 @@ namespace KS.Models
 	{
 		public List<ECell?> CArea { get; set; }
 		public Dictionary<AgentType?, Agent> Agents { get; set; }
-		public FrontlineDelivery FrontlineDelivery { get; set; }
+		public List<FrontlineDelivery> FrontlineDeliveries { get; set; }
 		public Warehouse Warehouse { get; set; }
 		public BacklineDelivery BacklineDelivery { get; set; }
 		public Factory Factory { get; set; }
@@ -1769,19 +1709,19 @@ namespace KS.Models
 			s.Add((byte)((CArea == null) ? 0 : 1));
 			if (CArea != null)
 			{
-				List<byte> tmp173 = new List<byte>();
-				tmp173.AddRange(BitConverter.GetBytes((uint)CArea.Count()));
-				while (tmp173.Count > 0 && tmp173.Last() == 0)
-					tmp173.RemoveAt(tmp173.Count - 1);
-				s.Add((byte)tmp173.Count);
-				s.AddRange(tmp173);
+				List<byte> tmp170 = new List<byte>();
+				tmp170.AddRange(BitConverter.GetBytes((uint)CArea.Count()));
+				while (tmp170.Count > 0 && tmp170.Last() == 0)
+					tmp170.RemoveAt(tmp170.Count - 1);
+				s.Add((byte)tmp170.Count);
+				s.AddRange(tmp170);
 				
-				foreach (var tmp174 in CArea)
+				foreach (var tmp171 in CArea)
 				{
-					s.Add((byte)((tmp174 == null) ? 0 : 1));
-					if (tmp174 != null)
+					s.Add((byte)((tmp171 == null) ? 0 : 1));
+					if (tmp171 != null)
 					{
-						s.Add((byte)((sbyte)tmp174));
+						s.Add((byte)((sbyte)tmp171));
 					}
 				}
 			}
@@ -1790,34 +1730,48 @@ namespace KS.Models
 			s.Add((byte)((Agents == null) ? 0 : 1));
 			if (Agents != null)
 			{
-				List<byte> tmp175 = new List<byte>();
-				tmp175.AddRange(BitConverter.GetBytes((uint)Agents.Count()));
-				while (tmp175.Count > 0 && tmp175.Last() == 0)
-					tmp175.RemoveAt(tmp175.Count - 1);
-				s.Add((byte)tmp175.Count);
-				s.AddRange(tmp175);
+				List<byte> tmp172 = new List<byte>();
+				tmp172.AddRange(BitConverter.GetBytes((uint)Agents.Count()));
+				while (tmp172.Count > 0 && tmp172.Last() == 0)
+					tmp172.RemoveAt(tmp172.Count - 1);
+				s.Add((byte)tmp172.Count);
+				s.AddRange(tmp172);
 				
-				foreach (var tmp176 in Agents)
+				foreach (var tmp173 in Agents)
 				{
-					s.Add((byte)((tmp176.Key == null) ? 0 : 1));
-					if (tmp176.Key != null)
+					s.Add((byte)((tmp173.Key == null) ? 0 : 1));
+					if (tmp173.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp176.Key));
+						s.Add((byte)((sbyte)tmp173.Key));
 					}
 					
-					s.Add((byte)((tmp176.Value == null) ? 0 : 1));
-					if (tmp176.Value != null)
+					s.Add((byte)((tmp173.Value == null) ? 0 : 1));
+					if (tmp173.Value != null)
 					{
-						s.AddRange(tmp176.Value.Serialize());
+						s.AddRange(tmp173.Value.Serialize());
 					}
 				}
 			}
 			
-			// serialize FrontlineDelivery
-			s.Add((byte)((FrontlineDelivery == null) ? 0 : 1));
-			if (FrontlineDelivery != null)
+			// serialize FrontlineDeliveries
+			s.Add((byte)((FrontlineDeliveries == null) ? 0 : 1));
+			if (FrontlineDeliveries != null)
 			{
-				s.AddRange(FrontlineDelivery.Serialize());
+				List<byte> tmp174 = new List<byte>();
+				tmp174.AddRange(BitConverter.GetBytes((uint)FrontlineDeliveries.Count()));
+				while (tmp174.Count > 0 && tmp174.Last() == 0)
+					tmp174.RemoveAt(tmp174.Count - 1);
+				s.Add((byte)tmp174.Count);
+				s.AddRange(tmp174);
+				
+				foreach (var tmp175 in FrontlineDeliveries)
+				{
+					s.Add((byte)((tmp175 == null) ? 0 : 1));
+					if (tmp175 != null)
+					{
+						s.AddRange(tmp175.Serialize());
+					}
+				}
 			}
 			
 			// serialize Warehouse
@@ -1845,25 +1799,25 @@ namespace KS.Models
 			s.Add((byte)((Units == null) ? 0 : 1));
 			if (Units != null)
 			{
-				List<byte> tmp177 = new List<byte>();
-				tmp177.AddRange(BitConverter.GetBytes((uint)Units.Count()));
-				while (tmp177.Count > 0 && tmp177.Last() == 0)
-					tmp177.RemoveAt(tmp177.Count - 1);
-				s.Add((byte)tmp177.Count);
-				s.AddRange(tmp177);
+				List<byte> tmp176 = new List<byte>();
+				tmp176.AddRange(BitConverter.GetBytes((uint)Units.Count()));
+				while (tmp176.Count > 0 && tmp176.Last() == 0)
+					tmp176.RemoveAt(tmp176.Count - 1);
+				s.Add((byte)tmp176.Count);
+				s.AddRange(tmp176);
 				
-				foreach (var tmp178 in Units)
+				foreach (var tmp177 in Units)
 				{
-					s.Add((byte)((tmp178.Key == null) ? 0 : 1));
-					if (tmp178.Key != null)
+					s.Add((byte)((tmp177.Key == null) ? 0 : 1));
+					if (tmp177.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp178.Key));
+						s.Add((byte)((sbyte)tmp177.Key));
 					}
 					
-					s.Add((byte)((tmp178.Value == null) ? 0 : 1));
-					if (tmp178.Value != null)
+					s.Add((byte)((tmp177.Value == null) ? 0 : 1));
+					if (tmp177.Value != null)
 					{
-						s.AddRange(tmp178.Value.Serialize());
+						s.AddRange(tmp177.Value.Serialize());
 					}
 				}
 			}
@@ -1874,109 +1828,132 @@ namespace KS.Models
 		public override uint Deserialize(byte[] s, uint offset = 0)
 		{
 			// deserialize CArea
-			byte tmp179;
-			tmp179 = (byte)s[(int)offset];
+			byte tmp178;
+			tmp178 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp179 == 1)
+			if (tmp178 == 1)
 			{
-				byte tmp180;
-				tmp180 = (byte)s[(int)offset];
+				byte tmp179;
+				tmp179 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp181 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp181, 0, tmp180);
-				offset += tmp180;
-				uint tmp182;
-				tmp182 = BitConverter.ToUInt32(tmp181, (int)0);
+				byte[] tmp180 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp180, 0, tmp179);
+				offset += tmp179;
+				uint tmp181;
+				tmp181 = BitConverter.ToUInt32(tmp180, (int)0);
 				
 				CArea = new List<ECell?>();
-				for (uint tmp183 = 0; tmp183 < tmp182; tmp183++)
+				for (uint tmp182 = 0; tmp182 < tmp181; tmp182++)
 				{
-					ECell? tmp184;
-					byte tmp185;
-					tmp185 = (byte)s[(int)offset];
+					ECell? tmp183;
+					byte tmp184;
+					tmp184 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp185 == 1)
+					if (tmp184 == 1)
 					{
-						sbyte tmp186;
-						tmp186 = (sbyte)s[(int)offset];
+						sbyte tmp185;
+						tmp185 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp184 = (ECell)tmp186;
+						tmp183 = (ECell)tmp185;
 					}
 					else
-						tmp184 = null;
-					CArea.Add(tmp184);
+						tmp183 = null;
+					CArea.Add(tmp183);
 				}
 			}
 			else
 				CArea = null;
 			
 			// deserialize Agents
-			byte tmp187;
-			tmp187 = (byte)s[(int)offset];
+			byte tmp186;
+			tmp186 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp187 == 1)
+			if (tmp186 == 1)
 			{
-				byte tmp188;
-				tmp188 = (byte)s[(int)offset];
+				byte tmp187;
+				tmp187 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp189 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp189, 0, tmp188);
-				offset += tmp188;
-				uint tmp190;
-				tmp190 = BitConverter.ToUInt32(tmp189, (int)0);
+				byte[] tmp188 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp188, 0, tmp187);
+				offset += tmp187;
+				uint tmp189;
+				tmp189 = BitConverter.ToUInt32(tmp188, (int)0);
 				
 				Agents = new Dictionary<AgentType?, Agent>();
-				for (uint tmp191 = 0; tmp191 < tmp190; tmp191++)
+				for (uint tmp190 = 0; tmp190 < tmp189; tmp190++)
 				{
-					AgentType? tmp192;
-					byte tmp194;
-					tmp194 = (byte)s[(int)offset];
+					AgentType? tmp191;
+					byte tmp193;
+					tmp193 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp194 == 1)
+					if (tmp193 == 1)
 					{
-						sbyte tmp195;
-						tmp195 = (sbyte)s[(int)offset];
+						sbyte tmp194;
+						tmp194 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp192 = (AgentType)tmp195;
+						tmp191 = (AgentType)tmp194;
+					}
+					else
+						tmp191 = null;
+					
+					Agent tmp192;
+					byte tmp195;
+					tmp195 = (byte)s[(int)offset];
+					offset += sizeof(byte);
+					if (tmp195 == 1)
+					{
+						tmp192 = new Agent();
+						offset = tmp192.Deserialize(s, offset);
 					}
 					else
 						tmp192 = null;
 					
-					Agent tmp193;
-					byte tmp196;
-					tmp196 = (byte)s[(int)offset];
-					offset += sizeof(byte);
-					if (tmp196 == 1)
-					{
-						tmp193 = new Agent();
-						offset = tmp193.Deserialize(s, offset);
-					}
-					else
-						tmp193 = null;
-					
-					Agents[tmp192] = tmp193;
+					Agents[tmp191] = tmp192;
 				}
 			}
 			else
 				Agents = null;
 			
-			// deserialize FrontlineDelivery
-			byte tmp197;
-			tmp197 = (byte)s[(int)offset];
+			// deserialize FrontlineDeliveries
+			byte tmp196;
+			tmp196 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp197 == 1)
+			if (tmp196 == 1)
 			{
-				FrontlineDelivery = new FrontlineDelivery();
-				offset = FrontlineDelivery.Deserialize(s, offset);
+				byte tmp197;
+				tmp197 = (byte)s[(int)offset];
+				offset += sizeof(byte);
+				byte[] tmp198 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp198, 0, tmp197);
+				offset += tmp197;
+				uint tmp199;
+				tmp199 = BitConverter.ToUInt32(tmp198, (int)0);
+				
+				FrontlineDeliveries = new List<FrontlineDelivery>();
+				for (uint tmp200 = 0; tmp200 < tmp199; tmp200++)
+				{
+					FrontlineDelivery tmp201;
+					byte tmp202;
+					tmp202 = (byte)s[(int)offset];
+					offset += sizeof(byte);
+					if (tmp202 == 1)
+					{
+						tmp201 = new FrontlineDelivery();
+						offset = tmp201.Deserialize(s, offset);
+					}
+					else
+						tmp201 = null;
+					FrontlineDeliveries.Add(tmp201);
+				}
 			}
 			else
-				FrontlineDelivery = null;
+				FrontlineDeliveries = null;
 			
 			// deserialize Warehouse
-			byte tmp198;
-			tmp198 = (byte)s[(int)offset];
+			byte tmp203;
+			tmp203 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp198 == 1)
+			if (tmp203 == 1)
 			{
 				Warehouse = new Warehouse();
 				offset = Warehouse.Deserialize(s, offset);
@@ -1985,10 +1962,10 @@ namespace KS.Models
 				Warehouse = null;
 			
 			// deserialize BacklineDelivery
-			byte tmp199;
-			tmp199 = (byte)s[(int)offset];
+			byte tmp204;
+			tmp204 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp199 == 1)
+			if (tmp204 == 1)
 			{
 				BacklineDelivery = new BacklineDelivery();
 				offset = BacklineDelivery.Deserialize(s, offset);
@@ -1997,10 +1974,10 @@ namespace KS.Models
 				BacklineDelivery = null;
 			
 			// deserialize Factory
-			byte tmp200;
-			tmp200 = (byte)s[(int)offset];
+			byte tmp205;
+			tmp205 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp200 == 1)
+			if (tmp205 == 1)
 			{
 				Factory = new Factory();
 				offset = Factory.Deserialize(s, offset);
@@ -2009,50 +1986,50 @@ namespace KS.Models
 				Factory = null;
 			
 			// deserialize Units
-			byte tmp201;
-			tmp201 = (byte)s[(int)offset];
+			byte tmp206;
+			tmp206 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp201 == 1)
+			if (tmp206 == 1)
 			{
-				byte tmp202;
-				tmp202 = (byte)s[(int)offset];
+				byte tmp207;
+				tmp207 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp203 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp203, 0, tmp202);
-				offset += tmp202;
-				uint tmp204;
-				tmp204 = BitConverter.ToUInt32(tmp203, (int)0);
+				byte[] tmp208 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp208, 0, tmp207);
+				offset += tmp207;
+				uint tmp209;
+				tmp209 = BitConverter.ToUInt32(tmp208, (int)0);
 				
 				Units = new Dictionary<UnitType?, Unit>();
-				for (uint tmp205 = 0; tmp205 < tmp204; tmp205++)
+				for (uint tmp210 = 0; tmp210 < tmp209; tmp210++)
 				{
-					UnitType? tmp206;
-					byte tmp208;
-					tmp208 = (byte)s[(int)offset];
+					UnitType? tmp211;
+					byte tmp213;
+					tmp213 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp208 == 1)
+					if (tmp213 == 1)
 					{
-						sbyte tmp209;
-						tmp209 = (sbyte)s[(int)offset];
+						sbyte tmp214;
+						tmp214 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp206 = (UnitType)tmp209;
+						tmp211 = (UnitType)tmp214;
 					}
 					else
-						tmp206 = null;
+						tmp211 = null;
 					
-					Unit tmp207;
-					byte tmp210;
-					tmp210 = (byte)s[(int)offset];
+					Unit tmp212;
+					byte tmp215;
+					tmp215 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp210 == 1)
+					if (tmp215 == 1)
 					{
-						tmp207 = new Unit();
-						offset = tmp207.Deserialize(s, offset);
+						tmp212 = new Unit();
+						offset = tmp212.Deserialize(s, offset);
 					}
 					else
-						tmp207 = null;
+						tmp212 = null;
 					
-					Units[tmp206] = tmp207;
+					Units[tmp211] = tmp212;
 				}
 			}
 			else
@@ -2092,32 +2069,32 @@ namespace KS.Models
 			s.Add((byte)((Bases == null) ? 0 : 1));
 			if (Bases != null)
 			{
-				List<byte> tmp211 = new List<byte>();
-				tmp211.AddRange(BitConverter.GetBytes((uint)Bases.Count()));
-				while (tmp211.Count > 0 && tmp211.Last() == 0)
-					tmp211.RemoveAt(tmp211.Count - 1);
-				s.Add((byte)tmp211.Count);
-				s.AddRange(tmp211);
+				List<byte> tmp216 = new List<byte>();
+				tmp216.AddRange(BitConverter.GetBytes((uint)Bases.Count()));
+				while (tmp216.Count > 0 && tmp216.Last() == 0)
+					tmp216.RemoveAt(tmp216.Count - 1);
+				s.Add((byte)tmp216.Count);
+				s.AddRange(tmp216);
 				
-				foreach (var tmp212 in Bases)
+				foreach (var tmp217 in Bases)
 				{
-					s.Add((byte)((tmp212.Key == null) ? 0 : 1));
-					if (tmp212.Key != null)
+					s.Add((byte)((tmp217.Key == null) ? 0 : 1));
+					if (tmp217.Key != null)
 					{
-						List<byte> tmp213 = new List<byte>();
-						tmp213.AddRange(BitConverter.GetBytes((uint)tmp212.Key.Count()));
-						while (tmp213.Count > 0 && tmp213.Last() == 0)
-							tmp213.RemoveAt(tmp213.Count - 1);
-						s.Add((byte)tmp213.Count);
-						s.AddRange(tmp213);
+						List<byte> tmp218 = new List<byte>();
+						tmp218.AddRange(BitConverter.GetBytes((uint)tmp217.Key.Count()));
+						while (tmp218.Count > 0 && tmp218.Last() == 0)
+							tmp218.RemoveAt(tmp218.Count - 1);
+						s.Add((byte)tmp218.Count);
+						s.AddRange(tmp218);
 						
-						s.AddRange(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(tmp212.Key));
+						s.AddRange(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(tmp217.Key));
 					}
 					
-					s.Add((byte)((tmp212.Value == null) ? 0 : 1));
-					if (tmp212.Value != null)
+					s.Add((byte)((tmp217.Value == null) ? 0 : 1));
+					if (tmp217.Value != null)
 					{
-						s.AddRange(tmp212.Value.Serialize());
+						s.AddRange(tmp217.Value.Serialize());
 					}
 				}
 			}
@@ -2126,32 +2103,32 @@ namespace KS.Models
 			s.Add((byte)((TotalHealths == null) ? 0 : 1));
 			if (TotalHealths != null)
 			{
-				List<byte> tmp214 = new List<byte>();
-				tmp214.AddRange(BitConverter.GetBytes((uint)TotalHealths.Count()));
-				while (tmp214.Count > 0 && tmp214.Last() == 0)
-					tmp214.RemoveAt(tmp214.Count - 1);
-				s.Add((byte)tmp214.Count);
-				s.AddRange(tmp214);
+				List<byte> tmp219 = new List<byte>();
+				tmp219.AddRange(BitConverter.GetBytes((uint)TotalHealths.Count()));
+				while (tmp219.Count > 0 && tmp219.Last() == 0)
+					tmp219.RemoveAt(tmp219.Count - 1);
+				s.Add((byte)tmp219.Count);
+				s.AddRange(tmp219);
 				
-				foreach (var tmp215 in TotalHealths)
+				foreach (var tmp220 in TotalHealths)
 				{
-					s.Add((byte)((tmp215.Key == null) ? 0 : 1));
-					if (tmp215.Key != null)
+					s.Add((byte)((tmp220.Key == null) ? 0 : 1));
+					if (tmp220.Key != null)
 					{
-						List<byte> tmp216 = new List<byte>();
-						tmp216.AddRange(BitConverter.GetBytes((uint)tmp215.Key.Count()));
-						while (tmp216.Count > 0 && tmp216.Last() == 0)
-							tmp216.RemoveAt(tmp216.Count - 1);
-						s.Add((byte)tmp216.Count);
-						s.AddRange(tmp216);
+						List<byte> tmp221 = new List<byte>();
+						tmp221.AddRange(BitConverter.GetBytes((uint)tmp220.Key.Count()));
+						while (tmp221.Count > 0 && tmp221.Last() == 0)
+							tmp221.RemoveAt(tmp221.Count - 1);
+						s.Add((byte)tmp221.Count);
+						s.AddRange(tmp221);
 						
-						s.AddRange(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(tmp215.Key));
+						s.AddRange(System.Text.Encoding.GetEncoding("ISO-8859-1").GetBytes(tmp220.Key));
 					}
 					
-					s.Add((byte)((tmp215.Value == null) ? 0 : 1));
-					if (tmp215.Value != null)
+					s.Add((byte)((tmp220.Value == null) ? 0 : 1));
+					if (tmp220.Value != null)
 					{
-						s.AddRange(BitConverter.GetBytes((int)tmp215.Value));
+						s.AddRange(BitConverter.GetBytes((int)tmp220.Value));
 					}
 				}
 			}
@@ -2162,10 +2139,10 @@ namespace KS.Models
 		public override uint Deserialize(byte[] s, uint offset = 0)
 		{
 			// deserialize MaxCycles
-			byte tmp217;
-			tmp217 = (byte)s[(int)offset];
+			byte tmp222;
+			tmp222 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp217 == 1)
+			if (tmp222 == 1)
 			{
 				MaxCycles = BitConverter.ToInt32(s, (int)offset);
 				offset += sizeof(int);
@@ -2174,114 +2151,114 @@ namespace KS.Models
 				MaxCycles = null;
 			
 			// deserialize Bases
-			byte tmp218;
-			tmp218 = (byte)s[(int)offset];
+			byte tmp223;
+			tmp223 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp218 == 1)
+			if (tmp223 == 1)
 			{
-				byte tmp219;
-				tmp219 = (byte)s[(int)offset];
+				byte tmp224;
+				tmp224 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp220 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp220, 0, tmp219);
-				offset += tmp219;
-				uint tmp221;
-				tmp221 = BitConverter.ToUInt32(tmp220, (int)0);
+				byte[] tmp225 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp225, 0, tmp224);
+				offset += tmp224;
+				uint tmp226;
+				tmp226 = BitConverter.ToUInt32(tmp225, (int)0);
 				
 				Bases = new Dictionary<string, Base>();
-				for (uint tmp222 = 0; tmp222 < tmp221; tmp222++)
+				for (uint tmp227 = 0; tmp227 < tmp226; tmp227++)
 				{
-					string tmp223;
-					byte tmp225;
-					tmp225 = (byte)s[(int)offset];
+					string tmp228;
+					byte tmp230;
+					tmp230 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp225 == 1)
+					if (tmp230 == 1)
 					{
-						byte tmp226;
-						tmp226 = (byte)s[(int)offset];
+						byte tmp231;
+						tmp231 = (byte)s[(int)offset];
 						offset += sizeof(byte);
-						byte[] tmp227 = new byte[sizeof(uint)];
-						Array.Copy(s, offset, tmp227, 0, tmp226);
-						offset += tmp226;
-						uint tmp228;
-						tmp228 = BitConverter.ToUInt32(tmp227, (int)0);
+						byte[] tmp232 = new byte[sizeof(uint)];
+						Array.Copy(s, offset, tmp232, 0, tmp231);
+						offset += tmp231;
+						uint tmp233;
+						tmp233 = BitConverter.ToUInt32(tmp232, (int)0);
 						
-						tmp223 = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(s.Skip((int)offset).Take((int)tmp228).ToArray());
-						offset += tmp228;
+						tmp228 = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(s.Skip((int)offset).Take((int)tmp233).ToArray());
+						offset += tmp233;
 					}
 					else
-						tmp223 = null;
+						tmp228 = null;
 					
-					Base tmp224;
-					byte tmp229;
-					tmp229 = (byte)s[(int)offset];
+					Base tmp229;
+					byte tmp234;
+					tmp234 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp229 == 1)
+					if (tmp234 == 1)
 					{
-						tmp224 = new Base();
-						offset = tmp224.Deserialize(s, offset);
+						tmp229 = new Base();
+						offset = tmp229.Deserialize(s, offset);
 					}
 					else
-						tmp224 = null;
+						tmp229 = null;
 					
-					Bases[tmp223] = tmp224;
+					Bases[tmp228] = tmp229;
 				}
 			}
 			else
 				Bases = null;
 			
 			// deserialize TotalHealths
-			byte tmp230;
-			tmp230 = (byte)s[(int)offset];
+			byte tmp235;
+			tmp235 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp230 == 1)
+			if (tmp235 == 1)
 			{
-				byte tmp231;
-				tmp231 = (byte)s[(int)offset];
+				byte tmp236;
+				tmp236 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp232 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp232, 0, tmp231);
-				offset += tmp231;
-				uint tmp233;
-				tmp233 = BitConverter.ToUInt32(tmp232, (int)0);
+				byte[] tmp237 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp237, 0, tmp236);
+				offset += tmp236;
+				uint tmp238;
+				tmp238 = BitConverter.ToUInt32(tmp237, (int)0);
 				
 				TotalHealths = new Dictionary<string, int?>();
-				for (uint tmp234 = 0; tmp234 < tmp233; tmp234++)
+				for (uint tmp239 = 0; tmp239 < tmp238; tmp239++)
 				{
-					string tmp235;
-					byte tmp237;
-					tmp237 = (byte)s[(int)offset];
+					string tmp240;
+					byte tmp242;
+					tmp242 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp237 == 1)
+					if (tmp242 == 1)
 					{
-						byte tmp238;
-						tmp238 = (byte)s[(int)offset];
+						byte tmp243;
+						tmp243 = (byte)s[(int)offset];
 						offset += sizeof(byte);
-						byte[] tmp239 = new byte[sizeof(uint)];
-						Array.Copy(s, offset, tmp239, 0, tmp238);
-						offset += tmp238;
-						uint tmp240;
-						tmp240 = BitConverter.ToUInt32(tmp239, (int)0);
+						byte[] tmp244 = new byte[sizeof(uint)];
+						Array.Copy(s, offset, tmp244, 0, tmp243);
+						offset += tmp243;
+						uint tmp245;
+						tmp245 = BitConverter.ToUInt32(tmp244, (int)0);
 						
-						tmp235 = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(s.Skip((int)offset).Take((int)tmp240).ToArray());
-						offset += tmp240;
+						tmp240 = System.Text.Encoding.GetEncoding("ISO-8859-1").GetString(s.Skip((int)offset).Take((int)tmp245).ToArray());
+						offset += tmp245;
 					}
 					else
-						tmp235 = null;
+						tmp240 = null;
 					
-					int? tmp236;
-					byte tmp241;
-					tmp241 = (byte)s[(int)offset];
+					int? tmp241;
+					byte tmp246;
+					tmp246 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp241 == 1)
+					if (tmp246 == 1)
 					{
-						tmp236 = BitConverter.ToInt32(s, (int)offset);
+						tmp241 = BitConverter.ToInt32(s, (int)offset);
 						offset += sizeof(int);
 					}
 					else
-						tmp236 = null;
+						tmp241 = null;
 					
-					TotalHealths[tmp235] = tmp236;
+					TotalHealths[tmp240] = tmp241;
 				}
 			}
 			else

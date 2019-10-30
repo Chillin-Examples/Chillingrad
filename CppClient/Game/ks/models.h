@@ -672,189 +672,105 @@ class FrontlineDelivery : public KSObject
 
 protected:
 
-	bool __isAvailable;
 	std::map<AmmoType, int> __ammos;
-	int __truckDeliveryRemTime;
-	int __cTruckDeliveryDuration;
-	int __truckReturnRemTime;
-	int __cTruckReturnDuration;
+	int __deliveryRemTime;
+	int __cDeliveryDuration;
 
-	bool __has_isAvailable;
 	bool __has_ammos;
-	bool __has_truckDeliveryRemTime;
-	bool __has_cTruckDeliveryDuration;
-	bool __has_truckReturnRemTime;
-	bool __has_cTruckReturnDuration;
+	bool __has_deliveryRemTime;
+	bool __has_cDeliveryDuration;
 
 
 public: // getters
 
-	inline bool isAvailable() const
-	{
-		return __isAvailable;
-	}
-	
 	inline std::map<AmmoType, int> ammos() const
 	{
 		return __ammos;
 	}
 	
-	inline int truckDeliveryRemTime() const
+	inline int deliveryRemTime() const
 	{
-		return __truckDeliveryRemTime;
+		return __deliveryRemTime;
 	}
 	
-	inline int cTruckDeliveryDuration() const
+	inline int cDeliveryDuration() const
 	{
-		return __cTruckDeliveryDuration;
-	}
-	
-	inline int truckReturnRemTime() const
-	{
-		return __truckReturnRemTime;
-	}
-	
-	inline int cTruckReturnDuration() const
-	{
-		return __cTruckReturnDuration;
+		return __cDeliveryDuration;
 	}
 	
 
 public: // reference getters
 
-	inline bool &ref_isAvailable() const
-	{
-		return (bool&) __isAvailable;
-	}
-	
 	inline std::map<AmmoType, int> &ref_ammos() const
 	{
 		return (std::map<AmmoType, int>&) __ammos;
 	}
 	
-	inline int &ref_truckDeliveryRemTime() const
+	inline int &ref_deliveryRemTime() const
 	{
-		return (int&) __truckDeliveryRemTime;
+		return (int&) __deliveryRemTime;
 	}
 	
-	inline int &ref_cTruckDeliveryDuration() const
+	inline int &ref_cDeliveryDuration() const
 	{
-		return (int&) __cTruckDeliveryDuration;
-	}
-	
-	inline int &ref_truckReturnRemTime() const
-	{
-		return (int&) __truckReturnRemTime;
-	}
-	
-	inline int &ref_cTruckReturnDuration() const
-	{
-		return (int&) __cTruckReturnDuration;
+		return (int&) __cDeliveryDuration;
 	}
 	
 
 public: // setters
 
-	inline void isAvailable(const bool &isAvailable)
-	{
-		__isAvailable = isAvailable;
-		has_isAvailable(true);
-	}
-	
 	inline void ammos(const std::map<AmmoType, int> &ammos)
 	{
 		__ammos = ammos;
 		has_ammos(true);
 	}
 	
-	inline void truckDeliveryRemTime(const int &truckDeliveryRemTime)
+	inline void deliveryRemTime(const int &deliveryRemTime)
 	{
-		__truckDeliveryRemTime = truckDeliveryRemTime;
-		has_truckDeliveryRemTime(true);
+		__deliveryRemTime = deliveryRemTime;
+		has_deliveryRemTime(true);
 	}
 	
-	inline void cTruckDeliveryDuration(const int &cTruckDeliveryDuration)
+	inline void cDeliveryDuration(const int &cDeliveryDuration)
 	{
-		__cTruckDeliveryDuration = cTruckDeliveryDuration;
-		has_cTruckDeliveryDuration(true);
-	}
-	
-	inline void truckReturnRemTime(const int &truckReturnRemTime)
-	{
-		__truckReturnRemTime = truckReturnRemTime;
-		has_truckReturnRemTime(true);
-	}
-	
-	inline void cTruckReturnDuration(const int &cTruckReturnDuration)
-	{
-		__cTruckReturnDuration = cTruckReturnDuration;
-		has_cTruckReturnDuration(true);
+		__cDeliveryDuration = cDeliveryDuration;
+		has_cDeliveryDuration(true);
 	}
 	
 
 public: // has_attribute getters
 
-	inline bool has_isAvailable() const
-	{
-		return __has_isAvailable;
-	}
-	
 	inline bool has_ammos() const
 	{
 		return __has_ammos;
 	}
 	
-	inline bool has_truckDeliveryRemTime() const
+	inline bool has_deliveryRemTime() const
 	{
-		return __has_truckDeliveryRemTime;
+		return __has_deliveryRemTime;
 	}
 	
-	inline bool has_cTruckDeliveryDuration() const
+	inline bool has_cDeliveryDuration() const
 	{
-		return __has_cTruckDeliveryDuration;
-	}
-	
-	inline bool has_truckReturnRemTime() const
-	{
-		return __has_truckReturnRemTime;
-	}
-	
-	inline bool has_cTruckReturnDuration() const
-	{
-		return __has_cTruckReturnDuration;
+		return __has_cDeliveryDuration;
 	}
 	
 
 public: // has_attribute setters
 
-	inline void has_isAvailable(const bool &has_isAvailable)
-	{
-		__has_isAvailable = has_isAvailable;
-	}
-	
 	inline void has_ammos(const bool &has_ammos)
 	{
 		__has_ammos = has_ammos;
 	}
 	
-	inline void has_truckDeliveryRemTime(const bool &has_truckDeliveryRemTime)
+	inline void has_deliveryRemTime(const bool &has_deliveryRemTime)
 	{
-		__has_truckDeliveryRemTime = has_truckDeliveryRemTime;
+		__has_deliveryRemTime = has_deliveryRemTime;
 	}
 	
-	inline void has_cTruckDeliveryDuration(const bool &has_cTruckDeliveryDuration)
+	inline void has_cDeliveryDuration(const bool &has_cDeliveryDuration)
 	{
-		__has_cTruckDeliveryDuration = has_cTruckDeliveryDuration;
-	}
-	
-	inline void has_truckReturnRemTime(const bool &has_truckReturnRemTime)
-	{
-		__has_truckReturnRemTime = has_truckReturnRemTime;
-	}
-	
-	inline void has_cTruckReturnDuration(const bool &has_cTruckReturnDuration)
-	{
-		__has_cTruckReturnDuration = has_cTruckReturnDuration;
+		__has_cDeliveryDuration = has_cDeliveryDuration;
 	}
 	
 
@@ -862,12 +778,9 @@ public:
 
 	FrontlineDelivery()
 	{
-		has_isAvailable(false);
 		has_ammos(false);
-		has_truckDeliveryRemTime(false);
-		has_cTruckDeliveryDuration(false);
-		has_truckReturnRemTime(false);
-		has_cTruckReturnDuration(false);
+		has_deliveryRemTime(false);
+		has_cDeliveryDuration(false);
 	}
 	
 	static inline const std::string nameStatic()
@@ -884,78 +797,51 @@ public:
 	{
 		std::string s = "";
 		
-		// serialize isAvailable
-		s += __has_isAvailable;
-		if (__has_isAvailable)
-		{
-			bool tmp25 = __isAvailable;
-			auto tmp26 = reinterpret_cast<char*>(&tmp25);
-			s += std::string(tmp26, sizeof(bool));
-		}
-		
 		// serialize ammos
 		s += __has_ammos;
 		if (__has_ammos)
 		{
-			std::string tmp27 = "";
-			unsigned int tmp29 = __ammos.size();
+			std::string tmp24 = "";
+			unsigned int tmp26 = __ammos.size();
+			auto tmp27 = reinterpret_cast<char*>(&tmp26);
+			tmp24 += std::string(tmp27, sizeof(unsigned int));
+			while (tmp24.size() && tmp24.back() == 0)
+				tmp24.pop_back();
+			unsigned char tmp29 = tmp24.size();
 			auto tmp30 = reinterpret_cast<char*>(&tmp29);
-			tmp27 += std::string(tmp30, sizeof(unsigned int));
-			while (tmp27.size() && tmp27.back() == 0)
-				tmp27.pop_back();
-			unsigned char tmp32 = tmp27.size();
-			auto tmp33 = reinterpret_cast<char*>(&tmp32);
-			s += std::string(tmp33, sizeof(unsigned char));
-			s += tmp27;
+			s += std::string(tmp30, sizeof(unsigned char));
+			s += tmp24;
 			
-			for (auto &tmp34 : __ammos)
+			for (auto &tmp31 : __ammos)
 			{
 				s += '\x01';
-				char tmp36 = (char) tmp34.first;
-				auto tmp37 = reinterpret_cast<char*>(&tmp36);
-				s += std::string(tmp37, sizeof(char));
+				char tmp33 = (char) tmp31.first;
+				auto tmp34 = reinterpret_cast<char*>(&tmp33);
+				s += std::string(tmp34, sizeof(char));
 				
 				s += '\x01';
-				int tmp39 = tmp34.second;
-				auto tmp40 = reinterpret_cast<char*>(&tmp39);
-				s += std::string(tmp40, sizeof(int));
+				int tmp36 = tmp31.second;
+				auto tmp37 = reinterpret_cast<char*>(&tmp36);
+				s += std::string(tmp37, sizeof(int));
 			}
 		}
 		
-		// serialize truckDeliveryRemTime
-		s += __has_truckDeliveryRemTime;
-		if (__has_truckDeliveryRemTime)
+		// serialize deliveryRemTime
+		s += __has_deliveryRemTime;
+		if (__has_deliveryRemTime)
 		{
-			int tmp42 = __truckDeliveryRemTime;
+			int tmp39 = __deliveryRemTime;
+			auto tmp40 = reinterpret_cast<char*>(&tmp39);
+			s += std::string(tmp40, sizeof(int));
+		}
+		
+		// serialize cDeliveryDuration
+		s += __has_cDeliveryDuration;
+		if (__has_cDeliveryDuration)
+		{
+			int tmp42 = __cDeliveryDuration;
 			auto tmp43 = reinterpret_cast<char*>(&tmp42);
 			s += std::string(tmp43, sizeof(int));
-		}
-		
-		// serialize cTruckDeliveryDuration
-		s += __has_cTruckDeliveryDuration;
-		if (__has_cTruckDeliveryDuration)
-		{
-			int tmp45 = __cTruckDeliveryDuration;
-			auto tmp46 = reinterpret_cast<char*>(&tmp45);
-			s += std::string(tmp46, sizeof(int));
-		}
-		
-		// serialize truckReturnRemTime
-		s += __has_truckReturnRemTime;
-		if (__has_truckReturnRemTime)
-		{
-			int tmp48 = __truckReturnRemTime;
-			auto tmp49 = reinterpret_cast<char*>(&tmp48);
-			s += std::string(tmp49, sizeof(int));
-		}
-		
-		// serialize cTruckReturnDuration
-		s += __has_cTruckReturnDuration;
-		if (__has_cTruckReturnDuration)
-		{
-			int tmp51 = __cTruckReturnDuration;
-			auto tmp52 = reinterpret_cast<char*>(&tmp51);
-			s += std::string(tmp52, sizeof(int));
 		}
 		
 		return s;
@@ -963,82 +849,55 @@ public:
 	
 	unsigned int deserialize(const std::string &s, unsigned int offset=0)
 	{
-		// deserialize isAvailable
-		__has_isAvailable = *((unsigned char*) (&s[offset]));
-		offset += sizeof(unsigned char);
-		if (__has_isAvailable)
-		{
-			__isAvailable = *((bool*) (&s[offset]));
-			offset += sizeof(bool);
-		}
-		
 		// deserialize ammos
 		__has_ammos = *((unsigned char*) (&s[offset]));
 		offset += sizeof(unsigned char);
 		if (__has_ammos)
 		{
-			unsigned char tmp53;
-			tmp53 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp44;
+			tmp44 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp54 = std::string(&s[offset], tmp53);
-			offset += tmp53;
-			while (tmp54.size() < sizeof(unsigned int))
-				tmp54 += '\x00';
-			unsigned int tmp55;
-			tmp55 = *((unsigned int*) (&tmp54[0]));
+			std::string tmp45 = std::string(&s[offset], tmp44);
+			offset += tmp44;
+			while (tmp45.size() < sizeof(unsigned int))
+				tmp45 += '\x00';
+			unsigned int tmp46;
+			tmp46 = *((unsigned int*) (&tmp45[0]));
 			
 			__ammos.clear();
-			for (unsigned int tmp56 = 0; tmp56 < tmp55; tmp56++)
+			for (unsigned int tmp47 = 0; tmp47 < tmp46; tmp47++)
 			{
-				AmmoType tmp57;
+				AmmoType tmp48;
 				offset++;
-				char tmp59;
-				tmp59 = *((char*) (&s[offset]));
+				char tmp50;
+				tmp50 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp57 = (AmmoType) tmp59;
+				tmp48 = (AmmoType) tmp50;
 				
-				int tmp58;
+				int tmp49;
 				offset++;
-				tmp58 = *((int*) (&s[offset]));
+				tmp49 = *((int*) (&s[offset]));
 				offset += sizeof(int);
 				
-				__ammos[tmp57] = tmp58;
+				__ammos[tmp48] = tmp49;
 			}
 		}
 		
-		// deserialize truckDeliveryRemTime
-		__has_truckDeliveryRemTime = *((unsigned char*) (&s[offset]));
+		// deserialize deliveryRemTime
+		__has_deliveryRemTime = *((unsigned char*) (&s[offset]));
 		offset += sizeof(unsigned char);
-		if (__has_truckDeliveryRemTime)
+		if (__has_deliveryRemTime)
 		{
-			__truckDeliveryRemTime = *((int*) (&s[offset]));
+			__deliveryRemTime = *((int*) (&s[offset]));
 			offset += sizeof(int);
 		}
 		
-		// deserialize cTruckDeliveryDuration
-		__has_cTruckDeliveryDuration = *((unsigned char*) (&s[offset]));
+		// deserialize cDeliveryDuration
+		__has_cDeliveryDuration = *((unsigned char*) (&s[offset]));
 		offset += sizeof(unsigned char);
-		if (__has_cTruckDeliveryDuration)
+		if (__has_cDeliveryDuration)
 		{
-			__cTruckDeliveryDuration = *((int*) (&s[offset]));
-			offset += sizeof(int);
-		}
-		
-		// deserialize truckReturnRemTime
-		__has_truckReturnRemTime = *((unsigned char*) (&s[offset]));
-		offset += sizeof(unsigned char);
-		if (__has_truckReturnRemTime)
-		{
-			__truckReturnRemTime = *((int*) (&s[offset]));
-			offset += sizeof(int);
-		}
-		
-		// deserialize cTruckReturnDuration
-		__has_cTruckReturnDuration = *((unsigned char*) (&s[offset]));
-		offset += sizeof(unsigned char);
-		if (__has_cTruckReturnDuration)
-		{
-			__cTruckReturnDuration = *((int*) (&s[offset]));
+			__cDeliveryDuration = *((int*) (&s[offset]));
 			offset += sizeof(int);
 		}
 		
@@ -1181,24 +1040,24 @@ public:
 		s += __has_materials;
 		if (__has_materials)
 		{
-			std::string tmp60 = "";
-			unsigned int tmp62 = __materials.size();
-			auto tmp63 = reinterpret_cast<char*>(&tmp62);
-			tmp60 += std::string(tmp63, sizeof(unsigned int));
-			while (tmp60.size() && tmp60.back() == 0)
-				tmp60.pop_back();
-			unsigned char tmp65 = tmp60.size();
-			auto tmp66 = reinterpret_cast<char*>(&tmp65);
-			s += std::string(tmp66, sizeof(unsigned char));
-			s += tmp60;
+			std::string tmp51 = "";
+			unsigned int tmp53 = __materials.size();
+			auto tmp54 = reinterpret_cast<char*>(&tmp53);
+			tmp51 += std::string(tmp54, sizeof(unsigned int));
+			while (tmp51.size() && tmp51.back() == 0)
+				tmp51.pop_back();
+			unsigned char tmp56 = tmp51.size();
+			auto tmp57 = reinterpret_cast<char*>(&tmp56);
+			s += std::string(tmp57, sizeof(unsigned char));
+			s += tmp51;
 			
-			for (auto &tmp67 : __materials)
+			for (auto &tmp58 : __materials)
 			{
 				s += '\x01';
-				s += tmp67.first.serialize();
+				s += tmp58.first.serialize();
 				
 				s += '\x01';
-				s += tmp67.second.serialize();
+				s += tmp58.second.serialize();
 			}
 		}
 		
@@ -1206,18 +1065,18 @@ public:
 		s += __has_materialsReloadRemTime;
 		if (__has_materialsReloadRemTime)
 		{
-			int tmp69 = __materialsReloadRemTime;
-			auto tmp70 = reinterpret_cast<char*>(&tmp69);
-			s += std::string(tmp70, sizeof(int));
+			int tmp60 = __materialsReloadRemTime;
+			auto tmp61 = reinterpret_cast<char*>(&tmp60);
+			s += std::string(tmp61, sizeof(int));
 		}
 		
 		// serialize cMaterialsReloadDuration
 		s += __has_cMaterialsReloadDuration;
 		if (__has_cMaterialsReloadDuration)
 		{
-			int tmp72 = __cMaterialsReloadDuration;
-			auto tmp73 = reinterpret_cast<char*>(&tmp72);
-			s += std::string(tmp73, sizeof(int));
+			int tmp63 = __cMaterialsReloadDuration;
+			auto tmp64 = reinterpret_cast<char*>(&tmp63);
+			s += std::string(tmp64, sizeof(int));
 		}
 		
 		return s;
@@ -1230,28 +1089,28 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_materials)
 		{
-			unsigned char tmp74;
-			tmp74 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp65;
+			tmp65 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp75 = std::string(&s[offset], tmp74);
-			offset += tmp74;
-			while (tmp75.size() < sizeof(unsigned int))
-				tmp75 += '\x00';
-			unsigned int tmp76;
-			tmp76 = *((unsigned int*) (&tmp75[0]));
+			std::string tmp66 = std::string(&s[offset], tmp65);
+			offset += tmp65;
+			while (tmp66.size() < sizeof(unsigned int))
+				tmp66 += '\x00';
+			unsigned int tmp67;
+			tmp67 = *((unsigned int*) (&tmp66[0]));
 			
 			__materials.clear();
-			for (unsigned int tmp77 = 0; tmp77 < tmp76; tmp77++)
+			for (unsigned int tmp68 = 0; tmp68 < tmp67; tmp68++)
 			{
-				Position tmp78;
+				Position tmp69;
 				offset++;
-				offset = tmp78.deserialize(s, offset);
+				offset = tmp69.deserialize(s, offset);
 				
-				Material tmp79;
+				Material tmp70;
 				offset++;
-				offset = tmp79.deserialize(s, offset);
+				offset = tmp70.deserialize(s, offset);
 				
-				__materials[tmp78] = tmp79;
+				__materials[tmp69] = tmp70;
 			}
 		}
 		
@@ -1383,28 +1242,28 @@ public:
 		s += __has_materials;
 		if (__has_materials)
 		{
-			std::string tmp80 = "";
-			unsigned int tmp82 = __materials.size();
-			auto tmp83 = reinterpret_cast<char*>(&tmp82);
-			tmp80 += std::string(tmp83, sizeof(unsigned int));
-			while (tmp80.size() && tmp80.back() == 0)
-				tmp80.pop_back();
-			unsigned char tmp85 = tmp80.size();
-			auto tmp86 = reinterpret_cast<char*>(&tmp85);
-			s += std::string(tmp86, sizeof(unsigned char));
-			s += tmp80;
+			std::string tmp71 = "";
+			unsigned int tmp73 = __materials.size();
+			auto tmp74 = reinterpret_cast<char*>(&tmp73);
+			tmp71 += std::string(tmp74, sizeof(unsigned int));
+			while (tmp71.size() && tmp71.back() == 0)
+				tmp71.pop_back();
+			unsigned char tmp76 = tmp71.size();
+			auto tmp77 = reinterpret_cast<char*>(&tmp76);
+			s += std::string(tmp77, sizeof(unsigned char));
+			s += tmp71;
 			
-			for (auto &tmp87 : __materials)
+			for (auto &tmp78 : __materials)
 			{
 				s += '\x01';
-				char tmp89 = (char) tmp87.first;
-				auto tmp90 = reinterpret_cast<char*>(&tmp89);
-				s += std::string(tmp90, sizeof(char));
+				char tmp80 = (char) tmp78.first;
+				auto tmp81 = reinterpret_cast<char*>(&tmp80);
+				s += std::string(tmp81, sizeof(char));
 				
 				s += '\x01';
-				int tmp92 = tmp87.second;
-				auto tmp93 = reinterpret_cast<char*>(&tmp92);
-				s += std::string(tmp93, sizeof(int));
+				int tmp83 = tmp78.second;
+				auto tmp84 = reinterpret_cast<char*>(&tmp83);
+				s += std::string(tmp84, sizeof(int));
 			}
 		}
 		
@@ -1412,28 +1271,28 @@ public:
 		s += __has_ammos;
 		if (__has_ammos)
 		{
-			std::string tmp94 = "";
-			unsigned int tmp96 = __ammos.size();
-			auto tmp97 = reinterpret_cast<char*>(&tmp96);
-			tmp94 += std::string(tmp97, sizeof(unsigned int));
-			while (tmp94.size() && tmp94.back() == 0)
-				tmp94.pop_back();
-			unsigned char tmp99 = tmp94.size();
-			auto tmp100 = reinterpret_cast<char*>(&tmp99);
-			s += std::string(tmp100, sizeof(unsigned char));
-			s += tmp94;
+			std::string tmp85 = "";
+			unsigned int tmp87 = __ammos.size();
+			auto tmp88 = reinterpret_cast<char*>(&tmp87);
+			tmp85 += std::string(tmp88, sizeof(unsigned int));
+			while (tmp85.size() && tmp85.back() == 0)
+				tmp85.pop_back();
+			unsigned char tmp90 = tmp85.size();
+			auto tmp91 = reinterpret_cast<char*>(&tmp90);
+			s += std::string(tmp91, sizeof(unsigned char));
+			s += tmp85;
 			
-			for (auto &tmp101 : __ammos)
+			for (auto &tmp92 : __ammos)
 			{
 				s += '\x01';
-				char tmp103 = (char) tmp101.first;
-				auto tmp104 = reinterpret_cast<char*>(&tmp103);
-				s += std::string(tmp104, sizeof(char));
+				char tmp94 = (char) tmp92.first;
+				auto tmp95 = reinterpret_cast<char*>(&tmp94);
+				s += std::string(tmp95, sizeof(char));
 				
 				s += '\x01';
-				int tmp106 = tmp101.second;
-				auto tmp107 = reinterpret_cast<char*>(&tmp106);
-				s += std::string(tmp107, sizeof(int));
+				int tmp97 = tmp92.second;
+				auto tmp98 = reinterpret_cast<char*>(&tmp97);
+				s += std::string(tmp98, sizeof(int));
 			}
 		}
 		
@@ -1447,32 +1306,32 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_materials)
 		{
-			unsigned char tmp108;
-			tmp108 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp99;
+			tmp99 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp109 = std::string(&s[offset], tmp108);
-			offset += tmp108;
-			while (tmp109.size() < sizeof(unsigned int))
-				tmp109 += '\x00';
-			unsigned int tmp110;
-			tmp110 = *((unsigned int*) (&tmp109[0]));
+			std::string tmp100 = std::string(&s[offset], tmp99);
+			offset += tmp99;
+			while (tmp100.size() < sizeof(unsigned int))
+				tmp100 += '\x00';
+			unsigned int tmp101;
+			tmp101 = *((unsigned int*) (&tmp100[0]));
 			
 			__materials.clear();
-			for (unsigned int tmp111 = 0; tmp111 < tmp110; tmp111++)
+			for (unsigned int tmp102 = 0; tmp102 < tmp101; tmp102++)
 			{
-				MaterialType tmp112;
+				MaterialType tmp103;
 				offset++;
-				char tmp114;
-				tmp114 = *((char*) (&s[offset]));
+				char tmp105;
+				tmp105 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp112 = (MaterialType) tmp114;
+				tmp103 = (MaterialType) tmp105;
 				
-				int tmp113;
+				int tmp104;
 				offset++;
-				tmp113 = *((int*) (&s[offset]));
+				tmp104 = *((int*) (&s[offset]));
 				offset += sizeof(int);
 				
-				__materials[tmp112] = tmp113;
+				__materials[tmp103] = tmp104;
 			}
 		}
 		
@@ -1481,32 +1340,32 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_ammos)
 		{
-			unsigned char tmp115;
-			tmp115 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp106;
+			tmp106 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp116 = std::string(&s[offset], tmp115);
-			offset += tmp115;
-			while (tmp116.size() < sizeof(unsigned int))
-				tmp116 += '\x00';
-			unsigned int tmp117;
-			tmp117 = *((unsigned int*) (&tmp116[0]));
+			std::string tmp107 = std::string(&s[offset], tmp106);
+			offset += tmp106;
+			while (tmp107.size() < sizeof(unsigned int))
+				tmp107 += '\x00';
+			unsigned int tmp108;
+			tmp108 = *((unsigned int*) (&tmp107[0]));
 			
 			__ammos.clear();
-			for (unsigned int tmp118 = 0; tmp118 < tmp117; tmp118++)
+			for (unsigned int tmp109 = 0; tmp109 < tmp108; tmp109++)
 			{
-				AmmoType tmp119;
+				AmmoType tmp110;
 				offset++;
-				char tmp121;
-				tmp121 = *((char*) (&s[offset]));
+				char tmp112;
+				tmp112 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp119 = (AmmoType) tmp121;
+				tmp110 = (AmmoType) tmp112;
 				
-				int tmp120;
+				int tmp111;
 				offset++;
-				tmp120 = *((int*) (&s[offset]));
+				tmp111 = *((int*) (&s[offset]));
 				offset += sizeof(int);
 				
-				__ammos[tmp119] = tmp120;
+				__ammos[tmp110] = tmp111;
 			}
 		}
 		
@@ -1678,24 +1537,24 @@ public:
 		s += __has_machines;
 		if (__has_machines)
 		{
-			std::string tmp122 = "";
-			unsigned int tmp124 = __machines.size();
-			auto tmp125 = reinterpret_cast<char*>(&tmp124);
-			tmp122 += std::string(tmp125, sizeof(unsigned int));
-			while (tmp122.size() && tmp122.back() == 0)
-				tmp122.pop_back();
-			unsigned char tmp127 = tmp122.size();
-			auto tmp128 = reinterpret_cast<char*>(&tmp127);
-			s += std::string(tmp128, sizeof(unsigned char));
-			s += tmp122;
+			std::string tmp113 = "";
+			unsigned int tmp115 = __machines.size();
+			auto tmp116 = reinterpret_cast<char*>(&tmp115);
+			tmp113 += std::string(tmp116, sizeof(unsigned int));
+			while (tmp113.size() && tmp113.back() == 0)
+				tmp113.pop_back();
+			unsigned char tmp118 = tmp113.size();
+			auto tmp119 = reinterpret_cast<char*>(&tmp118);
+			s += std::string(tmp119, sizeof(unsigned char));
+			s += tmp113;
 			
-			for (auto &tmp129 : __machines)
+			for (auto &tmp120 : __machines)
 			{
 				s += '\x01';
-				s += tmp129.first.serialize();
+				s += tmp120.first.serialize();
 				
 				s += '\x01';
-				s += tmp129.second.serialize();
+				s += tmp120.second.serialize();
 			}
 		}
 		
@@ -1703,47 +1562,47 @@ public:
 		s += __has_cMixtureFormulas;
 		if (__has_cMixtureFormulas)
 		{
-			std::string tmp130 = "";
-			unsigned int tmp132 = __cMixtureFormulas.size();
-			auto tmp133 = reinterpret_cast<char*>(&tmp132);
-			tmp130 += std::string(tmp133, sizeof(unsigned int));
-			while (tmp130.size() && tmp130.back() == 0)
-				tmp130.pop_back();
-			unsigned char tmp135 = tmp130.size();
-			auto tmp136 = reinterpret_cast<char*>(&tmp135);
-			s += std::string(tmp136, sizeof(unsigned char));
-			s += tmp130;
+			std::string tmp121 = "";
+			unsigned int tmp123 = __cMixtureFormulas.size();
+			auto tmp124 = reinterpret_cast<char*>(&tmp123);
+			tmp121 += std::string(tmp124, sizeof(unsigned int));
+			while (tmp121.size() && tmp121.back() == 0)
+				tmp121.pop_back();
+			unsigned char tmp126 = tmp121.size();
+			auto tmp127 = reinterpret_cast<char*>(&tmp126);
+			s += std::string(tmp127, sizeof(unsigned char));
+			s += tmp121;
 			
-			for (auto &tmp137 : __cMixtureFormulas)
+			for (auto &tmp128 : __cMixtureFormulas)
 			{
 				s += '\x01';
-				char tmp139 = (char) tmp137.first;
-				auto tmp140 = reinterpret_cast<char*>(&tmp139);
-				s += std::string(tmp140, sizeof(char));
+				char tmp130 = (char) tmp128.first;
+				auto tmp131 = reinterpret_cast<char*>(&tmp130);
+				s += std::string(tmp131, sizeof(char));
 				
 				s += '\x01';
-				std::string tmp141 = "";
-				unsigned int tmp143 = tmp137.second.size();
-				auto tmp144 = reinterpret_cast<char*>(&tmp143);
-				tmp141 += std::string(tmp144, sizeof(unsigned int));
-				while (tmp141.size() && tmp141.back() == 0)
-					tmp141.pop_back();
-				unsigned char tmp146 = tmp141.size();
-				auto tmp147 = reinterpret_cast<char*>(&tmp146);
-				s += std::string(tmp147, sizeof(unsigned char));
-				s += tmp141;
+				std::string tmp132 = "";
+				unsigned int tmp134 = tmp128.second.size();
+				auto tmp135 = reinterpret_cast<char*>(&tmp134);
+				tmp132 += std::string(tmp135, sizeof(unsigned int));
+				while (tmp132.size() && tmp132.back() == 0)
+					tmp132.pop_back();
+				unsigned char tmp137 = tmp132.size();
+				auto tmp138 = reinterpret_cast<char*>(&tmp137);
+				s += std::string(tmp138, sizeof(unsigned char));
+				s += tmp132;
 				
-				for (auto &tmp148 : tmp137.second)
+				for (auto &tmp139 : tmp128.second)
 				{
 					s += '\x01';
-					char tmp150 = (char) tmp148.first;
-					auto tmp151 = reinterpret_cast<char*>(&tmp150);
-					s += std::string(tmp151, sizeof(char));
+					char tmp141 = (char) tmp139.first;
+					auto tmp142 = reinterpret_cast<char*>(&tmp141);
+					s += std::string(tmp142, sizeof(char));
 					
 					s += '\x01';
-					int tmp153 = tmp148.second;
-					auto tmp154 = reinterpret_cast<char*>(&tmp153);
-					s += std::string(tmp154, sizeof(int));
+					int tmp144 = tmp139.second;
+					auto tmp145 = reinterpret_cast<char*>(&tmp144);
+					s += std::string(tmp145, sizeof(int));
 				}
 			}
 		}
@@ -1752,28 +1611,28 @@ public:
 		s += __has_cConstructionDurations;
 		if (__has_cConstructionDurations)
 		{
-			std::string tmp155 = "";
-			unsigned int tmp157 = __cConstructionDurations.size();
-			auto tmp158 = reinterpret_cast<char*>(&tmp157);
-			tmp155 += std::string(tmp158, sizeof(unsigned int));
-			while (tmp155.size() && tmp155.back() == 0)
-				tmp155.pop_back();
-			unsigned char tmp160 = tmp155.size();
-			auto tmp161 = reinterpret_cast<char*>(&tmp160);
-			s += std::string(tmp161, sizeof(unsigned char));
-			s += tmp155;
+			std::string tmp146 = "";
+			unsigned int tmp148 = __cConstructionDurations.size();
+			auto tmp149 = reinterpret_cast<char*>(&tmp148);
+			tmp146 += std::string(tmp149, sizeof(unsigned int));
+			while (tmp146.size() && tmp146.back() == 0)
+				tmp146.pop_back();
+			unsigned char tmp151 = tmp146.size();
+			auto tmp152 = reinterpret_cast<char*>(&tmp151);
+			s += std::string(tmp152, sizeof(unsigned char));
+			s += tmp146;
 			
-			for (auto &tmp162 : __cConstructionDurations)
+			for (auto &tmp153 : __cConstructionDurations)
 			{
 				s += '\x01';
-				char tmp164 = (char) tmp162.first;
-				auto tmp165 = reinterpret_cast<char*>(&tmp164);
-				s += std::string(tmp165, sizeof(char));
+				char tmp155 = (char) tmp153.first;
+				auto tmp156 = reinterpret_cast<char*>(&tmp155);
+				s += std::string(tmp156, sizeof(char));
 				
 				s += '\x01';
-				int tmp167 = tmp162.second;
-				auto tmp168 = reinterpret_cast<char*>(&tmp167);
-				s += std::string(tmp168, sizeof(int));
+				int tmp158 = tmp153.second;
+				auto tmp159 = reinterpret_cast<char*>(&tmp158);
+				s += std::string(tmp159, sizeof(int));
 			}
 		}
 		
@@ -1781,28 +1640,28 @@ public:
 		s += __has_cAmmoBoxSizes;
 		if (__has_cAmmoBoxSizes)
 		{
-			std::string tmp169 = "";
-			unsigned int tmp171 = __cAmmoBoxSizes.size();
-			auto tmp172 = reinterpret_cast<char*>(&tmp171);
-			tmp169 += std::string(tmp172, sizeof(unsigned int));
-			while (tmp169.size() && tmp169.back() == 0)
-				tmp169.pop_back();
-			unsigned char tmp174 = tmp169.size();
-			auto tmp175 = reinterpret_cast<char*>(&tmp174);
-			s += std::string(tmp175, sizeof(unsigned char));
-			s += tmp169;
+			std::string tmp160 = "";
+			unsigned int tmp162 = __cAmmoBoxSizes.size();
+			auto tmp163 = reinterpret_cast<char*>(&tmp162);
+			tmp160 += std::string(tmp163, sizeof(unsigned int));
+			while (tmp160.size() && tmp160.back() == 0)
+				tmp160.pop_back();
+			unsigned char tmp165 = tmp160.size();
+			auto tmp166 = reinterpret_cast<char*>(&tmp165);
+			s += std::string(tmp166, sizeof(unsigned char));
+			s += tmp160;
 			
-			for (auto &tmp176 : __cAmmoBoxSizes)
+			for (auto &tmp167 : __cAmmoBoxSizes)
 			{
 				s += '\x01';
-				char tmp178 = (char) tmp176.first;
-				auto tmp179 = reinterpret_cast<char*>(&tmp178);
-				s += std::string(tmp179, sizeof(char));
+				char tmp169 = (char) tmp167.first;
+				auto tmp170 = reinterpret_cast<char*>(&tmp169);
+				s += std::string(tmp170, sizeof(char));
 				
 				s += '\x01';
-				int tmp181 = tmp176.second;
-				auto tmp182 = reinterpret_cast<char*>(&tmp181);
-				s += std::string(tmp182, sizeof(int));
+				int tmp172 = tmp167.second;
+				auto tmp173 = reinterpret_cast<char*>(&tmp172);
+				s += std::string(tmp173, sizeof(int));
 			}
 		}
 		
@@ -1816,28 +1675,28 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_machines)
 		{
-			unsigned char tmp183;
-			tmp183 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp174;
+			tmp174 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp184 = std::string(&s[offset], tmp183);
-			offset += tmp183;
-			while (tmp184.size() < sizeof(unsigned int))
-				tmp184 += '\x00';
-			unsigned int tmp185;
-			tmp185 = *((unsigned int*) (&tmp184[0]));
+			std::string tmp175 = std::string(&s[offset], tmp174);
+			offset += tmp174;
+			while (tmp175.size() < sizeof(unsigned int))
+				tmp175 += '\x00';
+			unsigned int tmp176;
+			tmp176 = *((unsigned int*) (&tmp175[0]));
 			
 			__machines.clear();
-			for (unsigned int tmp186 = 0; tmp186 < tmp185; tmp186++)
+			for (unsigned int tmp177 = 0; tmp177 < tmp176; tmp177++)
 			{
-				Position tmp187;
+				Position tmp178;
 				offset++;
-				offset = tmp187.deserialize(s, offset);
+				offset = tmp178.deserialize(s, offset);
 				
-				Machine tmp188;
+				Machine tmp179;
 				offset++;
-				offset = tmp188.deserialize(s, offset);
+				offset = tmp179.deserialize(s, offset);
 				
-				__machines[tmp187] = tmp188;
+				__machines[tmp178] = tmp179;
 			}
 		}
 		
@@ -1846,57 +1705,57 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_cMixtureFormulas)
 		{
-			unsigned char tmp189;
-			tmp189 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp180;
+			tmp180 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp190 = std::string(&s[offset], tmp189);
-			offset += tmp189;
-			while (tmp190.size() < sizeof(unsigned int))
-				tmp190 += '\x00';
-			unsigned int tmp191;
-			tmp191 = *((unsigned int*) (&tmp190[0]));
+			std::string tmp181 = std::string(&s[offset], tmp180);
+			offset += tmp180;
+			while (tmp181.size() < sizeof(unsigned int))
+				tmp181 += '\x00';
+			unsigned int tmp182;
+			tmp182 = *((unsigned int*) (&tmp181[0]));
 			
 			__cMixtureFormulas.clear();
-			for (unsigned int tmp192 = 0; tmp192 < tmp191; tmp192++)
+			for (unsigned int tmp183 = 0; tmp183 < tmp182; tmp183++)
 			{
-				AmmoType tmp193;
+				AmmoType tmp184;
 				offset++;
-				char tmp195;
-				tmp195 = *((char*) (&s[offset]));
+				char tmp186;
+				tmp186 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp193 = (AmmoType) tmp195;
+				tmp184 = (AmmoType) tmp186;
 				
-				std::map<MaterialType, int> tmp194;
+				std::map<MaterialType, int> tmp185;
 				offset++;
-				unsigned char tmp196;
-				tmp196 = *((unsigned char*) (&s[offset]));
+				unsigned char tmp187;
+				tmp187 = *((unsigned char*) (&s[offset]));
 				offset += sizeof(unsigned char);
-				std::string tmp197 = std::string(&s[offset], tmp196);
-				offset += tmp196;
-				while (tmp197.size() < sizeof(unsigned int))
-					tmp197 += '\x00';
-				unsigned int tmp198;
-				tmp198 = *((unsigned int*) (&tmp197[0]));
+				std::string tmp188 = std::string(&s[offset], tmp187);
+				offset += tmp187;
+				while (tmp188.size() < sizeof(unsigned int))
+					tmp188 += '\x00';
+				unsigned int tmp189;
+				tmp189 = *((unsigned int*) (&tmp188[0]));
 				
-				tmp194.clear();
-				for (unsigned int tmp199 = 0; tmp199 < tmp198; tmp199++)
+				tmp185.clear();
+				for (unsigned int tmp190 = 0; tmp190 < tmp189; tmp190++)
 				{
-					MaterialType tmp200;
+					MaterialType tmp191;
 					offset++;
-					char tmp202;
-					tmp202 = *((char*) (&s[offset]));
+					char tmp193;
+					tmp193 = *((char*) (&s[offset]));
 					offset += sizeof(char);
-					tmp200 = (MaterialType) tmp202;
+					tmp191 = (MaterialType) tmp193;
 					
-					int tmp201;
+					int tmp192;
 					offset++;
-					tmp201 = *((int*) (&s[offset]));
+					tmp192 = *((int*) (&s[offset]));
 					offset += sizeof(int);
 					
-					tmp194[tmp200] = tmp201;
+					tmp185[tmp191] = tmp192;
 				}
 				
-				__cMixtureFormulas[tmp193] = tmp194;
+				__cMixtureFormulas[tmp184] = tmp185;
 			}
 		}
 		
@@ -1905,32 +1764,32 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_cConstructionDurations)
 		{
-			unsigned char tmp203;
-			tmp203 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp194;
+			tmp194 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp204 = std::string(&s[offset], tmp203);
-			offset += tmp203;
-			while (tmp204.size() < sizeof(unsigned int))
-				tmp204 += '\x00';
-			unsigned int tmp205;
-			tmp205 = *((unsigned int*) (&tmp204[0]));
+			std::string tmp195 = std::string(&s[offset], tmp194);
+			offset += tmp194;
+			while (tmp195.size() < sizeof(unsigned int))
+				tmp195 += '\x00';
+			unsigned int tmp196;
+			tmp196 = *((unsigned int*) (&tmp195[0]));
 			
 			__cConstructionDurations.clear();
-			for (unsigned int tmp206 = 0; tmp206 < tmp205; tmp206++)
+			for (unsigned int tmp197 = 0; tmp197 < tmp196; tmp197++)
 			{
-				AmmoType tmp207;
+				AmmoType tmp198;
 				offset++;
-				char tmp209;
-				tmp209 = *((char*) (&s[offset]));
+				char tmp200;
+				tmp200 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp207 = (AmmoType) tmp209;
+				tmp198 = (AmmoType) tmp200;
 				
-				int tmp208;
+				int tmp199;
 				offset++;
-				tmp208 = *((int*) (&s[offset]));
+				tmp199 = *((int*) (&s[offset]));
 				offset += sizeof(int);
 				
-				__cConstructionDurations[tmp207] = tmp208;
+				__cConstructionDurations[tmp198] = tmp199;
 			}
 		}
 		
@@ -1939,32 +1798,32 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_cAmmoBoxSizes)
 		{
-			unsigned char tmp210;
-			tmp210 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp201;
+			tmp201 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp211 = std::string(&s[offset], tmp210);
-			offset += tmp210;
-			while (tmp211.size() < sizeof(unsigned int))
-				tmp211 += '\x00';
-			unsigned int tmp212;
-			tmp212 = *((unsigned int*) (&tmp211[0]));
+			std::string tmp202 = std::string(&s[offset], tmp201);
+			offset += tmp201;
+			while (tmp202.size() < sizeof(unsigned int))
+				tmp202 += '\x00';
+			unsigned int tmp203;
+			tmp203 = *((unsigned int*) (&tmp202[0]));
 			
 			__cAmmoBoxSizes.clear();
-			for (unsigned int tmp213 = 0; tmp213 < tmp212; tmp213++)
+			for (unsigned int tmp204 = 0; tmp204 < tmp203; tmp204++)
 			{
-				AmmoType tmp214;
+				AmmoType tmp205;
 				offset++;
-				char tmp216;
-				tmp216 = *((char*) (&s[offset]));
+				char tmp207;
+				tmp207 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp214 = (AmmoType) tmp216;
+				tmp205 = (AmmoType) tmp207;
 				
-				int tmp215;
+				int tmp206;
 				offset++;
-				tmp215 = *((int*) (&s[offset]));
+				tmp206 = *((int*) (&s[offset]));
 				offset += sizeof(int);
 				
-				__cAmmoBoxSizes[tmp214] = tmp215;
+				__cAmmoBoxSizes[tmp205] = tmp206;
 			}
 		}
 		
@@ -2194,9 +2053,9 @@ public:
 		s += __has_type;
 		if (__has_type)
 		{
-			char tmp218 = (char) __type;
-			auto tmp219 = reinterpret_cast<char*>(&tmp218);
-			s += std::string(tmp219, sizeof(char));
+			char tmp209 = (char) __type;
+			auto tmp210 = reinterpret_cast<char*>(&tmp209);
+			s += std::string(tmp210, sizeof(char));
 		}
 		
 		// serialize position
@@ -2210,28 +2069,28 @@ public:
 		s += __has_materialsBag;
 		if (__has_materialsBag)
 		{
-			std::string tmp220 = "";
-			unsigned int tmp222 = __materialsBag.size();
-			auto tmp223 = reinterpret_cast<char*>(&tmp222);
-			tmp220 += std::string(tmp223, sizeof(unsigned int));
-			while (tmp220.size() && tmp220.back() == 0)
-				tmp220.pop_back();
-			unsigned char tmp225 = tmp220.size();
-			auto tmp226 = reinterpret_cast<char*>(&tmp225);
-			s += std::string(tmp226, sizeof(unsigned char));
-			s += tmp220;
+			std::string tmp211 = "";
+			unsigned int tmp213 = __materialsBag.size();
+			auto tmp214 = reinterpret_cast<char*>(&tmp213);
+			tmp211 += std::string(tmp214, sizeof(unsigned int));
+			while (tmp211.size() && tmp211.back() == 0)
+				tmp211.pop_back();
+			unsigned char tmp216 = tmp211.size();
+			auto tmp217 = reinterpret_cast<char*>(&tmp216);
+			s += std::string(tmp217, sizeof(unsigned char));
+			s += tmp211;
 			
-			for (auto &tmp227 : __materialsBag)
+			for (auto &tmp218 : __materialsBag)
 			{
 				s += '\x01';
-				char tmp229 = (char) tmp227.first;
-				auto tmp230 = reinterpret_cast<char*>(&tmp229);
-				s += std::string(tmp230, sizeof(char));
+				char tmp220 = (char) tmp218.first;
+				auto tmp221 = reinterpret_cast<char*>(&tmp220);
+				s += std::string(tmp221, sizeof(char));
 				
 				s += '\x01';
-				int tmp232 = tmp227.second;
-				auto tmp233 = reinterpret_cast<char*>(&tmp232);
-				s += std::string(tmp233, sizeof(int));
+				int tmp223 = tmp218.second;
+				auto tmp224 = reinterpret_cast<char*>(&tmp223);
+				s += std::string(tmp224, sizeof(int));
 			}
 		}
 		
@@ -2239,37 +2098,37 @@ public:
 		s += __has_cMaterialsBagCapacity;
 		if (__has_cMaterialsBagCapacity)
 		{
-			int tmp235 = __cMaterialsBagCapacity;
-			auto tmp236 = reinterpret_cast<char*>(&tmp235);
-			s += std::string(tmp236, sizeof(int));
+			int tmp226 = __cMaterialsBagCapacity;
+			auto tmp227 = reinterpret_cast<char*>(&tmp226);
+			s += std::string(tmp227, sizeof(int));
 		}
 		
 		// serialize ammosBag
 		s += __has_ammosBag;
 		if (__has_ammosBag)
 		{
-			std::string tmp237 = "";
-			unsigned int tmp239 = __ammosBag.size();
-			auto tmp240 = reinterpret_cast<char*>(&tmp239);
-			tmp237 += std::string(tmp240, sizeof(unsigned int));
-			while (tmp237.size() && tmp237.back() == 0)
-				tmp237.pop_back();
-			unsigned char tmp242 = tmp237.size();
-			auto tmp243 = reinterpret_cast<char*>(&tmp242);
-			s += std::string(tmp243, sizeof(unsigned char));
-			s += tmp237;
+			std::string tmp228 = "";
+			unsigned int tmp230 = __ammosBag.size();
+			auto tmp231 = reinterpret_cast<char*>(&tmp230);
+			tmp228 += std::string(tmp231, sizeof(unsigned int));
+			while (tmp228.size() && tmp228.back() == 0)
+				tmp228.pop_back();
+			unsigned char tmp233 = tmp228.size();
+			auto tmp234 = reinterpret_cast<char*>(&tmp233);
+			s += std::string(tmp234, sizeof(unsigned char));
+			s += tmp228;
 			
-			for (auto &tmp244 : __ammosBag)
+			for (auto &tmp235 : __ammosBag)
 			{
 				s += '\x01';
-				char tmp246 = (char) tmp244.first;
-				auto tmp247 = reinterpret_cast<char*>(&tmp246);
-				s += std::string(tmp247, sizeof(char));
+				char tmp237 = (char) tmp235.first;
+				auto tmp238 = reinterpret_cast<char*>(&tmp237);
+				s += std::string(tmp238, sizeof(char));
 				
 				s += '\x01';
-				int tmp249 = tmp244.second;
-				auto tmp250 = reinterpret_cast<char*>(&tmp249);
-				s += std::string(tmp250, sizeof(int));
+				int tmp240 = tmp235.second;
+				auto tmp241 = reinterpret_cast<char*>(&tmp240);
+				s += std::string(tmp241, sizeof(int));
 			}
 		}
 		
@@ -2277,9 +2136,9 @@ public:
 		s += __has_cAmmosBagCapacity;
 		if (__has_cAmmosBagCapacity)
 		{
-			int tmp252 = __cAmmosBagCapacity;
-			auto tmp253 = reinterpret_cast<char*>(&tmp252);
-			s += std::string(tmp253, sizeof(int));
+			int tmp243 = __cAmmosBagCapacity;
+			auto tmp244 = reinterpret_cast<char*>(&tmp243);
+			s += std::string(tmp244, sizeof(int));
 		}
 		
 		return s;
@@ -2292,10 +2151,10 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_type)
 		{
-			char tmp254;
-			tmp254 = *((char*) (&s[offset]));
+			char tmp245;
+			tmp245 = *((char*) (&s[offset]));
 			offset += sizeof(char);
-			__type = (AgentType) tmp254;
+			__type = (AgentType) tmp245;
 		}
 		
 		// deserialize position
@@ -2311,32 +2170,32 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_materialsBag)
 		{
-			unsigned char tmp255;
-			tmp255 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp246;
+			tmp246 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp256 = std::string(&s[offset], tmp255);
-			offset += tmp255;
-			while (tmp256.size() < sizeof(unsigned int))
-				tmp256 += '\x00';
-			unsigned int tmp257;
-			tmp257 = *((unsigned int*) (&tmp256[0]));
+			std::string tmp247 = std::string(&s[offset], tmp246);
+			offset += tmp246;
+			while (tmp247.size() < sizeof(unsigned int))
+				tmp247 += '\x00';
+			unsigned int tmp248;
+			tmp248 = *((unsigned int*) (&tmp247[0]));
 			
 			__materialsBag.clear();
-			for (unsigned int tmp258 = 0; tmp258 < tmp257; tmp258++)
+			for (unsigned int tmp249 = 0; tmp249 < tmp248; tmp249++)
 			{
-				MaterialType tmp259;
+				MaterialType tmp250;
 				offset++;
-				char tmp261;
-				tmp261 = *((char*) (&s[offset]));
+				char tmp252;
+				tmp252 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp259 = (MaterialType) tmp261;
+				tmp250 = (MaterialType) tmp252;
 				
-				int tmp260;
+				int tmp251;
 				offset++;
-				tmp260 = *((int*) (&s[offset]));
+				tmp251 = *((int*) (&s[offset]));
 				offset += sizeof(int);
 				
-				__materialsBag[tmp259] = tmp260;
+				__materialsBag[tmp250] = tmp251;
 			}
 		}
 		
@@ -2354,32 +2213,32 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_ammosBag)
 		{
-			unsigned char tmp262;
-			tmp262 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp253;
+			tmp253 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp263 = std::string(&s[offset], tmp262);
-			offset += tmp262;
-			while (tmp263.size() < sizeof(unsigned int))
-				tmp263 += '\x00';
-			unsigned int tmp264;
-			tmp264 = *((unsigned int*) (&tmp263[0]));
+			std::string tmp254 = std::string(&s[offset], tmp253);
+			offset += tmp253;
+			while (tmp254.size() < sizeof(unsigned int))
+				tmp254 += '\x00';
+			unsigned int tmp255;
+			tmp255 = *((unsigned int*) (&tmp254[0]));
 			
 			__ammosBag.clear();
-			for (unsigned int tmp265 = 0; tmp265 < tmp264; tmp265++)
+			for (unsigned int tmp256 = 0; tmp256 < tmp255; tmp256++)
 			{
-				AmmoType tmp266;
+				AmmoType tmp257;
 				offset++;
-				char tmp268;
-				tmp268 = *((char*) (&s[offset]));
+				char tmp259;
+				tmp259 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp266 = (AmmoType) tmp268;
+				tmp257 = (AmmoType) tmp259;
 				
-				int tmp267;
+				int tmp258;
 				offset++;
-				tmp267 = *((int*) (&s[offset]));
+				tmp258 = *((int*) (&s[offset]));
 				offset += sizeof(int);
 				
-				__ammosBag[tmp266] = tmp267;
+				__ammosBag[tmp257] = tmp258;
 			}
 		}
 		
@@ -2676,64 +2535,64 @@ public:
 		s += __has_type;
 		if (__has_type)
 		{
-			char tmp270 = (char) __type;
-			auto tmp271 = reinterpret_cast<char*>(&tmp270);
-			s += std::string(tmp271, sizeof(char));
+			char tmp261 = (char) __type;
+			auto tmp262 = reinterpret_cast<char*>(&tmp261);
+			s += std::string(tmp262, sizeof(char));
 		}
 		
 		// serialize health
 		s += __has_health;
 		if (__has_health)
 		{
-			int tmp273 = __health;
-			auto tmp274 = reinterpret_cast<char*>(&tmp273);
-			s += std::string(tmp274, sizeof(int));
+			int tmp264 = __health;
+			auto tmp265 = reinterpret_cast<char*>(&tmp264);
+			s += std::string(tmp265, sizeof(int));
 		}
 		
 		// serialize cIndividualHealth
 		s += __has_cIndividualHealth;
 		if (__has_cIndividualHealth)
 		{
-			int tmp276 = __cIndividualHealth;
-			auto tmp277 = reinterpret_cast<char*>(&tmp276);
-			s += std::string(tmp277, sizeof(int));
+			int tmp267 = __cIndividualHealth;
+			auto tmp268 = reinterpret_cast<char*>(&tmp267);
+			s += std::string(tmp268, sizeof(int));
 		}
 		
 		// serialize cIndividualDamage
 		s += __has_cIndividualDamage;
 		if (__has_cIndividualDamage)
 		{
-			int tmp279 = __cIndividualDamage;
-			auto tmp280 = reinterpret_cast<char*>(&tmp279);
-			s += std::string(tmp280, sizeof(int));
+			int tmp270 = __cIndividualDamage;
+			auto tmp271 = reinterpret_cast<char*>(&tmp270);
+			s += std::string(tmp271, sizeof(int));
 		}
 		
 		// serialize cDamageDistribution
 		s += __has_cDamageDistribution;
 		if (__has_cDamageDistribution)
 		{
-			std::string tmp281 = "";
-			unsigned int tmp283 = __cDamageDistribution.size();
-			auto tmp284 = reinterpret_cast<char*>(&tmp283);
-			tmp281 += std::string(tmp284, sizeof(unsigned int));
-			while (tmp281.size() && tmp281.back() == 0)
-				tmp281.pop_back();
-			unsigned char tmp286 = tmp281.size();
-			auto tmp287 = reinterpret_cast<char*>(&tmp286);
-			s += std::string(tmp287, sizeof(unsigned char));
-			s += tmp281;
+			std::string tmp272 = "";
+			unsigned int tmp274 = __cDamageDistribution.size();
+			auto tmp275 = reinterpret_cast<char*>(&tmp274);
+			tmp272 += std::string(tmp275, sizeof(unsigned int));
+			while (tmp272.size() && tmp272.back() == 0)
+				tmp272.pop_back();
+			unsigned char tmp277 = tmp272.size();
+			auto tmp278 = reinterpret_cast<char*>(&tmp277);
+			s += std::string(tmp278, sizeof(unsigned char));
+			s += tmp272;
 			
-			for (auto &tmp288 : __cDamageDistribution)
+			for (auto &tmp279 : __cDamageDistribution)
 			{
 				s += '\x01';
-				char tmp290 = (char) tmp288.first;
-				auto tmp291 = reinterpret_cast<char*>(&tmp290);
-				s += std::string(tmp291, sizeof(char));
+				char tmp281 = (char) tmp279.first;
+				auto tmp282 = reinterpret_cast<char*>(&tmp281);
+				s += std::string(tmp282, sizeof(char));
 				
 				s += '\x01';
-				float tmp293 = tmp288.second;
-				auto tmp294 = reinterpret_cast<char*>(&tmp293);
-				s += std::string(tmp294, sizeof(float));
+				float tmp284 = tmp279.second;
+				auto tmp285 = reinterpret_cast<char*>(&tmp284);
+				s += std::string(tmp285, sizeof(float));
 			}
 		}
 		
@@ -2741,27 +2600,27 @@ public:
 		s += __has_ammoCount;
 		if (__has_ammoCount)
 		{
-			int tmp296 = __ammoCount;
-			auto tmp297 = reinterpret_cast<char*>(&tmp296);
-			s += std::string(tmp297, sizeof(int));
+			int tmp287 = __ammoCount;
+			auto tmp288 = reinterpret_cast<char*>(&tmp287);
+			s += std::string(tmp288, sizeof(int));
 		}
 		
 		// serialize reloadRemTime
 		s += __has_reloadRemTime;
 		if (__has_reloadRemTime)
 		{
-			int tmp299 = __reloadRemTime;
-			auto tmp300 = reinterpret_cast<char*>(&tmp299);
-			s += std::string(tmp300, sizeof(int));
+			int tmp290 = __reloadRemTime;
+			auto tmp291 = reinterpret_cast<char*>(&tmp290);
+			s += std::string(tmp291, sizeof(int));
 		}
 		
 		// serialize cReloadDuration
 		s += __has_cReloadDuration;
 		if (__has_cReloadDuration)
 		{
-			int tmp302 = __cReloadDuration;
-			auto tmp303 = reinterpret_cast<char*>(&tmp302);
-			s += std::string(tmp303, sizeof(int));
+			int tmp293 = __cReloadDuration;
+			auto tmp294 = reinterpret_cast<char*>(&tmp293);
+			s += std::string(tmp294, sizeof(int));
 		}
 		
 		return s;
@@ -2774,10 +2633,10 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_type)
 		{
-			char tmp304;
-			tmp304 = *((char*) (&s[offset]));
+			char tmp295;
+			tmp295 = *((char*) (&s[offset]));
 			offset += sizeof(char);
-			__type = (UnitType) tmp304;
+			__type = (UnitType) tmp295;
 		}
 		
 		// deserialize health
@@ -2812,32 +2671,32 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_cDamageDistribution)
 		{
-			unsigned char tmp305;
-			tmp305 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp296;
+			tmp296 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp306 = std::string(&s[offset], tmp305);
-			offset += tmp305;
-			while (tmp306.size() < sizeof(unsigned int))
-				tmp306 += '\x00';
-			unsigned int tmp307;
-			tmp307 = *((unsigned int*) (&tmp306[0]));
+			std::string tmp297 = std::string(&s[offset], tmp296);
+			offset += tmp296;
+			while (tmp297.size() < sizeof(unsigned int))
+				tmp297 += '\x00';
+			unsigned int tmp298;
+			tmp298 = *((unsigned int*) (&tmp297[0]));
 			
 			__cDamageDistribution.clear();
-			for (unsigned int tmp308 = 0; tmp308 < tmp307; tmp308++)
+			for (unsigned int tmp299 = 0; tmp299 < tmp298; tmp299++)
 			{
-				UnitType tmp309;
+				UnitType tmp300;
 				offset++;
-				char tmp311;
-				tmp311 = *((char*) (&s[offset]));
+				char tmp302;
+				tmp302 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp309 = (UnitType) tmp311;
+				tmp300 = (UnitType) tmp302;
 				
-				float tmp310;
+				float tmp301;
 				offset++;
-				tmp310 = *((float*) (&s[offset]));
+				tmp301 = *((float*) (&s[offset]));
 				offset += sizeof(float);
 				
-				__cDamageDistribution[tmp309] = tmp310;
+				__cDamageDistribution[tmp300] = tmp301;
 			}
 		}
 		
@@ -2880,7 +2739,7 @@ protected:
 
 	std::vector<ECell> __cArea;
 	std::map<AgentType, Agent> __agents;
-	FrontlineDelivery __frontlineDelivery;
+	std::vector<FrontlineDelivery> __frontlineDeliveries;
 	Warehouse __warehouse;
 	BacklineDelivery __backlineDelivery;
 	Factory __factory;
@@ -2888,7 +2747,7 @@ protected:
 
 	bool __has_cArea;
 	bool __has_agents;
-	bool __has_frontlineDelivery;
+	bool __has_frontlineDeliveries;
 	bool __has_warehouse;
 	bool __has_backlineDelivery;
 	bool __has_factory;
@@ -2907,9 +2766,9 @@ public: // getters
 		return __agents;
 	}
 	
-	inline FrontlineDelivery frontlineDelivery() const
+	inline std::vector<FrontlineDelivery> frontlineDeliveries() const
 	{
-		return __frontlineDelivery;
+		return __frontlineDeliveries;
 	}
 	
 	inline Warehouse warehouse() const
@@ -2945,9 +2804,9 @@ public: // reference getters
 		return (std::map<AgentType, Agent>&) __agents;
 	}
 	
-	inline FrontlineDelivery &ref_frontlineDelivery() const
+	inline std::vector<FrontlineDelivery> &ref_frontlineDeliveries() const
 	{
-		return (FrontlineDelivery&) __frontlineDelivery;
+		return (std::vector<FrontlineDelivery>&) __frontlineDeliveries;
 	}
 	
 	inline Warehouse &ref_warehouse() const
@@ -2985,10 +2844,10 @@ public: // setters
 		has_agents(true);
 	}
 	
-	inline void frontlineDelivery(const FrontlineDelivery &frontlineDelivery)
+	inline void frontlineDeliveries(const std::vector<FrontlineDelivery> &frontlineDeliveries)
 	{
-		__frontlineDelivery = frontlineDelivery;
-		has_frontlineDelivery(true);
+		__frontlineDeliveries = frontlineDeliveries;
+		has_frontlineDeliveries(true);
 	}
 	
 	inline void warehouse(const Warehouse &warehouse)
@@ -3028,9 +2887,9 @@ public: // has_attribute getters
 		return __has_agents;
 	}
 	
-	inline bool has_frontlineDelivery() const
+	inline bool has_frontlineDeliveries() const
 	{
-		return __has_frontlineDelivery;
+		return __has_frontlineDeliveries;
 	}
 	
 	inline bool has_warehouse() const
@@ -3066,9 +2925,9 @@ public: // has_attribute setters
 		__has_agents = has_agents;
 	}
 	
-	inline void has_frontlineDelivery(const bool &has_frontlineDelivery)
+	inline void has_frontlineDeliveries(const bool &has_frontlineDeliveries)
 	{
-		__has_frontlineDelivery = has_frontlineDelivery;
+		__has_frontlineDeliveries = has_frontlineDeliveries;
 	}
 	
 	inline void has_warehouse(const bool &has_warehouse)
@@ -3098,7 +2957,7 @@ public:
 	{
 		has_cArea(false);
 		has_agents(false);
-		has_frontlineDelivery(false);
+		has_frontlineDeliveries(false);
 		has_warehouse(false);
 		has_backlineDelivery(false);
 		has_factory(false);
@@ -3123,23 +2982,23 @@ public:
 		s += __has_cArea;
 		if (__has_cArea)
 		{
-			std::string tmp312 = "";
-			unsigned int tmp314 = __cArea.size();
-			auto tmp315 = reinterpret_cast<char*>(&tmp314);
-			tmp312 += std::string(tmp315, sizeof(unsigned int));
-			while (tmp312.size() && tmp312.back() == 0)
-				tmp312.pop_back();
-			unsigned char tmp317 = tmp312.size();
-			auto tmp318 = reinterpret_cast<char*>(&tmp317);
-			s += std::string(tmp318, sizeof(unsigned char));
-			s += tmp312;
+			std::string tmp303 = "";
+			unsigned int tmp305 = __cArea.size();
+			auto tmp306 = reinterpret_cast<char*>(&tmp305);
+			tmp303 += std::string(tmp306, sizeof(unsigned int));
+			while (tmp303.size() && tmp303.back() == 0)
+				tmp303.pop_back();
+			unsigned char tmp308 = tmp303.size();
+			auto tmp309 = reinterpret_cast<char*>(&tmp308);
+			s += std::string(tmp309, sizeof(unsigned char));
+			s += tmp303;
 			
-			for (auto &tmp319 : __cArea)
+			for (auto &tmp310 : __cArea)
 			{
 				s += '\x01';
-				char tmp321 = (char) tmp319;
-				auto tmp322 = reinterpret_cast<char*>(&tmp321);
-				s += std::string(tmp322, sizeof(char));
+				char tmp312 = (char) tmp310;
+				auto tmp313 = reinterpret_cast<char*>(&tmp312);
+				s += std::string(tmp313, sizeof(char));
 			}
 		}
 		
@@ -3147,34 +3006,49 @@ public:
 		s += __has_agents;
 		if (__has_agents)
 		{
-			std::string tmp323 = "";
-			unsigned int tmp325 = __agents.size();
-			auto tmp326 = reinterpret_cast<char*>(&tmp325);
-			tmp323 += std::string(tmp326, sizeof(unsigned int));
-			while (tmp323.size() && tmp323.back() == 0)
-				tmp323.pop_back();
-			unsigned char tmp328 = tmp323.size();
-			auto tmp329 = reinterpret_cast<char*>(&tmp328);
-			s += std::string(tmp329, sizeof(unsigned char));
-			s += tmp323;
+			std::string tmp314 = "";
+			unsigned int tmp316 = __agents.size();
+			auto tmp317 = reinterpret_cast<char*>(&tmp316);
+			tmp314 += std::string(tmp317, sizeof(unsigned int));
+			while (tmp314.size() && tmp314.back() == 0)
+				tmp314.pop_back();
+			unsigned char tmp319 = tmp314.size();
+			auto tmp320 = reinterpret_cast<char*>(&tmp319);
+			s += std::string(tmp320, sizeof(unsigned char));
+			s += tmp314;
 			
-			for (auto &tmp330 : __agents)
+			for (auto &tmp321 : __agents)
 			{
 				s += '\x01';
-				char tmp332 = (char) tmp330.first;
-				auto tmp333 = reinterpret_cast<char*>(&tmp332);
-				s += std::string(tmp333, sizeof(char));
+				char tmp323 = (char) tmp321.first;
+				auto tmp324 = reinterpret_cast<char*>(&tmp323);
+				s += std::string(tmp324, sizeof(char));
 				
 				s += '\x01';
-				s += tmp330.second.serialize();
+				s += tmp321.second.serialize();
 			}
 		}
 		
-		// serialize frontlineDelivery
-		s += __has_frontlineDelivery;
-		if (__has_frontlineDelivery)
+		// serialize frontlineDeliveries
+		s += __has_frontlineDeliveries;
+		if (__has_frontlineDeliveries)
 		{
-			s += __frontlineDelivery.serialize();
+			std::string tmp325 = "";
+			unsigned int tmp327 = __frontlineDeliveries.size();
+			auto tmp328 = reinterpret_cast<char*>(&tmp327);
+			tmp325 += std::string(tmp328, sizeof(unsigned int));
+			while (tmp325.size() && tmp325.back() == 0)
+				tmp325.pop_back();
+			unsigned char tmp330 = tmp325.size();
+			auto tmp331 = reinterpret_cast<char*>(&tmp330);
+			s += std::string(tmp331, sizeof(unsigned char));
+			s += tmp325;
+			
+			for (auto &tmp332 : __frontlineDeliveries)
+			{
+				s += '\x01';
+				s += tmp332.serialize();
+			}
 		}
 		
 		// serialize warehouse
@@ -3202,26 +3076,26 @@ public:
 		s += __has_units;
 		if (__has_units)
 		{
-			std::string tmp334 = "";
-			unsigned int tmp336 = __units.size();
-			auto tmp337 = reinterpret_cast<char*>(&tmp336);
-			tmp334 += std::string(tmp337, sizeof(unsigned int));
-			while (tmp334.size() && tmp334.back() == 0)
-				tmp334.pop_back();
-			unsigned char tmp339 = tmp334.size();
-			auto tmp340 = reinterpret_cast<char*>(&tmp339);
-			s += std::string(tmp340, sizeof(unsigned char));
-			s += tmp334;
+			std::string tmp333 = "";
+			unsigned int tmp335 = __units.size();
+			auto tmp336 = reinterpret_cast<char*>(&tmp335);
+			tmp333 += std::string(tmp336, sizeof(unsigned int));
+			while (tmp333.size() && tmp333.back() == 0)
+				tmp333.pop_back();
+			unsigned char tmp338 = tmp333.size();
+			auto tmp339 = reinterpret_cast<char*>(&tmp338);
+			s += std::string(tmp339, sizeof(unsigned char));
+			s += tmp333;
 			
-			for (auto &tmp341 : __units)
+			for (auto &tmp340 : __units)
 			{
 				s += '\x01';
-				char tmp343 = (char) tmp341.first;
-				auto tmp344 = reinterpret_cast<char*>(&tmp343);
-				s += std::string(tmp344, sizeof(char));
+				char tmp342 = (char) tmp340.first;
+				auto tmp343 = reinterpret_cast<char*>(&tmp342);
+				s += std::string(tmp343, sizeof(char));
 				
 				s += '\x01';
-				s += tmp341.second.serialize();
+				s += tmp340.second.serialize();
 			}
 		}
 		
@@ -3235,26 +3109,26 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_cArea)
 		{
-			unsigned char tmp345;
-			tmp345 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp344;
+			tmp344 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp346 = std::string(&s[offset], tmp345);
-			offset += tmp345;
-			while (tmp346.size() < sizeof(unsigned int))
-				tmp346 += '\x00';
-			unsigned int tmp347;
-			tmp347 = *((unsigned int*) (&tmp346[0]));
+			std::string tmp345 = std::string(&s[offset], tmp344);
+			offset += tmp344;
+			while (tmp345.size() < sizeof(unsigned int))
+				tmp345 += '\x00';
+			unsigned int tmp346;
+			tmp346 = *((unsigned int*) (&tmp345[0]));
 			
 			__cArea.clear();
-			for (unsigned int tmp348 = 0; tmp348 < tmp347; tmp348++)
+			for (unsigned int tmp347 = 0; tmp347 < tmp346; tmp347++)
 			{
-				ECell tmp349;
+				ECell tmp348;
 				offset++;
-				char tmp350;
-				tmp350 = *((char*) (&s[offset]));
+				char tmp349;
+				tmp349 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp349 = (ECell) tmp350;
-				__cArea.push_back(tmp349);
+				tmp348 = (ECell) tmp349;
+				__cArea.push_back(tmp348);
 			}
 		}
 		
@@ -3263,40 +3137,57 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_agents)
 		{
-			unsigned char tmp351;
-			tmp351 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp350;
+			tmp350 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp352 = std::string(&s[offset], tmp351);
-			offset += tmp351;
-			while (tmp352.size() < sizeof(unsigned int))
-				tmp352 += '\x00';
-			unsigned int tmp353;
-			tmp353 = *((unsigned int*) (&tmp352[0]));
+			std::string tmp351 = std::string(&s[offset], tmp350);
+			offset += tmp350;
+			while (tmp351.size() < sizeof(unsigned int))
+				tmp351 += '\x00';
+			unsigned int tmp352;
+			tmp352 = *((unsigned int*) (&tmp351[0]));
 			
 			__agents.clear();
-			for (unsigned int tmp354 = 0; tmp354 < tmp353; tmp354++)
+			for (unsigned int tmp353 = 0; tmp353 < tmp352; tmp353++)
 			{
-				AgentType tmp355;
+				AgentType tmp354;
 				offset++;
-				char tmp357;
-				tmp357 = *((char*) (&s[offset]));
+				char tmp356;
+				tmp356 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp355 = (AgentType) tmp357;
+				tmp354 = (AgentType) tmp356;
 				
-				Agent tmp356;
+				Agent tmp355;
 				offset++;
-				offset = tmp356.deserialize(s, offset);
+				offset = tmp355.deserialize(s, offset);
 				
-				__agents[tmp355] = tmp356;
+				__agents[tmp354] = tmp355;
 			}
 		}
 		
-		// deserialize frontlineDelivery
-		__has_frontlineDelivery = *((unsigned char*) (&s[offset]));
+		// deserialize frontlineDeliveries
+		__has_frontlineDeliveries = *((unsigned char*) (&s[offset]));
 		offset += sizeof(unsigned char);
-		if (__has_frontlineDelivery)
+		if (__has_frontlineDeliveries)
 		{
-			offset = __frontlineDelivery.deserialize(s, offset);
+			unsigned char tmp357;
+			tmp357 = *((unsigned char*) (&s[offset]));
+			offset += sizeof(unsigned char);
+			std::string tmp358 = std::string(&s[offset], tmp357);
+			offset += tmp357;
+			while (tmp358.size() < sizeof(unsigned int))
+				tmp358 += '\x00';
+			unsigned int tmp359;
+			tmp359 = *((unsigned int*) (&tmp358[0]));
+			
+			__frontlineDeliveries.clear();
+			for (unsigned int tmp360 = 0; tmp360 < tmp359; tmp360++)
+			{
+				FrontlineDelivery tmp361;
+				offset++;
+				offset = tmp361.deserialize(s, offset);
+				__frontlineDeliveries.push_back(tmp361);
+			}
 		}
 		
 		// deserialize warehouse
@@ -3328,31 +3219,31 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_units)
 		{
-			unsigned char tmp358;
-			tmp358 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp362;
+			tmp362 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp359 = std::string(&s[offset], tmp358);
-			offset += tmp358;
-			while (tmp359.size() < sizeof(unsigned int))
-				tmp359 += '\x00';
-			unsigned int tmp360;
-			tmp360 = *((unsigned int*) (&tmp359[0]));
+			std::string tmp363 = std::string(&s[offset], tmp362);
+			offset += tmp362;
+			while (tmp363.size() < sizeof(unsigned int))
+				tmp363 += '\x00';
+			unsigned int tmp364;
+			tmp364 = *((unsigned int*) (&tmp363[0]));
 			
 			__units.clear();
-			for (unsigned int tmp361 = 0; tmp361 < tmp360; tmp361++)
+			for (unsigned int tmp365 = 0; tmp365 < tmp364; tmp365++)
 			{
-				UnitType tmp362;
+				UnitType tmp366;
 				offset++;
-				char tmp364;
-				tmp364 = *((char*) (&s[offset]));
+				char tmp368;
+				tmp368 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp362 = (UnitType) tmp364;
+				tmp366 = (UnitType) tmp368;
 				
-				Unit tmp363;
+				Unit tmp367;
 				offset++;
-				offset = tmp363.deserialize(s, offset);
+				offset = tmp367.deserialize(s, offset);
 				
-				__units[tmp362] = tmp363;
+				__units[tmp366] = tmp367;
 			}
 		}
 		
@@ -3495,44 +3386,44 @@ public:
 		s += __has_maxCycles;
 		if (__has_maxCycles)
 		{
-			int tmp366 = __maxCycles;
-			auto tmp367 = reinterpret_cast<char*>(&tmp366);
-			s += std::string(tmp367, sizeof(int));
+			int tmp370 = __maxCycles;
+			auto tmp371 = reinterpret_cast<char*>(&tmp370);
+			s += std::string(tmp371, sizeof(int));
 		}
 		
 		// serialize bases
 		s += __has_bases;
 		if (__has_bases)
 		{
-			std::string tmp368 = "";
-			unsigned int tmp370 = __bases.size();
-			auto tmp371 = reinterpret_cast<char*>(&tmp370);
-			tmp368 += std::string(tmp371, sizeof(unsigned int));
-			while (tmp368.size() && tmp368.back() == 0)
-				tmp368.pop_back();
-			unsigned char tmp373 = tmp368.size();
-			auto tmp374 = reinterpret_cast<char*>(&tmp373);
-			s += std::string(tmp374, sizeof(unsigned char));
-			s += tmp368;
+			std::string tmp372 = "";
+			unsigned int tmp374 = __bases.size();
+			auto tmp375 = reinterpret_cast<char*>(&tmp374);
+			tmp372 += std::string(tmp375, sizeof(unsigned int));
+			while (tmp372.size() && tmp372.back() == 0)
+				tmp372.pop_back();
+			unsigned char tmp377 = tmp372.size();
+			auto tmp378 = reinterpret_cast<char*>(&tmp377);
+			s += std::string(tmp378, sizeof(unsigned char));
+			s += tmp372;
 			
-			for (auto &tmp375 : __bases)
+			for (auto &tmp379 : __bases)
 			{
 				s += '\x01';
-				std::string tmp376 = "";
-				unsigned int tmp378 = tmp375.first.size();
-				auto tmp379 = reinterpret_cast<char*>(&tmp378);
-				tmp376 += std::string(tmp379, sizeof(unsigned int));
-				while (tmp376.size() && tmp376.back() == 0)
-					tmp376.pop_back();
-				unsigned char tmp381 = tmp376.size();
-				auto tmp382 = reinterpret_cast<char*>(&tmp381);
-				s += std::string(tmp382, sizeof(unsigned char));
-				s += tmp376;
+				std::string tmp380 = "";
+				unsigned int tmp382 = tmp379.first.size();
+				auto tmp383 = reinterpret_cast<char*>(&tmp382);
+				tmp380 += std::string(tmp383, sizeof(unsigned int));
+				while (tmp380.size() && tmp380.back() == 0)
+					tmp380.pop_back();
+				unsigned char tmp385 = tmp380.size();
+				auto tmp386 = reinterpret_cast<char*>(&tmp385);
+				s += std::string(tmp386, sizeof(unsigned char));
+				s += tmp380;
 				
-				s += tmp375.first;
+				s += tmp379.first;
 				
 				s += '\x01';
-				s += tmp375.second.serialize();
+				s += tmp379.second.serialize();
 			}
 		}
 		
@@ -3540,37 +3431,37 @@ public:
 		s += __has_totalHealths;
 		if (__has_totalHealths)
 		{
-			std::string tmp383 = "";
-			unsigned int tmp385 = __totalHealths.size();
-			auto tmp386 = reinterpret_cast<char*>(&tmp385);
-			tmp383 += std::string(tmp386, sizeof(unsigned int));
-			while (tmp383.size() && tmp383.back() == 0)
-				tmp383.pop_back();
-			unsigned char tmp388 = tmp383.size();
-			auto tmp389 = reinterpret_cast<char*>(&tmp388);
-			s += std::string(tmp389, sizeof(unsigned char));
-			s += tmp383;
+			std::string tmp387 = "";
+			unsigned int tmp389 = __totalHealths.size();
+			auto tmp390 = reinterpret_cast<char*>(&tmp389);
+			tmp387 += std::string(tmp390, sizeof(unsigned int));
+			while (tmp387.size() && tmp387.back() == 0)
+				tmp387.pop_back();
+			unsigned char tmp392 = tmp387.size();
+			auto tmp393 = reinterpret_cast<char*>(&tmp392);
+			s += std::string(tmp393, sizeof(unsigned char));
+			s += tmp387;
 			
-			for (auto &tmp390 : __totalHealths)
+			for (auto &tmp394 : __totalHealths)
 			{
 				s += '\x01';
-				std::string tmp391 = "";
-				unsigned int tmp393 = tmp390.first.size();
-				auto tmp394 = reinterpret_cast<char*>(&tmp393);
-				tmp391 += std::string(tmp394, sizeof(unsigned int));
-				while (tmp391.size() && tmp391.back() == 0)
-					tmp391.pop_back();
-				unsigned char tmp396 = tmp391.size();
-				auto tmp397 = reinterpret_cast<char*>(&tmp396);
-				s += std::string(tmp397, sizeof(unsigned char));
-				s += tmp391;
+				std::string tmp395 = "";
+				unsigned int tmp397 = tmp394.first.size();
+				auto tmp398 = reinterpret_cast<char*>(&tmp397);
+				tmp395 += std::string(tmp398, sizeof(unsigned int));
+				while (tmp395.size() && tmp395.back() == 0)
+					tmp395.pop_back();
+				unsigned char tmp400 = tmp395.size();
+				auto tmp401 = reinterpret_cast<char*>(&tmp400);
+				s += std::string(tmp401, sizeof(unsigned char));
+				s += tmp395;
 				
-				s += tmp390.first;
+				s += tmp394.first;
 				
 				s += '\x01';
-				int tmp399 = tmp390.second;
-				auto tmp400 = reinterpret_cast<char*>(&tmp399);
-				s += std::string(tmp400, sizeof(int));
+				int tmp403 = tmp394.second;
+				auto tmp404 = reinterpret_cast<char*>(&tmp403);
+				s += std::string(tmp404, sizeof(int));
 			}
 		}
 		
@@ -3593,39 +3484,39 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_bases)
 		{
-			unsigned char tmp401;
-			tmp401 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp405;
+			tmp405 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp402 = std::string(&s[offset], tmp401);
-			offset += tmp401;
-			while (tmp402.size() < sizeof(unsigned int))
-				tmp402 += '\x00';
-			unsigned int tmp403;
-			tmp403 = *((unsigned int*) (&tmp402[0]));
+			std::string tmp406 = std::string(&s[offset], tmp405);
+			offset += tmp405;
+			while (tmp406.size() < sizeof(unsigned int))
+				tmp406 += '\x00';
+			unsigned int tmp407;
+			tmp407 = *((unsigned int*) (&tmp406[0]));
 			
 			__bases.clear();
-			for (unsigned int tmp404 = 0; tmp404 < tmp403; tmp404++)
+			for (unsigned int tmp408 = 0; tmp408 < tmp407; tmp408++)
 			{
-				std::string tmp405;
+				std::string tmp409;
 				offset++;
-				unsigned char tmp407;
-				tmp407 = *((unsigned char*) (&s[offset]));
+				unsigned char tmp411;
+				tmp411 = *((unsigned char*) (&s[offset]));
 				offset += sizeof(unsigned char);
-				std::string tmp408 = std::string(&s[offset], tmp407);
-				offset += tmp407;
-				while (tmp408.size() < sizeof(unsigned int))
-					tmp408 += '\x00';
-				unsigned int tmp409;
-				tmp409 = *((unsigned int*) (&tmp408[0]));
+				std::string tmp412 = std::string(&s[offset], tmp411);
+				offset += tmp411;
+				while (tmp412.size() < sizeof(unsigned int))
+					tmp412 += '\x00';
+				unsigned int tmp413;
+				tmp413 = *((unsigned int*) (&tmp412[0]));
 				
-				tmp405 = s.substr(offset, tmp409);
-				offset += tmp409;
+				tmp409 = s.substr(offset, tmp413);
+				offset += tmp413;
 				
-				Base tmp406;
+				Base tmp410;
 				offset++;
-				offset = tmp406.deserialize(s, offset);
+				offset = tmp410.deserialize(s, offset);
 				
-				__bases[tmp405] = tmp406;
+				__bases[tmp409] = tmp410;
 			}
 		}
 		
@@ -3634,40 +3525,40 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_totalHealths)
 		{
-			unsigned char tmp410;
-			tmp410 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp414;
+			tmp414 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp411 = std::string(&s[offset], tmp410);
-			offset += tmp410;
-			while (tmp411.size() < sizeof(unsigned int))
-				tmp411 += '\x00';
-			unsigned int tmp412;
-			tmp412 = *((unsigned int*) (&tmp411[0]));
+			std::string tmp415 = std::string(&s[offset], tmp414);
+			offset += tmp414;
+			while (tmp415.size() < sizeof(unsigned int))
+				tmp415 += '\x00';
+			unsigned int tmp416;
+			tmp416 = *((unsigned int*) (&tmp415[0]));
 			
 			__totalHealths.clear();
-			for (unsigned int tmp413 = 0; tmp413 < tmp412; tmp413++)
+			for (unsigned int tmp417 = 0; tmp417 < tmp416; tmp417++)
 			{
-				std::string tmp414;
+				std::string tmp418;
 				offset++;
-				unsigned char tmp416;
-				tmp416 = *((unsigned char*) (&s[offset]));
+				unsigned char tmp420;
+				tmp420 = *((unsigned char*) (&s[offset]));
 				offset += sizeof(unsigned char);
-				std::string tmp417 = std::string(&s[offset], tmp416);
-				offset += tmp416;
-				while (tmp417.size() < sizeof(unsigned int))
-					tmp417 += '\x00';
-				unsigned int tmp418;
-				tmp418 = *((unsigned int*) (&tmp417[0]));
+				std::string tmp421 = std::string(&s[offset], tmp420);
+				offset += tmp420;
+				while (tmp421.size() < sizeof(unsigned int))
+					tmp421 += '\x00';
+				unsigned int tmp422;
+				tmp422 = *((unsigned int*) (&tmp421[0]));
 				
-				tmp414 = s.substr(offset, tmp418);
-				offset += tmp418;
+				tmp418 = s.substr(offset, tmp422);
+				offset += tmp422;
 				
-				int tmp415;
+				int tmp419;
 				offset++;
-				tmp415 = *((int*) (&s[offset]));
+				tmp419 = *((int*) (&s[offset]));
 				offset += sizeof(int);
 				
-				__totalHealths[tmp414] = tmp415;
+				__totalHealths[tmp418] = tmp419;
 			}
 		}
 		

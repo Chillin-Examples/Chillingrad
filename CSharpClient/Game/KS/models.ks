@@ -88,12 +88,9 @@ construction_rem_time = int
 
 [FrontlineDelivery]
 _def = class
-is_available = boolean
 ammos = map<AmmoType, int>
-truck_delivery_rem_time = int
-c_truck_delivery_duration = int
-truck_return_rem_time = int
-c_truck_return_duration = int
+delivery_rem_time = int
+c_delivery_duration = int
 
 
 [Warehouse]
@@ -145,7 +142,7 @@ c_reload_duration = int
 _def = class
 c_area = list<ECell>
 agents = map<AgentType, Agent>
-frontline_delivery = FrontlineDelivery
+frontline_deliveries = list<FrontlineDelivery>
 warehouse = Warehouse
 backline_delivery = BacklineDelivery
 factory = Factory

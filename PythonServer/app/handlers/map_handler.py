@@ -35,14 +35,13 @@ class MapHandler:
 
         # Frontline Delivery
         base.c_area[m['frontline_delivery']['position']] = ECell.FrontlineDelivery
+        base.frontline_deliveries = []
 
-        base.frontline_delivery = FrontlineDelivery(
-            is_available = True,
+        ## Extra Info
+        base.default_frontline_delivery = FrontlineDelivery(
             ammos = { ammo_type: 0 for ammo_type in AmmoType },
-            truck_delivery_rem_time = 0,
-            c_truck_delivery_duration = m['frontline_delivery']['c_truck_delivery_duration'],
-            truck_return_rem_time = 0,
-            c_truck_return_duration = m['frontline_delivery']['c_truck_return_duration'],
+            delivery_rem_time = None,
+            c_delivery_duration = m['frontline_delivery']['c_truck_delivery_duration']
         )
 
         # Warehouse

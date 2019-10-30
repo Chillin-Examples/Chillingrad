@@ -270,26 +270,18 @@ class FrontlineDelivery(object):
 		return 'FrontlineDelivery'
 
 
-	def __init__(self, is_available=None, ammos=None, truck_delivery_rem_time=None, c_truck_delivery_duration=None, truck_return_rem_time=None, c_truck_return_duration=None):
-		self.initialize(is_available, ammos, truck_delivery_rem_time, c_truck_delivery_duration, truck_return_rem_time, c_truck_return_duration)
+	def __init__(self, ammos=None, delivery_rem_time=None, c_delivery_duration=None):
+		self.initialize(ammos, delivery_rem_time, c_delivery_duration)
 	
 
-	def initialize(self, is_available=None, ammos=None, truck_delivery_rem_time=None, c_truck_delivery_duration=None, truck_return_rem_time=None, c_truck_return_duration=None):
-		self.is_available = is_available
+	def initialize(self, ammos=None, delivery_rem_time=None, c_delivery_duration=None):
 		self.ammos = ammos
-		self.truck_delivery_rem_time = truck_delivery_rem_time
-		self.c_truck_delivery_duration = c_truck_delivery_duration
-		self.truck_return_rem_time = truck_return_rem_time
-		self.c_truck_return_duration = c_truck_return_duration
+		self.delivery_rem_time = delivery_rem_time
+		self.c_delivery_duration = c_delivery_duration
 	
 
 	def serialize(self):
 		s = b''
-		
-		# serialize self.is_available
-		s += b'\x00' if self.is_available is None else b'\x01'
-		if self.is_available is not None:
-			s += struct.pack('?', self.is_available)
 		
 		# serialize self.ammos
 		s += b'\x00' if self.ammos is None else b'\x01'
@@ -309,106 +301,69 @@ class FrontlineDelivery(object):
 				if self.ammos[tmp13] is not None:
 					s += struct.pack('i', self.ammos[tmp13])
 		
-		# serialize self.truck_delivery_rem_time
-		s += b'\x00' if self.truck_delivery_rem_time is None else b'\x01'
-		if self.truck_delivery_rem_time is not None:
-			s += struct.pack('i', self.truck_delivery_rem_time)
+		# serialize self.delivery_rem_time
+		s += b'\x00' if self.delivery_rem_time is None else b'\x01'
+		if self.delivery_rem_time is not None:
+			s += struct.pack('i', self.delivery_rem_time)
 		
-		# serialize self.c_truck_delivery_duration
-		s += b'\x00' if self.c_truck_delivery_duration is None else b'\x01'
-		if self.c_truck_delivery_duration is not None:
-			s += struct.pack('i', self.c_truck_delivery_duration)
-		
-		# serialize self.truck_return_rem_time
-		s += b'\x00' if self.truck_return_rem_time is None else b'\x01'
-		if self.truck_return_rem_time is not None:
-			s += struct.pack('i', self.truck_return_rem_time)
-		
-		# serialize self.c_truck_return_duration
-		s += b'\x00' if self.c_truck_return_duration is None else b'\x01'
-		if self.c_truck_return_duration is not None:
-			s += struct.pack('i', self.c_truck_return_duration)
+		# serialize self.c_delivery_duration
+		s += b'\x00' if self.c_delivery_duration is None else b'\x01'
+		if self.c_delivery_duration is not None:
+			s += struct.pack('i', self.c_delivery_duration)
 		
 		return s
 	
 
 	def deserialize(self, s, offset=0):
-		# deserialize self.is_available
+		# deserialize self.ammos
 		tmp14 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
 		if tmp14:
-			self.is_available = struct.unpack('?', s[offset:offset + 1])[0]
+			tmp15 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-		else:
-			self.is_available = None
-		
-		# deserialize self.ammos
-		tmp15 = struct.unpack('B', s[offset:offset + 1])[0]
-		offset += 1
-		if tmp15:
-			tmp16 = struct.unpack('B', s[offset:offset + 1])[0]
-			offset += 1
-			tmp17 = s[offset:offset + tmp16]
-			offset += tmp16
-			tmp17 += b'\x00' * (4 - tmp16)
-			tmp18 = struct.unpack('I', tmp17)[0]
+			tmp16 = s[offset:offset + tmp15]
+			offset += tmp15
+			tmp16 += b'\x00' * (4 - tmp15)
+			tmp17 = struct.unpack('I', tmp16)[0]
 			
 			self.ammos = {}
-			for tmp19 in range(tmp18):
-				tmp22 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp18 in range(tmp17):
+				tmp21 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp22:
-					tmp23 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp21:
+					tmp22 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp20 = AmmoType(tmp23)
+					tmp19 = AmmoType(tmp22)
 				else:
-					tmp20 = None
-				tmp24 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp19 = None
+				tmp23 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp24:
-					tmp21 = struct.unpack('i', s[offset:offset + 4])[0]
+				if tmp23:
+					tmp20 = struct.unpack('i', s[offset:offset + 4])[0]
 					offset += 4
 				else:
-					tmp21 = None
-				self.ammos[tmp20] = tmp21
+					tmp20 = None
+				self.ammos[tmp19] = tmp20
 		else:
 			self.ammos = None
 		
-		# deserialize self.truck_delivery_rem_time
+		# deserialize self.delivery_rem_time
+		tmp24 = struct.unpack('B', s[offset:offset + 1])[0]
+		offset += 1
+		if tmp24:
+			self.delivery_rem_time = struct.unpack('i', s[offset:offset + 4])[0]
+			offset += 4
+		else:
+			self.delivery_rem_time = None
+		
+		# deserialize self.c_delivery_duration
 		tmp25 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
 		if tmp25:
-			self.truck_delivery_rem_time = struct.unpack('i', s[offset:offset + 4])[0]
+			self.c_delivery_duration = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
-			self.truck_delivery_rem_time = None
-		
-		# deserialize self.c_truck_delivery_duration
-		tmp26 = struct.unpack('B', s[offset:offset + 1])[0]
-		offset += 1
-		if tmp26:
-			self.c_truck_delivery_duration = struct.unpack('i', s[offset:offset + 4])[0]
-			offset += 4
-		else:
-			self.c_truck_delivery_duration = None
-		
-		# deserialize self.truck_return_rem_time
-		tmp27 = struct.unpack('B', s[offset:offset + 1])[0]
-		offset += 1
-		if tmp27:
-			self.truck_return_rem_time = struct.unpack('i', s[offset:offset + 4])[0]
-			offset += 4
-		else:
-			self.truck_return_rem_time = None
-		
-		# deserialize self.c_truck_return_duration
-		tmp28 = struct.unpack('B', s[offset:offset + 1])[0]
-		offset += 1
-		if tmp28:
-			self.c_truck_return_duration = struct.unpack('i', s[offset:offset + 4])[0]
-			offset += 4
-		else:
-			self.c_truck_return_duration = None
+			self.c_delivery_duration = None
 		
 		return offset
 
@@ -436,20 +391,20 @@ class Warehouse(object):
 		# serialize self.materials
 		s += b'\x00' if self.materials is None else b'\x01'
 		if self.materials is not None:
-			tmp29 = b''
-			tmp29 += struct.pack('I', len(self.materials))
-			while len(tmp29) and tmp29[-1] == b'\x00'[0]:
-				tmp29 = tmp29[:-1]
-			s += struct.pack('B', len(tmp29))
-			s += tmp29
+			tmp26 = b''
+			tmp26 += struct.pack('I', len(self.materials))
+			while len(tmp26) and tmp26[-1] == b'\x00'[0]:
+				tmp26 = tmp26[:-1]
+			s += struct.pack('B', len(tmp26))
+			s += tmp26
 			
-			for tmp30 in self.materials:
-				s += b'\x00' if tmp30 is None else b'\x01'
-				if tmp30 is not None:
-					s += tmp30.serialize()
-				s += b'\x00' if self.materials[tmp30] is None else b'\x01'
-				if self.materials[tmp30] is not None:
-					s += self.materials[tmp30].serialize()
+			for tmp27 in self.materials:
+				s += b'\x00' if tmp27 is None else b'\x01'
+				if tmp27 is not None:
+					s += tmp27.serialize()
+				s += b'\x00' if self.materials[tmp27] is None else b'\x01'
+				if self.materials[tmp27] is not None:
+					s += self.materials[tmp27].serialize()
 		
 		# serialize self.materials_reload_rem_time
 		s += b'\x00' if self.materials_reload_rem_time is None else b'\x01'
@@ -466,49 +421,49 @@ class Warehouse(object):
 
 	def deserialize(self, s, offset=0):
 		# deserialize self.materials
-		tmp31 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp28 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp31:
-			tmp32 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp28:
+			tmp29 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp33 = s[offset:offset + tmp32]
-			offset += tmp32
-			tmp33 += b'\x00' * (4 - tmp32)
-			tmp34 = struct.unpack('I', tmp33)[0]
+			tmp30 = s[offset:offset + tmp29]
+			offset += tmp29
+			tmp30 += b'\x00' * (4 - tmp29)
+			tmp31 = struct.unpack('I', tmp30)[0]
 			
 			self.materials = {}
-			for tmp35 in range(tmp34):
-				tmp38 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp32 in range(tmp31):
+				tmp35 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp38:
-					tmp36 = Position()
-					offset = tmp36.deserialize(s, offset)
+				if tmp35:
+					tmp33 = Position()
+					offset = tmp33.deserialize(s, offset)
 				else:
-					tmp36 = None
-				tmp39 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp33 = None
+				tmp36 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp39:
-					tmp37 = Material()
-					offset = tmp37.deserialize(s, offset)
+				if tmp36:
+					tmp34 = Material()
+					offset = tmp34.deserialize(s, offset)
 				else:
-					tmp37 = None
-				self.materials[tmp36] = tmp37
+					tmp34 = None
+				self.materials[tmp33] = tmp34
 		else:
 			self.materials = None
 		
 		# deserialize self.materials_reload_rem_time
-		tmp40 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp37 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp40:
+		if tmp37:
 			self.materials_reload_rem_time = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
 			self.materials_reload_rem_time = None
 		
 		# deserialize self.c_materials_reload_duration
-		tmp41 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp38 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp41:
+		if tmp38:
 			self.c_materials_reload_duration = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
@@ -539,104 +494,104 @@ class BacklineDelivery(object):
 		# serialize self.materials
 		s += b'\x00' if self.materials is None else b'\x01'
 		if self.materials is not None:
-			tmp42 = b''
-			tmp42 += struct.pack('I', len(self.materials))
-			while len(tmp42) and tmp42[-1] == b'\x00'[0]:
-				tmp42 = tmp42[:-1]
-			s += struct.pack('B', len(tmp42))
-			s += tmp42
+			tmp39 = b''
+			tmp39 += struct.pack('I', len(self.materials))
+			while len(tmp39) and tmp39[-1] == b'\x00'[0]:
+				tmp39 = tmp39[:-1]
+			s += struct.pack('B', len(tmp39))
+			s += tmp39
 			
-			for tmp43 in self.materials:
-				s += b'\x00' if tmp43 is None else b'\x01'
-				if tmp43 is not None:
-					s += struct.pack('b', tmp43.value)
-				s += b'\x00' if self.materials[tmp43] is None else b'\x01'
-				if self.materials[tmp43] is not None:
-					s += struct.pack('i', self.materials[tmp43])
+			for tmp40 in self.materials:
+				s += b'\x00' if tmp40 is None else b'\x01'
+				if tmp40 is not None:
+					s += struct.pack('b', tmp40.value)
+				s += b'\x00' if self.materials[tmp40] is None else b'\x01'
+				if self.materials[tmp40] is not None:
+					s += struct.pack('i', self.materials[tmp40])
 		
 		# serialize self.ammos
 		s += b'\x00' if self.ammos is None else b'\x01'
 		if self.ammos is not None:
-			tmp44 = b''
-			tmp44 += struct.pack('I', len(self.ammos))
-			while len(tmp44) and tmp44[-1] == b'\x00'[0]:
-				tmp44 = tmp44[:-1]
-			s += struct.pack('B', len(tmp44))
-			s += tmp44
+			tmp41 = b''
+			tmp41 += struct.pack('I', len(self.ammos))
+			while len(tmp41) and tmp41[-1] == b'\x00'[0]:
+				tmp41 = tmp41[:-1]
+			s += struct.pack('B', len(tmp41))
+			s += tmp41
 			
-			for tmp45 in self.ammos:
-				s += b'\x00' if tmp45 is None else b'\x01'
-				if tmp45 is not None:
-					s += struct.pack('b', tmp45.value)
-				s += b'\x00' if self.ammos[tmp45] is None else b'\x01'
-				if self.ammos[tmp45] is not None:
-					s += struct.pack('i', self.ammos[tmp45])
+			for tmp42 in self.ammos:
+				s += b'\x00' if tmp42 is None else b'\x01'
+				if tmp42 is not None:
+					s += struct.pack('b', tmp42.value)
+				s += b'\x00' if self.ammos[tmp42] is None else b'\x01'
+				if self.ammos[tmp42] is not None:
+					s += struct.pack('i', self.ammos[tmp42])
 		
 		return s
 	
 
 	def deserialize(self, s, offset=0):
 		# deserialize self.materials
-		tmp46 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp43 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp46:
-			tmp47 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp43:
+			tmp44 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp48 = s[offset:offset + tmp47]
-			offset += tmp47
-			tmp48 += b'\x00' * (4 - tmp47)
-			tmp49 = struct.unpack('I', tmp48)[0]
+			tmp45 = s[offset:offset + tmp44]
+			offset += tmp44
+			tmp45 += b'\x00' * (4 - tmp44)
+			tmp46 = struct.unpack('I', tmp45)[0]
 			
 			self.materials = {}
-			for tmp50 in range(tmp49):
-				tmp53 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp47 in range(tmp46):
+				tmp50 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp53:
-					tmp54 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp50:
+					tmp51 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp51 = MaterialType(tmp54)
+					tmp48 = MaterialType(tmp51)
 				else:
-					tmp51 = None
-				tmp55 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp48 = None
+				tmp52 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp55:
-					tmp52 = struct.unpack('i', s[offset:offset + 4])[0]
+				if tmp52:
+					tmp49 = struct.unpack('i', s[offset:offset + 4])[0]
 					offset += 4
 				else:
-					tmp52 = None
-				self.materials[tmp51] = tmp52
+					tmp49 = None
+				self.materials[tmp48] = tmp49
 		else:
 			self.materials = None
 		
 		# deserialize self.ammos
-		tmp56 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp53 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp56:
-			tmp57 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp53:
+			tmp54 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp58 = s[offset:offset + tmp57]
-			offset += tmp57
-			tmp58 += b'\x00' * (4 - tmp57)
-			tmp59 = struct.unpack('I', tmp58)[0]
+			tmp55 = s[offset:offset + tmp54]
+			offset += tmp54
+			tmp55 += b'\x00' * (4 - tmp54)
+			tmp56 = struct.unpack('I', tmp55)[0]
 			
 			self.ammos = {}
-			for tmp60 in range(tmp59):
-				tmp63 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp57 in range(tmp56):
+				tmp60 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp63:
-					tmp64 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp60:
+					tmp61 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp61 = AmmoType(tmp64)
+					tmp58 = AmmoType(tmp61)
 				else:
-					tmp61 = None
-				tmp65 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp58 = None
+				tmp62 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp65:
-					tmp62 = struct.unpack('i', s[offset:offset + 4])[0]
+				if tmp62:
+					tmp59 = struct.unpack('i', s[offset:offset + 4])[0]
 					offset += 4
 				else:
-					tmp62 = None
-				self.ammos[tmp61] = tmp62
+					tmp59 = None
+				self.ammos[tmp58] = tmp59
 		else:
 			self.ammos = None
 		
@@ -667,239 +622,239 @@ class Factory(object):
 		# serialize self.machines
 		s += b'\x00' if self.machines is None else b'\x01'
 		if self.machines is not None:
-			tmp66 = b''
-			tmp66 += struct.pack('I', len(self.machines))
-			while len(tmp66) and tmp66[-1] == b'\x00'[0]:
-				tmp66 = tmp66[:-1]
-			s += struct.pack('B', len(tmp66))
-			s += tmp66
+			tmp63 = b''
+			tmp63 += struct.pack('I', len(self.machines))
+			while len(tmp63) and tmp63[-1] == b'\x00'[0]:
+				tmp63 = tmp63[:-1]
+			s += struct.pack('B', len(tmp63))
+			s += tmp63
 			
-			for tmp67 in self.machines:
-				s += b'\x00' if tmp67 is None else b'\x01'
-				if tmp67 is not None:
-					s += tmp67.serialize()
-				s += b'\x00' if self.machines[tmp67] is None else b'\x01'
-				if self.machines[tmp67] is not None:
-					s += self.machines[tmp67].serialize()
+			for tmp64 in self.machines:
+				s += b'\x00' if tmp64 is None else b'\x01'
+				if tmp64 is not None:
+					s += tmp64.serialize()
+				s += b'\x00' if self.machines[tmp64] is None else b'\x01'
+				if self.machines[tmp64] is not None:
+					s += self.machines[tmp64].serialize()
 		
 		# serialize self.c_mixture_formulas
 		s += b'\x00' if self.c_mixture_formulas is None else b'\x01'
 		if self.c_mixture_formulas is not None:
-			tmp68 = b''
-			tmp68 += struct.pack('I', len(self.c_mixture_formulas))
-			while len(tmp68) and tmp68[-1] == b'\x00'[0]:
-				tmp68 = tmp68[:-1]
-			s += struct.pack('B', len(tmp68))
-			s += tmp68
+			tmp65 = b''
+			tmp65 += struct.pack('I', len(self.c_mixture_formulas))
+			while len(tmp65) and tmp65[-1] == b'\x00'[0]:
+				tmp65 = tmp65[:-1]
+			s += struct.pack('B', len(tmp65))
+			s += tmp65
 			
-			for tmp69 in self.c_mixture_formulas:
-				s += b'\x00' if tmp69 is None else b'\x01'
-				if tmp69 is not None:
-					s += struct.pack('b', tmp69.value)
-				s += b'\x00' if self.c_mixture_formulas[tmp69] is None else b'\x01'
-				if self.c_mixture_formulas[tmp69] is not None:
-					tmp70 = b''
-					tmp70 += struct.pack('I', len(self.c_mixture_formulas[tmp69]))
-					while len(tmp70) and tmp70[-1] == b'\x00'[0]:
-						tmp70 = tmp70[:-1]
-					s += struct.pack('B', len(tmp70))
-					s += tmp70
+			for tmp66 in self.c_mixture_formulas:
+				s += b'\x00' if tmp66 is None else b'\x01'
+				if tmp66 is not None:
+					s += struct.pack('b', tmp66.value)
+				s += b'\x00' if self.c_mixture_formulas[tmp66] is None else b'\x01'
+				if self.c_mixture_formulas[tmp66] is not None:
+					tmp67 = b''
+					tmp67 += struct.pack('I', len(self.c_mixture_formulas[tmp66]))
+					while len(tmp67) and tmp67[-1] == b'\x00'[0]:
+						tmp67 = tmp67[:-1]
+					s += struct.pack('B', len(tmp67))
+					s += tmp67
 					
-					for tmp71 in self.c_mixture_formulas[tmp69]:
-						s += b'\x00' if tmp71 is None else b'\x01'
-						if tmp71 is not None:
-							s += struct.pack('b', tmp71.value)
-						s += b'\x00' if self.c_mixture_formulas[tmp69][tmp71] is None else b'\x01'
-						if self.c_mixture_formulas[tmp69][tmp71] is not None:
-							s += struct.pack('i', self.c_mixture_formulas[tmp69][tmp71])
+					for tmp68 in self.c_mixture_formulas[tmp66]:
+						s += b'\x00' if tmp68 is None else b'\x01'
+						if tmp68 is not None:
+							s += struct.pack('b', tmp68.value)
+						s += b'\x00' if self.c_mixture_formulas[tmp66][tmp68] is None else b'\x01'
+						if self.c_mixture_formulas[tmp66][tmp68] is not None:
+							s += struct.pack('i', self.c_mixture_formulas[tmp66][tmp68])
 		
 		# serialize self.c_construction_durations
 		s += b'\x00' if self.c_construction_durations is None else b'\x01'
 		if self.c_construction_durations is not None:
-			tmp72 = b''
-			tmp72 += struct.pack('I', len(self.c_construction_durations))
-			while len(tmp72) and tmp72[-1] == b'\x00'[0]:
-				tmp72 = tmp72[:-1]
-			s += struct.pack('B', len(tmp72))
-			s += tmp72
+			tmp69 = b''
+			tmp69 += struct.pack('I', len(self.c_construction_durations))
+			while len(tmp69) and tmp69[-1] == b'\x00'[0]:
+				tmp69 = tmp69[:-1]
+			s += struct.pack('B', len(tmp69))
+			s += tmp69
 			
-			for tmp73 in self.c_construction_durations:
-				s += b'\x00' if tmp73 is None else b'\x01'
-				if tmp73 is not None:
-					s += struct.pack('b', tmp73.value)
-				s += b'\x00' if self.c_construction_durations[tmp73] is None else b'\x01'
-				if self.c_construction_durations[tmp73] is not None:
-					s += struct.pack('i', self.c_construction_durations[tmp73])
+			for tmp70 in self.c_construction_durations:
+				s += b'\x00' if tmp70 is None else b'\x01'
+				if tmp70 is not None:
+					s += struct.pack('b', tmp70.value)
+				s += b'\x00' if self.c_construction_durations[tmp70] is None else b'\x01'
+				if self.c_construction_durations[tmp70] is not None:
+					s += struct.pack('i', self.c_construction_durations[tmp70])
 		
 		# serialize self.c_ammo_box_sizes
 		s += b'\x00' if self.c_ammo_box_sizes is None else b'\x01'
 		if self.c_ammo_box_sizes is not None:
-			tmp74 = b''
-			tmp74 += struct.pack('I', len(self.c_ammo_box_sizes))
-			while len(tmp74) and tmp74[-1] == b'\x00'[0]:
-				tmp74 = tmp74[:-1]
-			s += struct.pack('B', len(tmp74))
-			s += tmp74
+			tmp71 = b''
+			tmp71 += struct.pack('I', len(self.c_ammo_box_sizes))
+			while len(tmp71) and tmp71[-1] == b'\x00'[0]:
+				tmp71 = tmp71[:-1]
+			s += struct.pack('B', len(tmp71))
+			s += tmp71
 			
-			for tmp75 in self.c_ammo_box_sizes:
-				s += b'\x00' if tmp75 is None else b'\x01'
-				if tmp75 is not None:
-					s += struct.pack('b', tmp75.value)
-				s += b'\x00' if self.c_ammo_box_sizes[tmp75] is None else b'\x01'
-				if self.c_ammo_box_sizes[tmp75] is not None:
-					s += struct.pack('i', self.c_ammo_box_sizes[tmp75])
+			for tmp72 in self.c_ammo_box_sizes:
+				s += b'\x00' if tmp72 is None else b'\x01'
+				if tmp72 is not None:
+					s += struct.pack('b', tmp72.value)
+				s += b'\x00' if self.c_ammo_box_sizes[tmp72] is None else b'\x01'
+				if self.c_ammo_box_sizes[tmp72] is not None:
+					s += struct.pack('i', self.c_ammo_box_sizes[tmp72])
 		
 		return s
 	
 
 	def deserialize(self, s, offset=0):
 		# deserialize self.machines
-		tmp76 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp73 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp76:
-			tmp77 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp73:
+			tmp74 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp78 = s[offset:offset + tmp77]
-			offset += tmp77
-			tmp78 += b'\x00' * (4 - tmp77)
-			tmp79 = struct.unpack('I', tmp78)[0]
+			tmp75 = s[offset:offset + tmp74]
+			offset += tmp74
+			tmp75 += b'\x00' * (4 - tmp74)
+			tmp76 = struct.unpack('I', tmp75)[0]
 			
 			self.machines = {}
-			for tmp80 in range(tmp79):
-				tmp83 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp77 in range(tmp76):
+				tmp80 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp83:
-					tmp81 = Position()
-					offset = tmp81.deserialize(s, offset)
+				if tmp80:
+					tmp78 = Position()
+					offset = tmp78.deserialize(s, offset)
 				else:
-					tmp81 = None
-				tmp84 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp78 = None
+				tmp81 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp84:
-					tmp82 = Machine()
-					offset = tmp82.deserialize(s, offset)
+				if tmp81:
+					tmp79 = Machine()
+					offset = tmp79.deserialize(s, offset)
 				else:
-					tmp82 = None
-				self.machines[tmp81] = tmp82
+					tmp79 = None
+				self.machines[tmp78] = tmp79
 		else:
 			self.machines = None
 		
 		# deserialize self.c_mixture_formulas
-		tmp85 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp82 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp85:
-			tmp86 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp82:
+			tmp83 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp87 = s[offset:offset + tmp86]
-			offset += tmp86
-			tmp87 += b'\x00' * (4 - tmp86)
-			tmp88 = struct.unpack('I', tmp87)[0]
+			tmp84 = s[offset:offset + tmp83]
+			offset += tmp83
+			tmp84 += b'\x00' * (4 - tmp83)
+			tmp85 = struct.unpack('I', tmp84)[0]
 			
 			self.c_mixture_formulas = {}
-			for tmp89 in range(tmp88):
-				tmp92 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp86 in range(tmp85):
+				tmp89 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp92:
-					tmp93 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp89:
+					tmp90 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp90 = AmmoType(tmp93)
+					tmp87 = AmmoType(tmp90)
 				else:
-					tmp90 = None
-				tmp94 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp87 = None
+				tmp91 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp94:
-					tmp95 = struct.unpack('B', s[offset:offset + 1])[0]
+				if tmp91:
+					tmp92 = struct.unpack('B', s[offset:offset + 1])[0]
 					offset += 1
-					tmp96 = s[offset:offset + tmp95]
-					offset += tmp95
-					tmp96 += b'\x00' * (4 - tmp95)
-					tmp97 = struct.unpack('I', tmp96)[0]
+					tmp93 = s[offset:offset + tmp92]
+					offset += tmp92
+					tmp93 += b'\x00' * (4 - tmp92)
+					tmp94 = struct.unpack('I', tmp93)[0]
 					
-					tmp91 = {}
-					for tmp98 in range(tmp97):
-						tmp101 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp88 = {}
+					for tmp95 in range(tmp94):
+						tmp98 = struct.unpack('B', s[offset:offset + 1])[0]
 						offset += 1
-						if tmp101:
-							tmp102 = struct.unpack('b', s[offset:offset + 1])[0]
+						if tmp98:
+							tmp99 = struct.unpack('b', s[offset:offset + 1])[0]
 							offset += 1
-							tmp99 = MaterialType(tmp102)
+							tmp96 = MaterialType(tmp99)
 						else:
-							tmp99 = None
-						tmp103 = struct.unpack('B', s[offset:offset + 1])[0]
+							tmp96 = None
+						tmp100 = struct.unpack('B', s[offset:offset + 1])[0]
 						offset += 1
-						if tmp103:
-							tmp100 = struct.unpack('i', s[offset:offset + 4])[0]
+						if tmp100:
+							tmp97 = struct.unpack('i', s[offset:offset + 4])[0]
 							offset += 4
 						else:
-							tmp100 = None
-						tmp91[tmp99] = tmp100
+							tmp97 = None
+						tmp88[tmp96] = tmp97
 				else:
-					tmp91 = None
-				self.c_mixture_formulas[tmp90] = tmp91
+					tmp88 = None
+				self.c_mixture_formulas[tmp87] = tmp88
 		else:
 			self.c_mixture_formulas = None
 		
 		# deserialize self.c_construction_durations
-		tmp104 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp101 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp104:
-			tmp105 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp101:
+			tmp102 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp106 = s[offset:offset + tmp105]
-			offset += tmp105
-			tmp106 += b'\x00' * (4 - tmp105)
-			tmp107 = struct.unpack('I', tmp106)[0]
+			tmp103 = s[offset:offset + tmp102]
+			offset += tmp102
+			tmp103 += b'\x00' * (4 - tmp102)
+			tmp104 = struct.unpack('I', tmp103)[0]
 			
 			self.c_construction_durations = {}
-			for tmp108 in range(tmp107):
-				tmp111 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp105 in range(tmp104):
+				tmp108 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp111:
-					tmp112 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp108:
+					tmp109 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp109 = AmmoType(tmp112)
+					tmp106 = AmmoType(tmp109)
 				else:
-					tmp109 = None
-				tmp113 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp106 = None
+				tmp110 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp113:
-					tmp110 = struct.unpack('i', s[offset:offset + 4])[0]
+				if tmp110:
+					tmp107 = struct.unpack('i', s[offset:offset + 4])[0]
 					offset += 4
 				else:
-					tmp110 = None
-				self.c_construction_durations[tmp109] = tmp110
+					tmp107 = None
+				self.c_construction_durations[tmp106] = tmp107
 		else:
 			self.c_construction_durations = None
 		
 		# deserialize self.c_ammo_box_sizes
-		tmp114 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp111 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp114:
-			tmp115 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp111:
+			tmp112 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp116 = s[offset:offset + tmp115]
-			offset += tmp115
-			tmp116 += b'\x00' * (4 - tmp115)
-			tmp117 = struct.unpack('I', tmp116)[0]
+			tmp113 = s[offset:offset + tmp112]
+			offset += tmp112
+			tmp113 += b'\x00' * (4 - tmp112)
+			tmp114 = struct.unpack('I', tmp113)[0]
 			
 			self.c_ammo_box_sizes = {}
-			for tmp118 in range(tmp117):
-				tmp121 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp115 in range(tmp114):
+				tmp118 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp121:
-					tmp122 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp118:
+					tmp119 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp119 = AmmoType(tmp122)
+					tmp116 = AmmoType(tmp119)
 				else:
-					tmp119 = None
-				tmp123 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp116 = None
+				tmp120 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp123:
-					tmp120 = struct.unpack('i', s[offset:offset + 4])[0]
+				if tmp120:
+					tmp117 = struct.unpack('i', s[offset:offset + 4])[0]
 					offset += 4
 				else:
-					tmp120 = None
-				self.c_ammo_box_sizes[tmp119] = tmp120
+					tmp117 = None
+				self.c_ammo_box_sizes[tmp116] = tmp117
 		else:
 			self.c_ammo_box_sizes = None
 		
@@ -942,20 +897,20 @@ class Agent(object):
 		# serialize self.materials_bag
 		s += b'\x00' if self.materials_bag is None else b'\x01'
 		if self.materials_bag is not None:
-			tmp124 = b''
-			tmp124 += struct.pack('I', len(self.materials_bag))
-			while len(tmp124) and tmp124[-1] == b'\x00'[0]:
-				tmp124 = tmp124[:-1]
-			s += struct.pack('B', len(tmp124))
-			s += tmp124
+			tmp121 = b''
+			tmp121 += struct.pack('I', len(self.materials_bag))
+			while len(tmp121) and tmp121[-1] == b'\x00'[0]:
+				tmp121 = tmp121[:-1]
+			s += struct.pack('B', len(tmp121))
+			s += tmp121
 			
-			for tmp125 in self.materials_bag:
-				s += b'\x00' if tmp125 is None else b'\x01'
-				if tmp125 is not None:
-					s += struct.pack('b', tmp125.value)
-				s += b'\x00' if self.materials_bag[tmp125] is None else b'\x01'
-				if self.materials_bag[tmp125] is not None:
-					s += struct.pack('i', self.materials_bag[tmp125])
+			for tmp122 in self.materials_bag:
+				s += b'\x00' if tmp122 is None else b'\x01'
+				if tmp122 is not None:
+					s += struct.pack('b', tmp122.value)
+				s += b'\x00' if self.materials_bag[tmp122] is None else b'\x01'
+				if self.materials_bag[tmp122] is not None:
+					s += struct.pack('i', self.materials_bag[tmp122])
 		
 		# serialize self.c_materials_bag_capacity
 		s += b'\x00' if self.c_materials_bag_capacity is None else b'\x01'
@@ -965,20 +920,20 @@ class Agent(object):
 		# serialize self.ammos_bag
 		s += b'\x00' if self.ammos_bag is None else b'\x01'
 		if self.ammos_bag is not None:
-			tmp126 = b''
-			tmp126 += struct.pack('I', len(self.ammos_bag))
-			while len(tmp126) and tmp126[-1] == b'\x00'[0]:
-				tmp126 = tmp126[:-1]
-			s += struct.pack('B', len(tmp126))
-			s += tmp126
+			tmp123 = b''
+			tmp123 += struct.pack('I', len(self.ammos_bag))
+			while len(tmp123) and tmp123[-1] == b'\x00'[0]:
+				tmp123 = tmp123[:-1]
+			s += struct.pack('B', len(tmp123))
+			s += tmp123
 			
-			for tmp127 in self.ammos_bag:
-				s += b'\x00' if tmp127 is None else b'\x01'
-				if tmp127 is not None:
-					s += struct.pack('b', tmp127.value)
-				s += b'\x00' if self.ammos_bag[tmp127] is None else b'\x01'
-				if self.ammos_bag[tmp127] is not None:
-					s += struct.pack('i', self.ammos_bag[tmp127])
+			for tmp124 in self.ammos_bag:
+				s += b'\x00' if tmp124 is None else b'\x01'
+				if tmp124 is not None:
+					s += struct.pack('b', tmp124.value)
+				s += b'\x00' if self.ammos_bag[tmp124] is None else b'\x01'
+				if self.ammos_bag[tmp124] is not None:
+					s += struct.pack('i', self.ammos_bag[tmp124])
 		
 		# serialize self.c_ammos_bag_capacity
 		s += b'\x00' if self.c_ammos_bag_capacity is None else b'\x01'
@@ -990,101 +945,101 @@ class Agent(object):
 
 	def deserialize(self, s, offset=0):
 		# deserialize self.type
-		tmp128 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp125 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp128:
-			tmp129 = struct.unpack('b', s[offset:offset + 1])[0]
+		if tmp125:
+			tmp126 = struct.unpack('b', s[offset:offset + 1])[0]
 			offset += 1
-			self.type = AgentType(tmp129)
+			self.type = AgentType(tmp126)
 		else:
 			self.type = None
 		
 		# deserialize self.position
-		tmp130 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp127 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp130:
+		if tmp127:
 			self.position = Position()
 			offset = self.position.deserialize(s, offset)
 		else:
 			self.position = None
 		
 		# deserialize self.materials_bag
-		tmp131 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp128 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp131:
-			tmp132 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp128:
+			tmp129 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp133 = s[offset:offset + tmp132]
-			offset += tmp132
-			tmp133 += b'\x00' * (4 - tmp132)
-			tmp134 = struct.unpack('I', tmp133)[0]
+			tmp130 = s[offset:offset + tmp129]
+			offset += tmp129
+			tmp130 += b'\x00' * (4 - tmp129)
+			tmp131 = struct.unpack('I', tmp130)[0]
 			
 			self.materials_bag = {}
-			for tmp135 in range(tmp134):
-				tmp138 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp132 in range(tmp131):
+				tmp135 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp138:
-					tmp139 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp135:
+					tmp136 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp136 = MaterialType(tmp139)
+					tmp133 = MaterialType(tmp136)
 				else:
-					tmp136 = None
-				tmp140 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp133 = None
+				tmp137 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp140:
-					tmp137 = struct.unpack('i', s[offset:offset + 4])[0]
+				if tmp137:
+					tmp134 = struct.unpack('i', s[offset:offset + 4])[0]
 					offset += 4
 				else:
-					tmp137 = None
-				self.materials_bag[tmp136] = tmp137
+					tmp134 = None
+				self.materials_bag[tmp133] = tmp134
 		else:
 			self.materials_bag = None
 		
 		# deserialize self.c_materials_bag_capacity
-		tmp141 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp138 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp141:
+		if tmp138:
 			self.c_materials_bag_capacity = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
 			self.c_materials_bag_capacity = None
 		
 		# deserialize self.ammos_bag
-		tmp142 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp139 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp142:
-			tmp143 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp139:
+			tmp140 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp144 = s[offset:offset + tmp143]
-			offset += tmp143
-			tmp144 += b'\x00' * (4 - tmp143)
-			tmp145 = struct.unpack('I', tmp144)[0]
+			tmp141 = s[offset:offset + tmp140]
+			offset += tmp140
+			tmp141 += b'\x00' * (4 - tmp140)
+			tmp142 = struct.unpack('I', tmp141)[0]
 			
 			self.ammos_bag = {}
-			for tmp146 in range(tmp145):
-				tmp149 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp143 in range(tmp142):
+				tmp146 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp149:
-					tmp150 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp146:
+					tmp147 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp147 = AmmoType(tmp150)
+					tmp144 = AmmoType(tmp147)
 				else:
-					tmp147 = None
-				tmp151 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp144 = None
+				tmp148 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp151:
-					tmp148 = struct.unpack('i', s[offset:offset + 4])[0]
+				if tmp148:
+					tmp145 = struct.unpack('i', s[offset:offset + 4])[0]
 					offset += 4
 				else:
-					tmp148 = None
-				self.ammos_bag[tmp147] = tmp148
+					tmp145 = None
+				self.ammos_bag[tmp144] = tmp145
 		else:
 			self.ammos_bag = None
 		
 		# deserialize self.c_ammos_bag_capacity
-		tmp152 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp149 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp152:
+		if tmp149:
 			self.c_ammos_bag_capacity = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
@@ -1141,20 +1096,20 @@ class Unit(object):
 		# serialize self.c_damage_distribution
 		s += b'\x00' if self.c_damage_distribution is None else b'\x01'
 		if self.c_damage_distribution is not None:
-			tmp153 = b''
-			tmp153 += struct.pack('I', len(self.c_damage_distribution))
-			while len(tmp153) and tmp153[-1] == b'\x00'[0]:
-				tmp153 = tmp153[:-1]
-			s += struct.pack('B', len(tmp153))
-			s += tmp153
+			tmp150 = b''
+			tmp150 += struct.pack('I', len(self.c_damage_distribution))
+			while len(tmp150) and tmp150[-1] == b'\x00'[0]:
+				tmp150 = tmp150[:-1]
+			s += struct.pack('B', len(tmp150))
+			s += tmp150
 			
-			for tmp154 in self.c_damage_distribution:
-				s += b'\x00' if tmp154 is None else b'\x01'
-				if tmp154 is not None:
-					s += struct.pack('b', tmp154.value)
-				s += b'\x00' if self.c_damage_distribution[tmp154] is None else b'\x01'
-				if self.c_damage_distribution[tmp154] is not None:
-					s += struct.pack('f', self.c_damage_distribution[tmp154])
+			for tmp151 in self.c_damage_distribution:
+				s += b'\x00' if tmp151 is None else b'\x01'
+				if tmp151 is not None:
+					s += struct.pack('b', tmp151.value)
+				s += b'\x00' if self.c_damage_distribution[tmp151] is None else b'\x01'
+				if self.c_damage_distribution[tmp151] is not None:
+					s += struct.pack('f', self.c_damage_distribution[tmp151])
 		
 		# serialize self.ammo_count
 		s += b'\x00' if self.ammo_count is None else b'\x01'
@@ -1176,96 +1131,96 @@ class Unit(object):
 
 	def deserialize(self, s, offset=0):
 		# deserialize self.type
-		tmp155 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp152 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp155:
-			tmp156 = struct.unpack('b', s[offset:offset + 1])[0]
+		if tmp152:
+			tmp153 = struct.unpack('b', s[offset:offset + 1])[0]
 			offset += 1
-			self.type = UnitType(tmp156)
+			self.type = UnitType(tmp153)
 		else:
 			self.type = None
 		
 		# deserialize self.health
-		tmp157 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp154 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp157:
+		if tmp154:
 			self.health = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
 			self.health = None
 		
 		# deserialize self.c_individual_health
-		tmp158 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp155 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp158:
+		if tmp155:
 			self.c_individual_health = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
 			self.c_individual_health = None
 		
 		# deserialize self.c_individual_damage
-		tmp159 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp156 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp159:
+		if tmp156:
 			self.c_individual_damage = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
 			self.c_individual_damage = None
 		
 		# deserialize self.c_damage_distribution
-		tmp160 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp157 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp160:
-			tmp161 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp157:
+			tmp158 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp162 = s[offset:offset + tmp161]
-			offset += tmp161
-			tmp162 += b'\x00' * (4 - tmp161)
-			tmp163 = struct.unpack('I', tmp162)[0]
+			tmp159 = s[offset:offset + tmp158]
+			offset += tmp158
+			tmp159 += b'\x00' * (4 - tmp158)
+			tmp160 = struct.unpack('I', tmp159)[0]
 			
 			self.c_damage_distribution = {}
-			for tmp164 in range(tmp163):
-				tmp167 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp161 in range(tmp160):
+				tmp164 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp167:
-					tmp168 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp164:
+					tmp165 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp165 = UnitType(tmp168)
+					tmp162 = UnitType(tmp165)
 				else:
-					tmp165 = None
-				tmp169 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp162 = None
+				tmp166 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp169:
-					tmp166 = struct.unpack('f', s[offset:offset + 4])[0]
+				if tmp166:
+					tmp163 = struct.unpack('f', s[offset:offset + 4])[0]
 					offset += 4
 				else:
-					tmp166 = None
-				self.c_damage_distribution[tmp165] = tmp166
+					tmp163 = None
+				self.c_damage_distribution[tmp162] = tmp163
 		else:
 			self.c_damage_distribution = None
 		
 		# deserialize self.ammo_count
-		tmp170 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp167 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp170:
+		if tmp167:
 			self.ammo_count = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
 			self.ammo_count = None
 		
 		# deserialize self.reload_rem_time
-		tmp171 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp168 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp171:
+		if tmp168:
 			self.reload_rem_time = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
 			self.reload_rem_time = None
 		
 		# deserialize self.c_reload_duration
-		tmp172 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp169 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp172:
+		if tmp169:
 			self.c_reload_duration = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
@@ -1281,14 +1236,14 @@ class Base(object):
 		return 'Base'
 
 
-	def __init__(self, c_area=None, agents=None, frontline_delivery=None, warehouse=None, backline_delivery=None, factory=None, units=None):
-		self.initialize(c_area, agents, frontline_delivery, warehouse, backline_delivery, factory, units)
+	def __init__(self, c_area=None, agents=None, frontline_deliveries=None, warehouse=None, backline_delivery=None, factory=None, units=None):
+		self.initialize(c_area, agents, frontline_deliveries, warehouse, backline_delivery, factory, units)
 	
 
-	def initialize(self, c_area=None, agents=None, frontline_delivery=None, warehouse=None, backline_delivery=None, factory=None, units=None):
+	def initialize(self, c_area=None, agents=None, frontline_deliveries=None, warehouse=None, backline_delivery=None, factory=None, units=None):
 		self.c_area = c_area
 		self.agents = agents
-		self.frontline_delivery = frontline_delivery
+		self.frontline_deliveries = frontline_deliveries
 		self.warehouse = warehouse
 		self.backline_delivery = backline_delivery
 		self.factory = factory
@@ -1301,40 +1256,50 @@ class Base(object):
 		# serialize self.c_area
 		s += b'\x00' if self.c_area is None else b'\x01'
 		if self.c_area is not None:
-			tmp173 = b''
-			tmp173 += struct.pack('I', len(self.c_area))
-			while len(tmp173) and tmp173[-1] == b'\x00'[0]:
-				tmp173 = tmp173[:-1]
-			s += struct.pack('B', len(tmp173))
-			s += tmp173
+			tmp170 = b''
+			tmp170 += struct.pack('I', len(self.c_area))
+			while len(tmp170) and tmp170[-1] == b'\x00'[0]:
+				tmp170 = tmp170[:-1]
+			s += struct.pack('B', len(tmp170))
+			s += tmp170
 			
-			for tmp174 in self.c_area:
-				s += b'\x00' if tmp174 is None else b'\x01'
-				if tmp174 is not None:
-					s += struct.pack('b', tmp174.value)
+			for tmp171 in self.c_area:
+				s += b'\x00' if tmp171 is None else b'\x01'
+				if tmp171 is not None:
+					s += struct.pack('b', tmp171.value)
 		
 		# serialize self.agents
 		s += b'\x00' if self.agents is None else b'\x01'
 		if self.agents is not None:
-			tmp175 = b''
-			tmp175 += struct.pack('I', len(self.agents))
-			while len(tmp175) and tmp175[-1] == b'\x00'[0]:
-				tmp175 = tmp175[:-1]
-			s += struct.pack('B', len(tmp175))
-			s += tmp175
+			tmp172 = b''
+			tmp172 += struct.pack('I', len(self.agents))
+			while len(tmp172) and tmp172[-1] == b'\x00'[0]:
+				tmp172 = tmp172[:-1]
+			s += struct.pack('B', len(tmp172))
+			s += tmp172
 			
-			for tmp176 in self.agents:
-				s += b'\x00' if tmp176 is None else b'\x01'
-				if tmp176 is not None:
-					s += struct.pack('b', tmp176.value)
-				s += b'\x00' if self.agents[tmp176] is None else b'\x01'
-				if self.agents[tmp176] is not None:
-					s += self.agents[tmp176].serialize()
+			for tmp173 in self.agents:
+				s += b'\x00' if tmp173 is None else b'\x01'
+				if tmp173 is not None:
+					s += struct.pack('b', tmp173.value)
+				s += b'\x00' if self.agents[tmp173] is None else b'\x01'
+				if self.agents[tmp173] is not None:
+					s += self.agents[tmp173].serialize()
 		
-		# serialize self.frontline_delivery
-		s += b'\x00' if self.frontline_delivery is None else b'\x01'
-		if self.frontline_delivery is not None:
-			s += self.frontline_delivery.serialize()
+		# serialize self.frontline_deliveries
+		s += b'\x00' if self.frontline_deliveries is None else b'\x01'
+		if self.frontline_deliveries is not None:
+			tmp174 = b''
+			tmp174 += struct.pack('I', len(self.frontline_deliveries))
+			while len(tmp174) and tmp174[-1] == b'\x00'[0]:
+				tmp174 = tmp174[:-1]
+			s += struct.pack('B', len(tmp174))
+			s += tmp174
+			
+			for tmp175 in self.frontline_deliveries:
+				s += b'\x00' if tmp175 is None else b'\x01'
+				if tmp175 is not None:
+					s += tmp175.serialize()
 		
 		# serialize self.warehouse
 		s += b'\x00' if self.warehouse is None else b'\x01'
@@ -1354,147 +1319,162 @@ class Base(object):
 		# serialize self.units
 		s += b'\x00' if self.units is None else b'\x01'
 		if self.units is not None:
-			tmp177 = b''
-			tmp177 += struct.pack('I', len(self.units))
-			while len(tmp177) and tmp177[-1] == b'\x00'[0]:
-				tmp177 = tmp177[:-1]
-			s += struct.pack('B', len(tmp177))
-			s += tmp177
+			tmp176 = b''
+			tmp176 += struct.pack('I', len(self.units))
+			while len(tmp176) and tmp176[-1] == b'\x00'[0]:
+				tmp176 = tmp176[:-1]
+			s += struct.pack('B', len(tmp176))
+			s += tmp176
 			
-			for tmp178 in self.units:
-				s += b'\x00' if tmp178 is None else b'\x01'
-				if tmp178 is not None:
-					s += struct.pack('b', tmp178.value)
-				s += b'\x00' if self.units[tmp178] is None else b'\x01'
-				if self.units[tmp178] is not None:
-					s += self.units[tmp178].serialize()
+			for tmp177 in self.units:
+				s += b'\x00' if tmp177 is None else b'\x01'
+				if tmp177 is not None:
+					s += struct.pack('b', tmp177.value)
+				s += b'\x00' if self.units[tmp177] is None else b'\x01'
+				if self.units[tmp177] is not None:
+					s += self.units[tmp177].serialize()
 		
 		return s
 	
 
 	def deserialize(self, s, offset=0):
 		# deserialize self.c_area
-		tmp179 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp178 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp179:
-			tmp180 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp178:
+			tmp179 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp181 = s[offset:offset + tmp180]
-			offset += tmp180
-			tmp181 += b'\x00' * (4 - tmp180)
-			tmp182 = struct.unpack('I', tmp181)[0]
+			tmp180 = s[offset:offset + tmp179]
+			offset += tmp179
+			tmp180 += b'\x00' * (4 - tmp179)
+			tmp181 = struct.unpack('I', tmp180)[0]
 			
 			self.c_area = []
-			for tmp183 in range(tmp182):
-				tmp185 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp182 in range(tmp181):
+				tmp184 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp185:
-					tmp186 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp184:
+					tmp185 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp184 = ECell(tmp186)
+					tmp183 = ECell(tmp185)
 				else:
-					tmp184 = None
-				self.c_area.append(tmp184)
+					tmp183 = None
+				self.c_area.append(tmp183)
 		else:
 			self.c_area = None
 		
 		# deserialize self.agents
-		tmp187 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp186 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp187:
-			tmp188 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp186:
+			tmp187 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp189 = s[offset:offset + tmp188]
-			offset += tmp188
-			tmp189 += b'\x00' * (4 - tmp188)
-			tmp190 = struct.unpack('I', tmp189)[0]
+			tmp188 = s[offset:offset + tmp187]
+			offset += tmp187
+			tmp188 += b'\x00' * (4 - tmp187)
+			tmp189 = struct.unpack('I', tmp188)[0]
 			
 			self.agents = {}
-			for tmp191 in range(tmp190):
-				tmp194 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp190 in range(tmp189):
+				tmp193 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp194:
-					tmp195 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp193:
+					tmp194 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp192 = AgentType(tmp195)
+					tmp191 = AgentType(tmp194)
+				else:
+					tmp191 = None
+				tmp195 = struct.unpack('B', s[offset:offset + 1])[0]
+				offset += 1
+				if tmp195:
+					tmp192 = Agent()
+					offset = tmp192.deserialize(s, offset)
 				else:
 					tmp192 = None
-				tmp196 = struct.unpack('B', s[offset:offset + 1])[0]
-				offset += 1
-				if tmp196:
-					tmp193 = Agent()
-					offset = tmp193.deserialize(s, offset)
-				else:
-					tmp193 = None
-				self.agents[tmp192] = tmp193
+				self.agents[tmp191] = tmp192
 		else:
 			self.agents = None
 		
-		# deserialize self.frontline_delivery
-		tmp197 = struct.unpack('B', s[offset:offset + 1])[0]
+		# deserialize self.frontline_deliveries
+		tmp196 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp197:
-			self.frontline_delivery = FrontlineDelivery()
-			offset = self.frontline_delivery.deserialize(s, offset)
+		if tmp196:
+			tmp197 = struct.unpack('B', s[offset:offset + 1])[0]
+			offset += 1
+			tmp198 = s[offset:offset + tmp197]
+			offset += tmp197
+			tmp198 += b'\x00' * (4 - tmp197)
+			tmp199 = struct.unpack('I', tmp198)[0]
+			
+			self.frontline_deliveries = []
+			for tmp200 in range(tmp199):
+				tmp202 = struct.unpack('B', s[offset:offset + 1])[0]
+				offset += 1
+				if tmp202:
+					tmp201 = FrontlineDelivery()
+					offset = tmp201.deserialize(s, offset)
+				else:
+					tmp201 = None
+				self.frontline_deliveries.append(tmp201)
 		else:
-			self.frontline_delivery = None
+			self.frontline_deliveries = None
 		
 		# deserialize self.warehouse
-		tmp198 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp203 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp198:
+		if tmp203:
 			self.warehouse = Warehouse()
 			offset = self.warehouse.deserialize(s, offset)
 		else:
 			self.warehouse = None
 		
 		# deserialize self.backline_delivery
-		tmp199 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp204 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp199:
+		if tmp204:
 			self.backline_delivery = BacklineDelivery()
 			offset = self.backline_delivery.deserialize(s, offset)
 		else:
 			self.backline_delivery = None
 		
 		# deserialize self.factory
-		tmp200 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp205 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp200:
+		if tmp205:
 			self.factory = Factory()
 			offset = self.factory.deserialize(s, offset)
 		else:
 			self.factory = None
 		
 		# deserialize self.units
-		tmp201 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp206 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp201:
-			tmp202 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp206:
+			tmp207 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp203 = s[offset:offset + tmp202]
-			offset += tmp202
-			tmp203 += b'\x00' * (4 - tmp202)
-			tmp204 = struct.unpack('I', tmp203)[0]
+			tmp208 = s[offset:offset + tmp207]
+			offset += tmp207
+			tmp208 += b'\x00' * (4 - tmp207)
+			tmp209 = struct.unpack('I', tmp208)[0]
 			
 			self.units = {}
-			for tmp205 in range(tmp204):
-				tmp208 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp210 in range(tmp209):
+				tmp213 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp208:
-					tmp209 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp213:
+					tmp214 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp206 = UnitType(tmp209)
+					tmp211 = UnitType(tmp214)
 				else:
-					tmp206 = None
-				tmp210 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp211 = None
+				tmp215 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp210:
-					tmp207 = Unit()
-					offset = tmp207.deserialize(s, offset)
+				if tmp215:
+					tmp212 = Unit()
+					offset = tmp212.deserialize(s, offset)
 				else:
-					tmp207 = None
-				self.units[tmp206] = tmp207
+					tmp212 = None
+				self.units[tmp211] = tmp212
 		else:
 			self.units = None
 		
@@ -1529,139 +1509,139 @@ class World(object):
 		# serialize self.bases
 		s += b'\x00' if self.bases is None else b'\x01'
 		if self.bases is not None:
-			tmp211 = b''
-			tmp211 += struct.pack('I', len(self.bases))
-			while len(tmp211) and tmp211[-1] == b'\x00'[0]:
-				tmp211 = tmp211[:-1]
-			s += struct.pack('B', len(tmp211))
-			s += tmp211
+			tmp216 = b''
+			tmp216 += struct.pack('I', len(self.bases))
+			while len(tmp216) and tmp216[-1] == b'\x00'[0]:
+				tmp216 = tmp216[:-1]
+			s += struct.pack('B', len(tmp216))
+			s += tmp216
 			
-			for tmp212 in self.bases:
-				s += b'\x00' if tmp212 is None else b'\x01'
-				if tmp212 is not None:
-					tmp213 = b''
-					tmp213 += struct.pack('I', len(tmp212))
-					while len(tmp213) and tmp213[-1] == b'\x00'[0]:
-						tmp213 = tmp213[:-1]
-					s += struct.pack('B', len(tmp213))
-					s += tmp213
+			for tmp217 in self.bases:
+				s += b'\x00' if tmp217 is None else b'\x01'
+				if tmp217 is not None:
+					tmp218 = b''
+					tmp218 += struct.pack('I', len(tmp217))
+					while len(tmp218) and tmp218[-1] == b'\x00'[0]:
+						tmp218 = tmp218[:-1]
+					s += struct.pack('B', len(tmp218))
+					s += tmp218
 					
-					s += tmp212.encode('ISO-8859-1') if PY3 else tmp212
-				s += b'\x00' if self.bases[tmp212] is None else b'\x01'
-				if self.bases[tmp212] is not None:
-					s += self.bases[tmp212].serialize()
+					s += tmp217.encode('ISO-8859-1') if PY3 else tmp217
+				s += b'\x00' if self.bases[tmp217] is None else b'\x01'
+				if self.bases[tmp217] is not None:
+					s += self.bases[tmp217].serialize()
 		
 		# serialize self.total_healths
 		s += b'\x00' if self.total_healths is None else b'\x01'
 		if self.total_healths is not None:
-			tmp214 = b''
-			tmp214 += struct.pack('I', len(self.total_healths))
-			while len(tmp214) and tmp214[-1] == b'\x00'[0]:
-				tmp214 = tmp214[:-1]
-			s += struct.pack('B', len(tmp214))
-			s += tmp214
+			tmp219 = b''
+			tmp219 += struct.pack('I', len(self.total_healths))
+			while len(tmp219) and tmp219[-1] == b'\x00'[0]:
+				tmp219 = tmp219[:-1]
+			s += struct.pack('B', len(tmp219))
+			s += tmp219
 			
-			for tmp215 in self.total_healths:
-				s += b'\x00' if tmp215 is None else b'\x01'
-				if tmp215 is not None:
-					tmp216 = b''
-					tmp216 += struct.pack('I', len(tmp215))
-					while len(tmp216) and tmp216[-1] == b'\x00'[0]:
-						tmp216 = tmp216[:-1]
-					s += struct.pack('B', len(tmp216))
-					s += tmp216
+			for tmp220 in self.total_healths:
+				s += b'\x00' if tmp220 is None else b'\x01'
+				if tmp220 is not None:
+					tmp221 = b''
+					tmp221 += struct.pack('I', len(tmp220))
+					while len(tmp221) and tmp221[-1] == b'\x00'[0]:
+						tmp221 = tmp221[:-1]
+					s += struct.pack('B', len(tmp221))
+					s += tmp221
 					
-					s += tmp215.encode('ISO-8859-1') if PY3 else tmp215
-				s += b'\x00' if self.total_healths[tmp215] is None else b'\x01'
-				if self.total_healths[tmp215] is not None:
-					s += struct.pack('i', self.total_healths[tmp215])
+					s += tmp220.encode('ISO-8859-1') if PY3 else tmp220
+				s += b'\x00' if self.total_healths[tmp220] is None else b'\x01'
+				if self.total_healths[tmp220] is not None:
+					s += struct.pack('i', self.total_healths[tmp220])
 		
 		return s
 	
 
 	def deserialize(self, s, offset=0):
 		# deserialize self.max_cycles
-		tmp217 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp222 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp217:
+		if tmp222:
 			self.max_cycles = struct.unpack('i', s[offset:offset + 4])[0]
 			offset += 4
 		else:
 			self.max_cycles = None
 		
 		# deserialize self.bases
-		tmp218 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp223 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp218:
-			tmp219 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp223:
+			tmp224 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp220 = s[offset:offset + tmp219]
-			offset += tmp219
-			tmp220 += b'\x00' * (4 - tmp219)
-			tmp221 = struct.unpack('I', tmp220)[0]
+			tmp225 = s[offset:offset + tmp224]
+			offset += tmp224
+			tmp225 += b'\x00' * (4 - tmp224)
+			tmp226 = struct.unpack('I', tmp225)[0]
 			
 			self.bases = {}
-			for tmp222 in range(tmp221):
-				tmp225 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp227 in range(tmp226):
+				tmp230 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp225:
-					tmp226 = struct.unpack('B', s[offset:offset + 1])[0]
+				if tmp230:
+					tmp231 = struct.unpack('B', s[offset:offset + 1])[0]
 					offset += 1
-					tmp227 = s[offset:offset + tmp226]
-					offset += tmp226
-					tmp227 += b'\x00' * (4 - tmp226)
-					tmp228 = struct.unpack('I', tmp227)[0]
+					tmp232 = s[offset:offset + tmp231]
+					offset += tmp231
+					tmp232 += b'\x00' * (4 - tmp231)
+					tmp233 = struct.unpack('I', tmp232)[0]
 					
-					tmp223 = s[offset:offset + tmp228].decode('ISO-8859-1') if PY3 else s[offset:offset + tmp228]
-					offset += tmp228
+					tmp228 = s[offset:offset + tmp233].decode('ISO-8859-1') if PY3 else s[offset:offset + tmp233]
+					offset += tmp233
 				else:
-					tmp223 = None
-				tmp229 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp228 = None
+				tmp234 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp229:
-					tmp224 = Base()
-					offset = tmp224.deserialize(s, offset)
+				if tmp234:
+					tmp229 = Base()
+					offset = tmp229.deserialize(s, offset)
 				else:
-					tmp224 = None
-				self.bases[tmp223] = tmp224
+					tmp229 = None
+				self.bases[tmp228] = tmp229
 		else:
 			self.bases = None
 		
 		# deserialize self.total_healths
-		tmp230 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp235 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp230:
-			tmp231 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp235:
+			tmp236 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp232 = s[offset:offset + tmp231]
-			offset += tmp231
-			tmp232 += b'\x00' * (4 - tmp231)
-			tmp233 = struct.unpack('I', tmp232)[0]
+			tmp237 = s[offset:offset + tmp236]
+			offset += tmp236
+			tmp237 += b'\x00' * (4 - tmp236)
+			tmp238 = struct.unpack('I', tmp237)[0]
 			
 			self.total_healths = {}
-			for tmp234 in range(tmp233):
-				tmp237 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp239 in range(tmp238):
+				tmp242 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp237:
-					tmp238 = struct.unpack('B', s[offset:offset + 1])[0]
+				if tmp242:
+					tmp243 = struct.unpack('B', s[offset:offset + 1])[0]
 					offset += 1
-					tmp239 = s[offset:offset + tmp238]
-					offset += tmp238
-					tmp239 += b'\x00' * (4 - tmp238)
-					tmp240 = struct.unpack('I', tmp239)[0]
+					tmp244 = s[offset:offset + tmp243]
+					offset += tmp243
+					tmp244 += b'\x00' * (4 - tmp243)
+					tmp245 = struct.unpack('I', tmp244)[0]
 					
-					tmp235 = s[offset:offset + tmp240].decode('ISO-8859-1') if PY3 else s[offset:offset + tmp240]
-					offset += tmp240
+					tmp240 = s[offset:offset + tmp245].decode('ISO-8859-1') if PY3 else s[offset:offset + tmp245]
+					offset += tmp245
 				else:
-					tmp235 = None
-				tmp241 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp240 = None
+				tmp246 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp241:
-					tmp236 = struct.unpack('i', s[offset:offset + 4])[0]
+				if tmp246:
+					tmp241 = struct.unpack('i', s[offset:offset + 4])[0]
 					offset += 4
 				else:
-					tmp236 = None
-				self.total_healths[tmp235] = tmp236
+					tmp241 = None
+				self.total_healths[tmp240] = tmp241
 		else:
 			self.total_healths = None
 		

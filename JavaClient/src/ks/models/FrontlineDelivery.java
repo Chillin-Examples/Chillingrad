@@ -9,76 +9,43 @@ import ks.KSObject;
 
 public class FrontlineDelivery extends KSObject
 {
-	protected Boolean isAvailable;
 	protected Map<AmmoType, Integer> ammos;
-	protected Integer truckDeliveryRemTime;
-	protected Integer cTruckDeliveryDuration;
-	protected Integer truckReturnRemTime;
-	protected Integer cTruckReturnDuration;
+	protected Integer deliveryRemTime;
+	protected Integer cDeliveryDuration;
 	
 	// getters
-	
-	public Boolean getIsAvailable()
-	{
-		return this.isAvailable;
-	}
 	
 	public Map<AmmoType, Integer> getAmmos()
 	{
 		return this.ammos;
 	}
 	
-	public Integer getTruckDeliveryRemTime()
+	public Integer getDeliveryRemTime()
 	{
-		return this.truckDeliveryRemTime;
+		return this.deliveryRemTime;
 	}
 	
-	public Integer getCTruckDeliveryDuration()
+	public Integer getCDeliveryDuration()
 	{
-		return this.cTruckDeliveryDuration;
-	}
-	
-	public Integer getTruckReturnRemTime()
-	{
-		return this.truckReturnRemTime;
-	}
-	
-	public Integer getCTruckReturnDuration()
-	{
-		return this.cTruckReturnDuration;
+		return this.cDeliveryDuration;
 	}
 	
 	
 	// setters
-	
-	public void setIsAvailable(Boolean isAvailable)
-	{
-		this.isAvailable = isAvailable;
-	}
 	
 	public void setAmmos(Map<AmmoType, Integer> ammos)
 	{
 		this.ammos = ammos;
 	}
 	
-	public void setTruckDeliveryRemTime(Integer truckDeliveryRemTime)
+	public void setDeliveryRemTime(Integer deliveryRemTime)
 	{
-		this.truckDeliveryRemTime = truckDeliveryRemTime;
+		this.deliveryRemTime = deliveryRemTime;
 	}
 	
-	public void setCTruckDeliveryDuration(Integer cTruckDeliveryDuration)
+	public void setCDeliveryDuration(Integer cDeliveryDuration)
 	{
-		this.cTruckDeliveryDuration = cTruckDeliveryDuration;
-	}
-	
-	public void setTruckReturnRemTime(Integer truckReturnRemTime)
-	{
-		this.truckReturnRemTime = truckReturnRemTime;
-	}
-	
-	public void setCTruckReturnDuration(Integer cTruckReturnDuration)
-	{
-		this.cTruckReturnDuration = cTruckReturnDuration;
+		this.cDeliveryDuration = cDeliveryDuration;
 	}
 	
 	
@@ -95,13 +62,6 @@ public class FrontlineDelivery extends KSObject
 	public byte[] serialize()
 	{
 		List<Byte> s = new ArrayList<>();
-		
-		// serialize isAvailable
-		s.add((byte) ((isAvailable == null) ? 0 : 1));
-		if (isAvailable != null)
-		{
-			s.add((byte) ((isAvailable) ? 1 : 0));
-		}
 		
 		// serialize ammos
 		s.add((byte) ((ammos == null) ? 0 : 1));
@@ -130,32 +90,18 @@ public class FrontlineDelivery extends KSObject
 			}
 		}
 		
-		// serialize truckDeliveryRemTime
-		s.add((byte) ((truckDeliveryRemTime == null) ? 0 : 1));
-		if (truckDeliveryRemTime != null)
+		// serialize deliveryRemTime
+		s.add((byte) ((deliveryRemTime == null) ? 0 : 1));
+		if (deliveryRemTime != null)
 		{
-			s.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(truckDeliveryRemTime).array()));
+			s.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(deliveryRemTime).array()));
 		}
 		
-		// serialize cTruckDeliveryDuration
-		s.add((byte) ((cTruckDeliveryDuration == null) ? 0 : 1));
-		if (cTruckDeliveryDuration != null)
+		// serialize cDeliveryDuration
+		s.add((byte) ((cDeliveryDuration == null) ? 0 : 1));
+		if (cDeliveryDuration != null)
 		{
-			s.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(cTruckDeliveryDuration).array()));
-		}
-		
-		// serialize truckReturnRemTime
-		s.add((byte) ((truckReturnRemTime == null) ? 0 : 1));
-		if (truckReturnRemTime != null)
-		{
-			s.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(truckReturnRemTime).array()));
-		}
-		
-		// serialize cTruckReturnDuration
-		s.add((byte) ((cTruckReturnDuration == null) ? 0 : 1));
-		if (cTruckReturnDuration != null)
-		{
-			s.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(cTruckReturnDuration).array()));
+			s.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(cDeliveryDuration).array()));
 		}
 		
 		return B2b(s);
@@ -164,114 +110,78 @@ public class FrontlineDelivery extends KSObject
 	@Override
 	protected int deserialize(byte[] s, int offset)
 	{
-		// deserialize isAvailable
+		// deserialize ammos
 		byte tmp2;
 		tmp2 = s[offset];
 		offset += Byte.BYTES;
 		if (tmp2 == 1)
 		{
-			isAvailable = (s[offset] == 0) ? false : true;
+			byte tmp3;
+			tmp3 = s[offset];
 			offset += Byte.BYTES;
-		}
-		else
-			isAvailable = null;
-		
-		// deserialize ammos
-		byte tmp3;
-		tmp3 = s[offset];
-		offset += Byte.BYTES;
-		if (tmp3 == 1)
-		{
-			byte tmp4;
-			tmp4 = s[offset];
-			offset += Byte.BYTES;
-			byte[] tmp5 = Arrays.copyOfRange(s, offset, offset + tmp4);
-			offset += tmp4;
-			int tmp6;
-			tmp6 = ByteBuffer.wrap(Arrays.copyOfRange(tmp5, 0, 0 + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
+			byte[] tmp4 = Arrays.copyOfRange(s, offset, offset + tmp3);
+			offset += tmp3;
+			int tmp5;
+			tmp5 = ByteBuffer.wrap(Arrays.copyOfRange(tmp4, 0, 0 + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
 			
 			ammos = new HashMap<>();
-			for (int tmp7 = 0; tmp7 < tmp6; tmp7++)
+			for (int tmp6 = 0; tmp6 < tmp5; tmp6++)
 			{
-				AmmoType tmp8;
-				byte tmp10;
-				tmp10 = s[offset];
+				AmmoType tmp7;
+				byte tmp9;
+				tmp9 = s[offset];
 				offset += Byte.BYTES;
-				if (tmp10 == 1)
+				if (tmp9 == 1)
 				{
-					byte tmp11;
-					tmp11 = s[offset];
+					byte tmp10;
+					tmp10 = s[offset];
 					offset += Byte.BYTES;
-					tmp8 = AmmoType.of(tmp11);
+					tmp7 = AmmoType.of(tmp10);
+				}
+				else
+					tmp7 = null;
+				
+				Integer tmp8;
+				byte tmp11;
+				tmp11 = s[offset];
+				offset += Byte.BYTES;
+				if (tmp11 == 1)
+				{
+					tmp8 = ByteBuffer.wrap(Arrays.copyOfRange(s, offset, offset + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
+					offset += Integer.BYTES;
 				}
 				else
 					tmp8 = null;
 				
-				Integer tmp9;
-				byte tmp12;
-				tmp12 = s[offset];
-				offset += Byte.BYTES;
-				if (tmp12 == 1)
-				{
-					tmp9 = ByteBuffer.wrap(Arrays.copyOfRange(s, offset, offset + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
-					offset += Integer.BYTES;
-				}
-				else
-					tmp9 = null;
-				
-				ammos.put(tmp8, tmp9);
+				ammos.put(tmp7, tmp8);
 			}
 		}
 		else
 			ammos = null;
 		
-		// deserialize truckDeliveryRemTime
+		// deserialize deliveryRemTime
+		byte tmp12;
+		tmp12 = s[offset];
+		offset += Byte.BYTES;
+		if (tmp12 == 1)
+		{
+			deliveryRemTime = ByteBuffer.wrap(Arrays.copyOfRange(s, offset, offset + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
+			offset += Integer.BYTES;
+		}
+		else
+			deliveryRemTime = null;
+		
+		// deserialize cDeliveryDuration
 		byte tmp13;
 		tmp13 = s[offset];
 		offset += Byte.BYTES;
 		if (tmp13 == 1)
 		{
-			truckDeliveryRemTime = ByteBuffer.wrap(Arrays.copyOfRange(s, offset, offset + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
+			cDeliveryDuration = ByteBuffer.wrap(Arrays.copyOfRange(s, offset, offset + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
 			offset += Integer.BYTES;
 		}
 		else
-			truckDeliveryRemTime = null;
-		
-		// deserialize cTruckDeliveryDuration
-		byte tmp14;
-		tmp14 = s[offset];
-		offset += Byte.BYTES;
-		if (tmp14 == 1)
-		{
-			cTruckDeliveryDuration = ByteBuffer.wrap(Arrays.copyOfRange(s, offset, offset + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
-			offset += Integer.BYTES;
-		}
-		else
-			cTruckDeliveryDuration = null;
-		
-		// deserialize truckReturnRemTime
-		byte tmp15;
-		tmp15 = s[offset];
-		offset += Byte.BYTES;
-		if (tmp15 == 1)
-		{
-			truckReturnRemTime = ByteBuffer.wrap(Arrays.copyOfRange(s, offset, offset + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
-			offset += Integer.BYTES;
-		}
-		else
-			truckReturnRemTime = null;
-		
-		// deserialize cTruckReturnDuration
-		byte tmp16;
-		tmp16 = s[offset];
-		offset += Byte.BYTES;
-		if (tmp16 == 1)
-		{
-			cTruckReturnDuration = ByteBuffer.wrap(Arrays.copyOfRange(s, offset, offset + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
-			offset += Integer.BYTES;
-		}
-		else
-			cTruckReturnDuration = null;
+			cDeliveryDuration = null;
 		
 		return offset;
 	}

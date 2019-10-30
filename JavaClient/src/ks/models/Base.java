@@ -11,7 +11,7 @@ public class Base extends KSObject
 {
 	protected List<ECell> cArea;
 	protected Map<AgentType, Agent> agents;
-	protected FrontlineDelivery frontlineDelivery;
+	protected List<FrontlineDelivery> frontlineDeliveries;
 	protected Warehouse warehouse;
 	protected BacklineDelivery backlineDelivery;
 	protected Factory factory;
@@ -29,9 +29,9 @@ public class Base extends KSObject
 		return this.agents;
 	}
 	
-	public FrontlineDelivery getFrontlineDelivery()
+	public List<FrontlineDelivery> getFrontlineDeliveries()
 	{
-		return this.frontlineDelivery;
+		return this.frontlineDeliveries;
 	}
 	
 	public Warehouse getWarehouse()
@@ -67,9 +67,9 @@ public class Base extends KSObject
 		this.agents = agents;
 	}
 	
-	public void setFrontlineDelivery(FrontlineDelivery frontlineDelivery)
+	public void setFrontlineDeliveries(List<FrontlineDelivery> frontlineDeliveries)
 	{
-		this.frontlineDelivery = frontlineDelivery;
+		this.frontlineDeliveries = frontlineDeliveries;
 	}
 	
 	public void setWarehouse(Warehouse warehouse)
@@ -155,11 +155,25 @@ public class Base extends KSObject
 			}
 		}
 		
-		// serialize frontlineDelivery
-		s.add((byte) ((frontlineDelivery == null) ? 0 : 1));
-		if (frontlineDelivery != null)
+		// serialize frontlineDeliveries
+		s.add((byte) ((frontlineDeliveries == null) ? 0 : 1));
+		if (frontlineDeliveries != null)
 		{
-			s.addAll(b2B(frontlineDelivery.serialize()));
+			List<Byte> tmp4 = new ArrayList<>();
+			tmp4.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(frontlineDeliveries.size()).array()));
+			while (tmp4.size() > 0 && tmp4.get(tmp4.size() - 1) == 0)
+				tmp4.remove(tmp4.size() - 1);
+			s.add((byte) tmp4.size());
+			s.addAll(tmp4);
+			
+			for (FrontlineDelivery tmp5 : frontlineDeliveries)
+			{
+				s.add((byte) ((tmp5 == null) ? 0 : 1));
+				if (tmp5 != null)
+				{
+					s.addAll(b2B(tmp5.serialize()));
+				}
+			}
 		}
 		
 		// serialize warehouse
@@ -187,25 +201,25 @@ public class Base extends KSObject
 		s.add((byte) ((units == null) ? 0 : 1));
 		if (units != null)
 		{
-			List<Byte> tmp4 = new ArrayList<>();
-			tmp4.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(units.size()).array()));
-			while (tmp4.size() > 0 && tmp4.get(tmp4.size() - 1) == 0)
-				tmp4.remove(tmp4.size() - 1);
-			s.add((byte) tmp4.size());
-			s.addAll(tmp4);
+			List<Byte> tmp6 = new ArrayList<>();
+			tmp6.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(units.size()).array()));
+			while (tmp6.size() > 0 && tmp6.get(tmp6.size() - 1) == 0)
+				tmp6.remove(tmp6.size() - 1);
+			s.add((byte) tmp6.size());
+			s.addAll(tmp6);
 			
-			for (Map.Entry<UnitType, Unit> tmp5 : units.entrySet())
+			for (Map.Entry<UnitType, Unit> tmp7 : units.entrySet())
 			{
-				s.add((byte) ((tmp5.getKey() == null) ? 0 : 1));
-				if (tmp5.getKey() != null)
+				s.add((byte) ((tmp7.getKey() == null) ? 0 : 1));
+				if (tmp7.getKey() != null)
 				{
-					s.add((byte) (tmp5.getKey().getValue()));
+					s.add((byte) (tmp7.getKey().getValue()));
 				}
 				
-				s.add((byte) ((tmp5.getValue() == null) ? 0 : 1));
-				if (tmp5.getValue() != null)
+				s.add((byte) ((tmp7.getValue() == null) ? 0 : 1));
+				if (tmp7.getValue() != null)
 				{
-					s.addAll(b2B(tmp5.getValue().serialize()));
+					s.addAll(b2B(tmp7.getValue().serialize()));
 				}
 			}
 		}
@@ -217,107 +231,129 @@ public class Base extends KSObject
 	protected int deserialize(byte[] s, int offset)
 	{
 		// deserialize cArea
-		byte tmp6;
-		tmp6 = s[offset];
+		byte tmp8;
+		tmp8 = s[offset];
 		offset += Byte.BYTES;
-		if (tmp6 == 1)
+		if (tmp8 == 1)
 		{
-			byte tmp7;
-			tmp7 = s[offset];
+			byte tmp9;
+			tmp9 = s[offset];
 			offset += Byte.BYTES;
-			byte[] tmp8 = Arrays.copyOfRange(s, offset, offset + tmp7);
-			offset += tmp7;
-			int tmp9;
-			tmp9 = ByteBuffer.wrap(Arrays.copyOfRange(tmp8, 0, 0 + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
+			byte[] tmp10 = Arrays.copyOfRange(s, offset, offset + tmp9);
+			offset += tmp9;
+			int tmp11;
+			tmp11 = ByteBuffer.wrap(Arrays.copyOfRange(tmp10, 0, 0 + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
 			
 			cArea = new ArrayList<>();
-			for (int tmp10 = 0; tmp10 < tmp9; tmp10++)
+			for (int tmp12 = 0; tmp12 < tmp11; tmp12++)
 			{
-				ECell tmp11;
-				byte tmp12;
-				tmp12 = s[offset];
+				ECell tmp13;
+				byte tmp14;
+				tmp14 = s[offset];
 				offset += Byte.BYTES;
-				if (tmp12 == 1)
+				if (tmp14 == 1)
 				{
-					byte tmp13;
-					tmp13 = s[offset];
+					byte tmp15;
+					tmp15 = s[offset];
 					offset += Byte.BYTES;
-					tmp11 = ECell.of(tmp13);
+					tmp13 = ECell.of(tmp15);
 				}
 				else
-					tmp11 = null;
-				cArea.add(tmp11);
+					tmp13 = null;
+				cArea.add(tmp13);
 			}
 		}
 		else
 			cArea = null;
 		
 		// deserialize agents
-		byte tmp14;
-		tmp14 = s[offset];
+		byte tmp16;
+		tmp16 = s[offset];
 		offset += Byte.BYTES;
-		if (tmp14 == 1)
+		if (tmp16 == 1)
 		{
-			byte tmp15;
-			tmp15 = s[offset];
+			byte tmp17;
+			tmp17 = s[offset];
 			offset += Byte.BYTES;
-			byte[] tmp16 = Arrays.copyOfRange(s, offset, offset + tmp15);
-			offset += tmp15;
-			int tmp17;
-			tmp17 = ByteBuffer.wrap(Arrays.copyOfRange(tmp16, 0, 0 + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
+			byte[] tmp18 = Arrays.copyOfRange(s, offset, offset + tmp17);
+			offset += tmp17;
+			int tmp19;
+			tmp19 = ByteBuffer.wrap(Arrays.copyOfRange(tmp18, 0, 0 + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
 			
 			agents = new HashMap<>();
-			for (int tmp18 = 0; tmp18 < tmp17; tmp18++)
+			for (int tmp20 = 0; tmp20 < tmp19; tmp20++)
 			{
-				AgentType tmp19;
-				byte tmp21;
-				tmp21 = s[offset];
-				offset += Byte.BYTES;
-				if (tmp21 == 1)
-				{
-					byte tmp22;
-					tmp22 = s[offset];
-					offset += Byte.BYTES;
-					tmp19 = AgentType.of(tmp22);
-				}
-				else
-					tmp19 = null;
-				
-				Agent tmp20;
+				AgentType tmp21;
 				byte tmp23;
 				tmp23 = s[offset];
 				offset += Byte.BYTES;
 				if (tmp23 == 1)
 				{
-					tmp20 = new Agent();
-					offset = tmp20.deserialize(s, offset);
+					byte tmp24;
+					tmp24 = s[offset];
+					offset += Byte.BYTES;
+					tmp21 = AgentType.of(tmp24);
 				}
 				else
-					tmp20 = null;
+					tmp21 = null;
 				
-				agents.put(tmp19, tmp20);
+				Agent tmp22;
+				byte tmp25;
+				tmp25 = s[offset];
+				offset += Byte.BYTES;
+				if (tmp25 == 1)
+				{
+					tmp22 = new Agent();
+					offset = tmp22.deserialize(s, offset);
+				}
+				else
+					tmp22 = null;
+				
+				agents.put(tmp21, tmp22);
 			}
 		}
 		else
 			agents = null;
 		
-		// deserialize frontlineDelivery
-		byte tmp24;
-		tmp24 = s[offset];
+		// deserialize frontlineDeliveries
+		byte tmp26;
+		tmp26 = s[offset];
 		offset += Byte.BYTES;
-		if (tmp24 == 1)
+		if (tmp26 == 1)
 		{
-			frontlineDelivery = new FrontlineDelivery();
-			offset = frontlineDelivery.deserialize(s, offset);
+			byte tmp27;
+			tmp27 = s[offset];
+			offset += Byte.BYTES;
+			byte[] tmp28 = Arrays.copyOfRange(s, offset, offset + tmp27);
+			offset += tmp27;
+			int tmp29;
+			tmp29 = ByteBuffer.wrap(Arrays.copyOfRange(tmp28, 0, 0 + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
+			
+			frontlineDeliveries = new ArrayList<>();
+			for (int tmp30 = 0; tmp30 < tmp29; tmp30++)
+			{
+				FrontlineDelivery tmp31;
+				byte tmp32;
+				tmp32 = s[offset];
+				offset += Byte.BYTES;
+				if (tmp32 == 1)
+				{
+					tmp31 = new FrontlineDelivery();
+					offset = tmp31.deserialize(s, offset);
+				}
+				else
+					tmp31 = null;
+				frontlineDeliveries.add(tmp31);
+			}
 		}
 		else
-			frontlineDelivery = null;
+			frontlineDeliveries = null;
 		
 		// deserialize warehouse
-		byte tmp25;
-		tmp25 = s[offset];
+		byte tmp33;
+		tmp33 = s[offset];
 		offset += Byte.BYTES;
-		if (tmp25 == 1)
+		if (tmp33 == 1)
 		{
 			warehouse = new Warehouse();
 			offset = warehouse.deserialize(s, offset);
@@ -326,10 +362,10 @@ public class Base extends KSObject
 			warehouse = null;
 		
 		// deserialize backlineDelivery
-		byte tmp26;
-		tmp26 = s[offset];
+		byte tmp34;
+		tmp34 = s[offset];
 		offset += Byte.BYTES;
-		if (tmp26 == 1)
+		if (tmp34 == 1)
 		{
 			backlineDelivery = new BacklineDelivery();
 			offset = backlineDelivery.deserialize(s, offset);
@@ -338,10 +374,10 @@ public class Base extends KSObject
 			backlineDelivery = null;
 		
 		// deserialize factory
-		byte tmp27;
-		tmp27 = s[offset];
+		byte tmp35;
+		tmp35 = s[offset];
 		offset += Byte.BYTES;
-		if (tmp27 == 1)
+		if (tmp35 == 1)
 		{
 			factory = new Factory();
 			offset = factory.deserialize(s, offset);
@@ -350,49 +386,49 @@ public class Base extends KSObject
 			factory = null;
 		
 		// deserialize units
-		byte tmp28;
-		tmp28 = s[offset];
+		byte tmp36;
+		tmp36 = s[offset];
 		offset += Byte.BYTES;
-		if (tmp28 == 1)
+		if (tmp36 == 1)
 		{
-			byte tmp29;
-			tmp29 = s[offset];
+			byte tmp37;
+			tmp37 = s[offset];
 			offset += Byte.BYTES;
-			byte[] tmp30 = Arrays.copyOfRange(s, offset, offset + tmp29);
-			offset += tmp29;
-			int tmp31;
-			tmp31 = ByteBuffer.wrap(Arrays.copyOfRange(tmp30, 0, 0 + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
+			byte[] tmp38 = Arrays.copyOfRange(s, offset, offset + tmp37);
+			offset += tmp37;
+			int tmp39;
+			tmp39 = ByteBuffer.wrap(Arrays.copyOfRange(tmp38, 0, 0 + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
 			
 			units = new HashMap<>();
-			for (int tmp32 = 0; tmp32 < tmp31; tmp32++)
+			for (int tmp40 = 0; tmp40 < tmp39; tmp40++)
 			{
-				UnitType tmp33;
-				byte tmp35;
-				tmp35 = s[offset];
+				UnitType tmp41;
+				byte tmp43;
+				tmp43 = s[offset];
 				offset += Byte.BYTES;
-				if (tmp35 == 1)
+				if (tmp43 == 1)
 				{
-					byte tmp36;
-					tmp36 = s[offset];
+					byte tmp44;
+					tmp44 = s[offset];
 					offset += Byte.BYTES;
-					tmp33 = UnitType.of(tmp36);
+					tmp41 = UnitType.of(tmp44);
 				}
 				else
-					tmp33 = null;
+					tmp41 = null;
 				
-				Unit tmp34;
-				byte tmp37;
-				tmp37 = s[offset];
+				Unit tmp42;
+				byte tmp45;
+				tmp45 = s[offset];
 				offset += Byte.BYTES;
-				if (tmp37 == 1)
+				if (tmp45 == 1)
 				{
-					tmp34 = new Unit();
-					offset = tmp34.deserialize(s, offset);
+					tmp42 = new Unit();
+					offset = tmp42.deserialize(s, offset);
 				}
 				else
-					tmp34 = null;
+					tmp42 = null;
 				
-				units.put(tmp33, tmp34);
+				units.put(tmp41, tmp42);
 			}
 		}
 		else
