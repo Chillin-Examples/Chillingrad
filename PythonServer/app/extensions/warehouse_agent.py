@@ -34,7 +34,7 @@ class WarehouseAgent(Agent):
         material = base.warehouse.materials[self.position]
         self.materials_bag[material.type] += 1
         material.count -= 1
-        return [GuiEvent(GuiEventType.PickMaterial, agent=self, material=material)]
+        return [GuiEvent(GuiEventType.PickMaterial, side=side, agent=self, material=material)]
 
 
     def put_material(self, world, side):
@@ -46,7 +46,7 @@ class WarehouseAgent(Agent):
         for material_type, count in self.materials_bag.items():
             base.backline_delivery.materials[material_type] += count
             self.materials_bag[material_type] = 0
-        return [GuiEvent(GuiEventType.PutMaterial, agent=self)]
+        return [GuiEvent(GuiEventType.PutMaterial, side=side, agent=self)]
 
 
     def pick_ammo(self, world, side, ammos):
@@ -65,7 +65,7 @@ class WarehouseAgent(Agent):
         for ammo_type, count in ammos.items():
             self.ammos_bag[ammo_type] += count
             base.backline_delivery.ammos[ammo_type] -= count
-        return [GuiEvent(GuiEventType.PickAmmo, agent=self, ammos=ammos)]
+        return [GuiEvent(GuiEventType.PickAmmo, side=side, agent=self, ammos=ammos)]
 
 
     def put_ammo(self, world, side):
@@ -82,7 +82,7 @@ class WarehouseAgent(Agent):
         for ammo_type, count in self.ammos_bag.items():
             frontline_delivery.ammos[ammo_type] = count
             self.ammos_bag[ammo_type] = 0
-        return [GuiEvent(GuiEventType.PutAmmo, agent=self)]
+        return [GuiEvent(GuiEventType.PutAmmo, side=side, agent=self)]
 
 
 models.WarehouseAgent = WarehouseAgent

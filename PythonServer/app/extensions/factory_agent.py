@@ -34,7 +34,7 @@ class FactoryAgent(Agent):
         for material_type, count in materials.items():
             self.materials_bag[material_type] += count
             base.backline_delivery.materials[material_type] -= count
-        return [GuiEvent(GuiEventType.PickMaterial, agent=self, materials=materials)]
+        return [GuiEvent(GuiEventType.PickMaterial, side=side, agent=self, materials=materials)]
 
 
     def put_material(self, world, side, desired_ammo):
@@ -56,7 +56,7 @@ class FactoryAgent(Agent):
         machine.current_ammo = desired_ammo
         machine.construction_rem_time = base.factory.c_construction_durations[desired_ammo]
 
-        return [GuiEvent(GuiEventType.PutMaterial, agent=self, machine=machine)]
+        return [GuiEvent(GuiEventType.PutMaterial, side=side, agent=self, machine=machine)]
 
 
     def pick_ammo(self, world, side):
@@ -73,7 +73,7 @@ class FactoryAgent(Agent):
         self.ammos_bag[machine.current_ammo] += 1
         machine.status = MachineStatus.Idle
         machine.current_ammo = None
-        return [GuiEvent(GuiEventType.PickAmmo, agent=self, machine=machine)]
+        return [GuiEvent(GuiEventType.PickAmmo, side=side, agent=self, machine=machine)]
 
 
     def put_ammo(self, world, side):
@@ -88,7 +88,7 @@ class FactoryAgent(Agent):
         for ammo_type, count in self.ammos_bag.items():
             base.backline_delivery.ammos[ammo_type] += count
             self.ammos_bag[ammo_type] = 0
-        return [GuiEvent(GuiEventType.PutAmmo, agent=self)]
+        return [GuiEvent(GuiEventType.PutAmmo, side=side, agent=self)]
 
 
 models.FactoryAgent = FactoryAgent
