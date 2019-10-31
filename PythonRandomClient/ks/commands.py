@@ -208,14 +208,14 @@ class PutMaterial(BaseCommand):
 		return 'PutMaterial'
 
 
-	def __init__(self, agent_type=None, materials=None):
-		self.initialize(agent_type, materials)
+	def __init__(self, agent_type=None, desired_ammo=None):
+		self.initialize(agent_type, desired_ammo)
 	
 
-	def initialize(self, agent_type=None, materials=None):
+	def initialize(self, agent_type=None, desired_ammo=None):
 		BaseCommand.initialize(self, agent_type)
 		
-		self.materials = materials
+		self.desired_ammo = desired_ammo
 	
 
 	def serialize(self):
@@ -224,23 +224,10 @@ class PutMaterial(BaseCommand):
 		# serialize parents
 		s += BaseCommand.serialize(self)
 		
-		# serialize self.materials
-		s += b'\x00' if self.materials is None else b'\x01'
-		if self.materials is not None:
-			tmp15 = b''
-			tmp15 += struct.pack('I', len(self.materials))
-			while len(tmp15) and tmp15[-1] == b'\x00'[0]:
-				tmp15 = tmp15[:-1]
-			s += struct.pack('B', len(tmp15))
-			s += tmp15
-			
-			for tmp16 in self.materials:
-				s += b'\x00' if tmp16 is None else b'\x01'
-				if tmp16 is not None:
-					s += struct.pack('b', tmp16.value)
-				s += b'\x00' if self.materials[tmp16] is None else b'\x01'
-				if self.materials[tmp16] is not None:
-					s += struct.pack('i', self.materials[tmp16])
+		# serialize self.desired_ammo
+		s += b'\x00' if self.desired_ammo is None else b'\x01'
+		if self.desired_ammo is not None:
+			s += struct.pack('b', self.desired_ammo.value)
 		
 		return s
 	
@@ -249,37 +236,15 @@ class PutMaterial(BaseCommand):
 		# deserialize parents
 		offset = BaseCommand.deserialize(self, s, offset)
 		
-		# deserialize self.materials
-		tmp17 = struct.unpack('B', s[offset:offset + 1])[0]
+		# deserialize self.desired_ammo
+		tmp15 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp17:
-			tmp18 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp15:
+			tmp16 = struct.unpack('b', s[offset:offset + 1])[0]
 			offset += 1
-			tmp19 = s[offset:offset + tmp18]
-			offset += tmp18
-			tmp19 += b'\x00' * (4 - tmp18)
-			tmp20 = struct.unpack('I', tmp19)[0]
-			
-			self.materials = {}
-			for tmp21 in range(tmp20):
-				tmp24 = struct.unpack('B', s[offset:offset + 1])[0]
-				offset += 1
-				if tmp24:
-					tmp25 = struct.unpack('b', s[offset:offset + 1])[0]
-					offset += 1
-					tmp22 = CommandMaterialType(tmp25)
-				else:
-					tmp22 = None
-				tmp26 = struct.unpack('B', s[offset:offset + 1])[0]
-				offset += 1
-				if tmp26:
-					tmp23 = struct.unpack('i', s[offset:offset + 4])[0]
-					offset += 4
-				else:
-					tmp23 = None
-				self.materials[tmp22] = tmp23
+			self.desired_ammo = CommandAmmoType(tmp16)
 		else:
-			self.materials = None
+			self.desired_ammo = None
 		
 		return offset
 
@@ -310,20 +275,20 @@ class PickAmmo(BaseCommand):
 		# serialize self.ammos
 		s += b'\x00' if self.ammos is None else b'\x01'
 		if self.ammos is not None:
-			tmp27 = b''
-			tmp27 += struct.pack('I', len(self.ammos))
-			while len(tmp27) and tmp27[-1] == b'\x00'[0]:
-				tmp27 = tmp27[:-1]
-			s += struct.pack('B', len(tmp27))
-			s += tmp27
+			tmp17 = b''
+			tmp17 += struct.pack('I', len(self.ammos))
+			while len(tmp17) and tmp17[-1] == b'\x00'[0]:
+				tmp17 = tmp17[:-1]
+			s += struct.pack('B', len(tmp17))
+			s += tmp17
 			
-			for tmp28 in self.ammos:
-				s += b'\x00' if tmp28 is None else b'\x01'
-				if tmp28 is not None:
-					s += struct.pack('b', tmp28.value)
-				s += b'\x00' if self.ammos[tmp28] is None else b'\x01'
-				if self.ammos[tmp28] is not None:
-					s += struct.pack('i', self.ammos[tmp28])
+			for tmp18 in self.ammos:
+				s += b'\x00' if tmp18 is None else b'\x01'
+				if tmp18 is not None:
+					s += struct.pack('b', tmp18.value)
+				s += b'\x00' if self.ammos[tmp18] is None else b'\x01'
+				if self.ammos[tmp18] is not None:
+					s += struct.pack('i', self.ammos[tmp18])
 		
 		return s
 	
@@ -333,34 +298,34 @@ class PickAmmo(BaseCommand):
 		offset = BaseCommand.deserialize(self, s, offset)
 		
 		# deserialize self.ammos
-		tmp29 = struct.unpack('B', s[offset:offset + 1])[0]
+		tmp19 = struct.unpack('B', s[offset:offset + 1])[0]
 		offset += 1
-		if tmp29:
-			tmp30 = struct.unpack('B', s[offset:offset + 1])[0]
+		if tmp19:
+			tmp20 = struct.unpack('B', s[offset:offset + 1])[0]
 			offset += 1
-			tmp31 = s[offset:offset + tmp30]
-			offset += tmp30
-			tmp31 += b'\x00' * (4 - tmp30)
-			tmp32 = struct.unpack('I', tmp31)[0]
+			tmp21 = s[offset:offset + tmp20]
+			offset += tmp20
+			tmp21 += b'\x00' * (4 - tmp20)
+			tmp22 = struct.unpack('I', tmp21)[0]
 			
 			self.ammos = {}
-			for tmp33 in range(tmp32):
-				tmp36 = struct.unpack('B', s[offset:offset + 1])[0]
+			for tmp23 in range(tmp22):
+				tmp26 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp36:
-					tmp37 = struct.unpack('b', s[offset:offset + 1])[0]
+				if tmp26:
+					tmp27 = struct.unpack('b', s[offset:offset + 1])[0]
 					offset += 1
-					tmp34 = CommandAmmoType(tmp37)
+					tmp24 = CommandAmmoType(tmp27)
 				else:
-					tmp34 = None
-				tmp38 = struct.unpack('B', s[offset:offset + 1])[0]
+					tmp24 = None
+				tmp28 = struct.unpack('B', s[offset:offset + 1])[0]
 				offset += 1
-				if tmp38:
-					tmp35 = struct.unpack('i', s[offset:offset + 4])[0]
+				if tmp28:
+					tmp25 = struct.unpack('i', s[offset:offset + 4])[0]
 					offset += 4
 				else:
-					tmp35 = None
-				self.ammos[tmp34] = tmp35
+					tmp25 = None
+				self.ammos[tmp24] = tmp25
 		else:
 			self.ammos = None
 		

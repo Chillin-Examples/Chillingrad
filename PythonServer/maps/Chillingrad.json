@@ -17,18 +17,19 @@
     "frontline_delivery": {
         "position": 0,
 
-        "c_truck_delivery_duration": 20,
-        "c_truck_return_duration": 30
+        "c_delivery_duration": 20,
+        "c_return_duration": 30
     },
 
     "warehouse": {
         "materials": [
             { "position": 2, "type": "Powder", "c_capacity": 10 },
             { "position": 3, "type": "Steel", "c_capacity": 10 },
-            { "position": 4, "type": "Shell", "c_capacity": 10 },
-            { "position": 5, "type": "Nickel", "c_capacity": 10 },
-            { "position": 6, "type": "Manganese", "c_capacity": 10 },
-            { "position": 7, "type": "Chromium", "c_capacity": 10 }
+            { "position": 4, "type": "Aluminum", "c_capacity": 10 },
+            { "position": 5, "type": "Shell", "c_capacity": 10 },
+            { "position": 6, "type": "Nickel", "c_capacity": 10 },
+            { "position": 7, "type": "Manganese", "c_capacity": 10 },
+            { "position": 8, "type": "Chromium", "c_capacity": 10 }
         ],
 
         "c_materials_reload_duration": 20

@@ -19,12 +19,13 @@ class MapHandler:
         base = Base()
 
         # Area
-        base.c_area = [ECell.Empty] * m['area']['length']
+        base.c_area = { Position(i): ECell.Empty for i in range(m['area']['length']) }
 
         # Agents
         base.agents = {}
         for agent_type in AgentType:
-            base.agents[agent_type] = Agent(
+            AgentClass = WarehouseAgent if agent_type == AgentType.Warehouse else FactoryAgent
+            base.agents[agent_type] = AgentClass(
                 type = agent_type,
                 position = Position(index = m['agents'][agent_type.name]['position']),
                 materials_bag = { material_type: 0 for material_type in MaterialType },
@@ -34,21 +35,21 @@ class MapHandler:
             )
 
         # Frontline Delivery
-        base.c_area[m['frontline_delivery']['position']] = ECell.FrontlineDelivery
+        base.c_area[Position(m['frontline_delivery']['position'])] = ECell.FrontlineDelivery
         base.frontline_deliveries = []
 
         ## Extra Info
         base.default_frontline_delivery = FrontlineDelivery(
             ammos = { ammo_type: 0 for ammo_type in AmmoType },
-            delivery_rem_time = None,
-            c_delivery_duration = m['frontline_delivery']['c_truck_delivery_duration']
+            delivery_rem_time = m['frontline_delivery']['c_delivery_duration'],
+            c_delivery_duration = m['frontline_delivery']['c_delivery_duration']
         )
 
         # Warehouse
         warehouse_materials = {}
         for material in m['warehouse']['materials']:
             position = Position(index = material['position'])
-            base.c_area[position.index] = ECell.Material
+            base.c_area[position] = ECell.Material
 
             warehouse_materials[position] = Material(
                 type = MaterialType[material['type']],
@@ -64,7 +65,7 @@ class MapHandler:
         )
 
         # Backline Delivery
-        base.c_area[m['backline_delivery']['position']] = ECell.BacklineDelivery
+        base.c_area[Position(m['backline_delivery']['position'])] = ECell.BacklineDelivery
 
         base.backline_delivery = BacklineDelivery(
             materials = { material_type: 0 for material_type in MaterialType },
@@ -75,12 +76,12 @@ class MapHandler:
         factory_machines = {}
         for machine_position in m['factory']['machine_positions']:
             position = Position(index = machine_position)
-            base.c_area[position.index] = ECell.Machine
+            base.c_area[position] = ECell.Machine
 
             factory_machines[position] = Machine(
-                status = MachineStatus.Idle,
                 position = position,
-                current_ammo = None,  # TODO: Should it change to some value?
+                status = MachineStatus.Idle,
+                current_ammo = None,
                 construction_rem_time = 0,
             )
 

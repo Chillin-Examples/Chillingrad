@@ -78,8 +78,8 @@ c_capacity = int
 
 [Machine]
 _def = class
-status = MachineStatus
 position = Position
+status = MachineStatus
 current_ammo = AmmoType
 construction_rem_time = int
 
@@ -140,7 +140,7 @@ c_reload_duration = int
 
 [Base]
 _def = class
-c_area = list<ECell>
+c_area = map<Position, ECell>
 agents = map<AgentType, Agent>
 frontline_deliveries = list<FrontlineDelivery>
 warehouse = Warehouse

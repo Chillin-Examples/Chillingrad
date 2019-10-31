@@ -49,7 +49,7 @@ materials = map<CommandMaterialType, int>
 
 [PutMaterial]
 _def = class(BaseCommand)
-materials = map<CommandMaterialType, int>
+desired_ammo = CommandAmmoType
 
 
 [PickAmmo]

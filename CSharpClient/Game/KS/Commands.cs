@@ -239,7 +239,7 @@ namespace KS.Commands
 	
 	public partial class PutMaterial : BaseCommand
 	{
-		public Dictionary<CommandMaterialType?, int?> Materials { get; set; }
+		public CommandAmmoType? DesiredAmmo { get; set; }
 		
 
 		public PutMaterial()
@@ -257,31 +257,11 @@ namespace KS.Commands
 			// serialize parents
 			s.AddRange(base.Serialize());
 			
-			// serialize Materials
-			s.Add((byte)((Materials == null) ? 0 : 1));
-			if (Materials != null)
+			// serialize DesiredAmmo
+			s.Add((byte)((DesiredAmmo == null) ? 0 : 1));
+			if (DesiredAmmo != null)
 			{
-				List<byte> tmp15 = new List<byte>();
-				tmp15.AddRange(BitConverter.GetBytes((uint)Materials.Count()));
-				while (tmp15.Count > 0 && tmp15.Last() == 0)
-					tmp15.RemoveAt(tmp15.Count - 1);
-				s.Add((byte)tmp15.Count);
-				s.AddRange(tmp15);
-				
-				foreach (var tmp16 in Materials)
-				{
-					s.Add((byte)((tmp16.Key == null) ? 0 : 1));
-					if (tmp16.Key != null)
-					{
-						s.Add((byte)((sbyte)tmp16.Key));
-					}
-					
-					s.Add((byte)((tmp16.Value == null) ? 0 : 1));
-					if (tmp16.Value != null)
-					{
-						s.AddRange(BitConverter.GetBytes((int)tmp16.Value));
-					}
-				}
+				s.Add((byte)((sbyte)DesiredAmmo));
 			}
 			
 			return s.ToArray();
@@ -292,55 +272,19 @@ namespace KS.Commands
 			// deserialize parents
 			offset = base.Deserialize(s, offset);
 			
-			// deserialize Materials
-			byte tmp17;
-			tmp17 = (byte)s[(int)offset];
+			// deserialize DesiredAmmo
+			byte tmp15;
+			tmp15 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp17 == 1)
+			if (tmp15 == 1)
 			{
-				byte tmp18;
-				tmp18 = (byte)s[(int)offset];
-				offset += sizeof(byte);
-				byte[] tmp19 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp19, 0, tmp18);
-				offset += tmp18;
-				uint tmp20;
-				tmp20 = BitConverter.ToUInt32(tmp19, (int)0);
-				
-				Materials = new Dictionary<CommandMaterialType?, int?>();
-				for (uint tmp21 = 0; tmp21 < tmp20; tmp21++)
-				{
-					CommandMaterialType? tmp22;
-					byte tmp24;
-					tmp24 = (byte)s[(int)offset];
-					offset += sizeof(byte);
-					if (tmp24 == 1)
-					{
-						sbyte tmp25;
-						tmp25 = (sbyte)s[(int)offset];
-						offset += sizeof(sbyte);
-						tmp22 = (CommandMaterialType)tmp25;
-					}
-					else
-						tmp22 = null;
-					
-					int? tmp23;
-					byte tmp26;
-					tmp26 = (byte)s[(int)offset];
-					offset += sizeof(byte);
-					if (tmp26 == 1)
-					{
-						tmp23 = BitConverter.ToInt32(s, (int)offset);
-						offset += sizeof(int);
-					}
-					else
-						tmp23 = null;
-					
-					Materials[tmp22] = tmp23;
-				}
+				sbyte tmp16;
+				tmp16 = (sbyte)s[(int)offset];
+				offset += sizeof(sbyte);
+				DesiredAmmo = (CommandAmmoType)tmp16;
 			}
 			else
-				Materials = null;
+				DesiredAmmo = null;
 			
 			return offset;
 		}
@@ -370,25 +314,25 @@ namespace KS.Commands
 			s.Add((byte)((Ammos == null) ? 0 : 1));
 			if (Ammos != null)
 			{
-				List<byte> tmp27 = new List<byte>();
-				tmp27.AddRange(BitConverter.GetBytes((uint)Ammos.Count()));
-				while (tmp27.Count > 0 && tmp27.Last() == 0)
-					tmp27.RemoveAt(tmp27.Count - 1);
-				s.Add((byte)tmp27.Count);
-				s.AddRange(tmp27);
+				List<byte> tmp17 = new List<byte>();
+				tmp17.AddRange(BitConverter.GetBytes((uint)Ammos.Count()));
+				while (tmp17.Count > 0 && tmp17.Last() == 0)
+					tmp17.RemoveAt(tmp17.Count - 1);
+				s.Add((byte)tmp17.Count);
+				s.AddRange(tmp17);
 				
-				foreach (var tmp28 in Ammos)
+				foreach (var tmp18 in Ammos)
 				{
-					s.Add((byte)((tmp28.Key == null) ? 0 : 1));
-					if (tmp28.Key != null)
+					s.Add((byte)((tmp18.Key == null) ? 0 : 1));
+					if (tmp18.Key != null)
 					{
-						s.Add((byte)((sbyte)tmp28.Key));
+						s.Add((byte)((sbyte)tmp18.Key));
 					}
 					
-					s.Add((byte)((tmp28.Value == null) ? 0 : 1));
-					if (tmp28.Value != null)
+					s.Add((byte)((tmp18.Value == null) ? 0 : 1));
+					if (tmp18.Value != null)
 					{
-						s.AddRange(BitConverter.GetBytes((int)tmp28.Value));
+						s.AddRange(BitConverter.GetBytes((int)tmp18.Value));
 					}
 				}
 			}
@@ -402,50 +346,50 @@ namespace KS.Commands
 			offset = base.Deserialize(s, offset);
 			
 			// deserialize Ammos
-			byte tmp29;
-			tmp29 = (byte)s[(int)offset];
+			byte tmp19;
+			tmp19 = (byte)s[(int)offset];
 			offset += sizeof(byte);
-			if (tmp29 == 1)
+			if (tmp19 == 1)
 			{
-				byte tmp30;
-				tmp30 = (byte)s[(int)offset];
+				byte tmp20;
+				tmp20 = (byte)s[(int)offset];
 				offset += sizeof(byte);
-				byte[] tmp31 = new byte[sizeof(uint)];
-				Array.Copy(s, offset, tmp31, 0, tmp30);
-				offset += tmp30;
-				uint tmp32;
-				tmp32 = BitConverter.ToUInt32(tmp31, (int)0);
+				byte[] tmp21 = new byte[sizeof(uint)];
+				Array.Copy(s, offset, tmp21, 0, tmp20);
+				offset += tmp20;
+				uint tmp22;
+				tmp22 = BitConverter.ToUInt32(tmp21, (int)0);
 				
 				Ammos = new Dictionary<CommandAmmoType?, int?>();
-				for (uint tmp33 = 0; tmp33 < tmp32; tmp33++)
+				for (uint tmp23 = 0; tmp23 < tmp22; tmp23++)
 				{
-					CommandAmmoType? tmp34;
-					byte tmp36;
-					tmp36 = (byte)s[(int)offset];
+					CommandAmmoType? tmp24;
+					byte tmp26;
+					tmp26 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp36 == 1)
+					if (tmp26 == 1)
 					{
-						sbyte tmp37;
-						tmp37 = (sbyte)s[(int)offset];
+						sbyte tmp27;
+						tmp27 = (sbyte)s[(int)offset];
 						offset += sizeof(sbyte);
-						tmp34 = (CommandAmmoType)tmp37;
+						tmp24 = (CommandAmmoType)tmp27;
 					}
 					else
-						tmp34 = null;
+						tmp24 = null;
 					
-					int? tmp35;
-					byte tmp38;
-					tmp38 = (byte)s[(int)offset];
+					int? tmp25;
+					byte tmp28;
+					tmp28 = (byte)s[(int)offset];
 					offset += sizeof(byte);
-					if (tmp38 == 1)
+					if (tmp28 == 1)
 					{
-						tmp35 = BitConverter.ToInt32(s, (int)offset);
+						tmp25 = BitConverter.ToInt32(s, (int)offset);
 						offset += sizeof(int);
 					}
 					else
-						tmp35 = null;
+						tmp25 = null;
 					
-					Ammos[tmp34] = tmp35;
+					Ammos[tmp24] = tmp25;
 				}
 			}
 			else

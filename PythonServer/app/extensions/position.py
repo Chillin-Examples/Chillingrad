@@ -18,7 +18,7 @@ def __ne__(self, other):
 
 
 def __hash__(self):
-    return hash(tuple(sorted(self.__dict__.items())))
+    return self.index
 
 
 def __add__(self, other):
@@ -46,7 +46,7 @@ def __isub__(self, other):
 
 
 def __repr__(self):
-    return '<index: %s>'.format(self.index)
+    return '<index: {}>'.format(self.index)
 
 
 Position.__eq__ = __eq__

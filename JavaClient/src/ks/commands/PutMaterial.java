@@ -9,21 +9,21 @@ import ks.KSObject;
 
 public class PutMaterial extends BaseCommand
 {
-	protected Map<CommandMaterialType, Integer> materials;
+	protected CommandAmmoType desiredAmmo;
 	
 	// getters
 	
-	public Map<CommandMaterialType, Integer> getMaterials()
+	public CommandAmmoType getDesiredAmmo()
 	{
-		return this.materials;
+		return this.desiredAmmo;
 	}
 	
 	
 	// setters
 	
-	public void setMaterials(Map<CommandMaterialType, Integer> materials)
+	public void setDesiredAmmo(CommandAmmoType desiredAmmo)
 	{
-		this.materials = materials;
+		this.desiredAmmo = desiredAmmo;
 	}
 	
 	
@@ -44,31 +44,11 @@ public class PutMaterial extends BaseCommand
 		// serialize parents
 		s.addAll(b2B(super.serialize()));
 		
-		// serialize materials
-		s.add((byte) ((materials == null) ? 0 : 1));
-		if (materials != null)
+		// serialize desiredAmmo
+		s.add((byte) ((desiredAmmo == null) ? 0 : 1));
+		if (desiredAmmo != null)
 		{
-			List<Byte> tmp0 = new ArrayList<>();
-			tmp0.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(materials.size()).array()));
-			while (tmp0.size() > 0 && tmp0.get(tmp0.size() - 1) == 0)
-				tmp0.remove(tmp0.size() - 1);
-			s.add((byte) tmp0.size());
-			s.addAll(tmp0);
-			
-			for (Map.Entry<CommandMaterialType, Integer> tmp1 : materials.entrySet())
-			{
-				s.add((byte) ((tmp1.getKey() == null) ? 0 : 1));
-				if (tmp1.getKey() != null)
-				{
-					s.add((byte) (tmp1.getKey().getValue()));
-				}
-				
-				s.add((byte) ((tmp1.getValue() == null) ? 0 : 1));
-				if (tmp1.getValue() != null)
-				{
-					s.addAll(b2B(ByteBuffer.allocate(Integer.BYTES).order(ByteOrder.LITTLE_ENDIAN).putInt(tmp1.getValue()).array()));
-				}
-			}
+			s.add((byte) (desiredAmmo.getValue()));
 		}
 		
 		return B2b(s);
@@ -80,54 +60,19 @@ public class PutMaterial extends BaseCommand
 		// deserialize parents
 		offset = super.deserialize(s, offset);
 		
-		// deserialize materials
-		byte tmp2;
-		tmp2 = s[offset];
+		// deserialize desiredAmmo
+		byte tmp0;
+		tmp0 = s[offset];
 		offset += Byte.BYTES;
-		if (tmp2 == 1)
+		if (tmp0 == 1)
 		{
-			byte tmp3;
-			tmp3 = s[offset];
+			byte tmp1;
+			tmp1 = s[offset];
 			offset += Byte.BYTES;
-			byte[] tmp4 = Arrays.copyOfRange(s, offset, offset + tmp3);
-			offset += tmp3;
-			int tmp5;
-			tmp5 = ByteBuffer.wrap(Arrays.copyOfRange(tmp4, 0, 0 + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
-			
-			materials = new HashMap<>();
-			for (int tmp6 = 0; tmp6 < tmp5; tmp6++)
-			{
-				CommandMaterialType tmp7;
-				byte tmp9;
-				tmp9 = s[offset];
-				offset += Byte.BYTES;
-				if (tmp9 == 1)
-				{
-					byte tmp10;
-					tmp10 = s[offset];
-					offset += Byte.BYTES;
-					tmp7 = CommandMaterialType.of(tmp10);
-				}
-				else
-					tmp7 = null;
-				
-				Integer tmp8;
-				byte tmp11;
-				tmp11 = s[offset];
-				offset += Byte.BYTES;
-				if (tmp11 == 1)
-				{
-					tmp8 = ByteBuffer.wrap(Arrays.copyOfRange(s, offset, offset + Integer.BYTES)).order(ByteOrder.LITTLE_ENDIAN).getInt();
-					offset += Integer.BYTES;
-				}
-				else
-					tmp8 = null;
-				
-				materials.put(tmp7, tmp8);
-			}
+			desiredAmmo = CommandAmmoType.of(tmp1);
 		}
 		else
-			materials = null;
+			desiredAmmo = null;
 		
 		return offset;
 	}

@@ -9,21 +9,21 @@ import ks.KSObject;
 
 public class Machine extends KSObject
 {
-	protected MachineStatus status;
 	protected Position position;
+	protected MachineStatus status;
 	protected AmmoType currentAmmo;
 	protected Integer constructionRemTime;
 	
 	// getters
 	
-	public MachineStatus getStatus()
-	{
-		return this.status;
-	}
-	
 	public Position getPosition()
 	{
 		return this.position;
+	}
+	
+	public MachineStatus getStatus()
+	{
+		return this.status;
 	}
 	
 	public AmmoType getCurrentAmmo()
@@ -39,14 +39,14 @@ public class Machine extends KSObject
 	
 	// setters
 	
-	public void setStatus(MachineStatus status)
-	{
-		this.status = status;
-	}
-	
 	public void setPosition(Position position)
 	{
 		this.position = position;
+	}
+	
+	public void setStatus(MachineStatus status)
+	{
+		this.status = status;
 	}
 	
 	public void setCurrentAmmo(AmmoType currentAmmo)
@@ -74,18 +74,18 @@ public class Machine extends KSObject
 	{
 		List<Byte> s = new ArrayList<>();
 		
-		// serialize status
-		s.add((byte) ((status == null) ? 0 : 1));
-		if (status != null)
-		{
-			s.add((byte) (status.getValue()));
-		}
-		
 		// serialize position
 		s.add((byte) ((position == null) ? 0 : 1));
 		if (position != null)
 		{
 			s.addAll(b2B(position.serialize()));
+		}
+		
+		// serialize status
+		s.add((byte) ((status == null) ? 0 : 1));
+		if (status != null)
+		{
+			s.add((byte) (status.getValue()));
 		}
 		
 		// serialize currentAmmo
@@ -108,31 +108,31 @@ public class Machine extends KSObject
 	@Override
 	protected int deserialize(byte[] s, int offset)
 	{
-		// deserialize status
+		// deserialize position
 		byte tmp0;
 		tmp0 = s[offset];
 		offset += Byte.BYTES;
 		if (tmp0 == 1)
-		{
-			byte tmp1;
-			tmp1 = s[offset];
-			offset += Byte.BYTES;
-			status = MachineStatus.of(tmp1);
-		}
-		else
-			status = null;
-		
-		// deserialize position
-		byte tmp2;
-		tmp2 = s[offset];
-		offset += Byte.BYTES;
-		if (tmp2 == 1)
 		{
 			position = new Position();
 			offset = position.deserialize(s, offset);
 		}
 		else
 			position = null;
+		
+		// deserialize status
+		byte tmp1;
+		tmp1 = s[offset];
+		offset += Byte.BYTES;
+		if (tmp1 == 1)
+		{
+			byte tmp2;
+			tmp2 = s[offset];
+			offset += Byte.BYTES;
+			status = MachineStatus.of(tmp2);
+		}
+		else
+			status = null;
 		
 		// deserialize currentAmmo
 		byte tmp3;

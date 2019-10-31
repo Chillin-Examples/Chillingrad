@@ -421,49 +421,49 @@ class PutMaterial : public BaseCommand
 
 protected:
 
-	std::map<CommandMaterialType, int> __materials;
+	CommandAmmoType __desiredAmmo;
 
-	bool __has_materials;
+	bool __has_desiredAmmo;
 
 
 public: // getters
 
-	inline std::map<CommandMaterialType, int> materials() const
+	inline CommandAmmoType desiredAmmo() const
 	{
-		return __materials;
+		return __desiredAmmo;
 	}
 	
 
 public: // reference getters
 
-	inline std::map<CommandMaterialType, int> &ref_materials() const
+	inline CommandAmmoType &ref_desiredAmmo() const
 	{
-		return (std::map<CommandMaterialType, int>&) __materials;
+		return (CommandAmmoType&) __desiredAmmo;
 	}
 	
 
 public: // setters
 
-	inline void materials(const std::map<CommandMaterialType, int> &materials)
+	inline void desiredAmmo(const CommandAmmoType &desiredAmmo)
 	{
-		__materials = materials;
-		has_materials(true);
+		__desiredAmmo = desiredAmmo;
+		has_desiredAmmo(true);
 	}
 	
 
 public: // has_attribute getters
 
-	inline bool has_materials() const
+	inline bool has_desiredAmmo() const
 	{
-		return __has_materials;
+		return __has_desiredAmmo;
 	}
 	
 
 public: // has_attribute setters
 
-	inline void has_materials(const bool &has_materials)
+	inline void has_desiredAmmo(const bool &has_desiredAmmo)
 	{
-		__has_materials = has_materials;
+		__has_desiredAmmo = has_desiredAmmo;
 	}
 	
 
@@ -471,7 +471,7 @@ public:
 
 	PutMaterial()
 	{
-		has_materials(false);
+		has_desiredAmmo(false);
 	}
 	
 	static inline const std::string nameStatic()
@@ -491,33 +491,13 @@ public:
 		// serialize parents
 		s += BaseCommand::serialize();
 		
-		// serialize materials
-		s += __has_materials;
-		if (__has_materials)
+		// serialize desiredAmmo
+		s += __has_desiredAmmo;
+		if (__has_desiredAmmo)
 		{
-			std::string tmp28 = "";
-			unsigned int tmp30 = __materials.size();
-			auto tmp31 = reinterpret_cast<char*>(&tmp30);
-			tmp28 += std::string(tmp31, sizeof(unsigned int));
-			while (tmp28.size() && tmp28.back() == 0)
-				tmp28.pop_back();
-			unsigned char tmp33 = tmp28.size();
-			auto tmp34 = reinterpret_cast<char*>(&tmp33);
-			s += std::string(tmp34, sizeof(unsigned char));
-			s += tmp28;
-			
-			for (auto &tmp35 : __materials)
-			{
-				s += '\x01';
-				char tmp37 = (char) tmp35.first;
-				auto tmp38 = reinterpret_cast<char*>(&tmp37);
-				s += std::string(tmp38, sizeof(char));
-				
-				s += '\x01';
-				int tmp40 = tmp35.second;
-				auto tmp41 = reinterpret_cast<char*>(&tmp40);
-				s += std::string(tmp41, sizeof(int));
-			}
+			char tmp29 = (char) __desiredAmmo;
+			auto tmp30 = reinterpret_cast<char*>(&tmp29);
+			s += std::string(tmp30, sizeof(char));
 		}
 		
 		return s;
@@ -528,38 +508,15 @@ public:
 		// deserialize parents
 		offset = BaseCommand::deserialize(s, offset);
 		
-		// deserialize materials
-		__has_materials = *((unsigned char*) (&s[offset]));
+		// deserialize desiredAmmo
+		__has_desiredAmmo = *((unsigned char*) (&s[offset]));
 		offset += sizeof(unsigned char);
-		if (__has_materials)
+		if (__has_desiredAmmo)
 		{
-			unsigned char tmp42;
-			tmp42 = *((unsigned char*) (&s[offset]));
-			offset += sizeof(unsigned char);
-			std::string tmp43 = std::string(&s[offset], tmp42);
-			offset += tmp42;
-			while (tmp43.size() < sizeof(unsigned int))
-				tmp43 += '\x00';
-			unsigned int tmp44;
-			tmp44 = *((unsigned int*) (&tmp43[0]));
-			
-			__materials.clear();
-			for (unsigned int tmp45 = 0; tmp45 < tmp44; tmp45++)
-			{
-				CommandMaterialType tmp46;
-				offset++;
-				char tmp48;
-				tmp48 = *((char*) (&s[offset]));
-				offset += sizeof(char);
-				tmp46 = (CommandMaterialType) tmp48;
-				
-				int tmp47;
-				offset++;
-				tmp47 = *((int*) (&s[offset]));
-				offset += sizeof(int);
-				
-				__materials[tmp46] = tmp47;
-			}
+			char tmp31;
+			tmp31 = *((char*) (&s[offset]));
+			offset += sizeof(char);
+			__desiredAmmo = (CommandAmmoType) tmp31;
 		}
 		
 		return offset;
@@ -646,28 +603,28 @@ public:
 		s += __has_ammos;
 		if (__has_ammos)
 		{
-			std::string tmp49 = "";
-			unsigned int tmp51 = __ammos.size();
-			auto tmp52 = reinterpret_cast<char*>(&tmp51);
-			tmp49 += std::string(tmp52, sizeof(unsigned int));
-			while (tmp49.size() && tmp49.back() == 0)
-				tmp49.pop_back();
-			unsigned char tmp54 = tmp49.size();
-			auto tmp55 = reinterpret_cast<char*>(&tmp54);
-			s += std::string(tmp55, sizeof(unsigned char));
-			s += tmp49;
+			std::string tmp32 = "";
+			unsigned int tmp34 = __ammos.size();
+			auto tmp35 = reinterpret_cast<char*>(&tmp34);
+			tmp32 += std::string(tmp35, sizeof(unsigned int));
+			while (tmp32.size() && tmp32.back() == 0)
+				tmp32.pop_back();
+			unsigned char tmp37 = tmp32.size();
+			auto tmp38 = reinterpret_cast<char*>(&tmp37);
+			s += std::string(tmp38, sizeof(unsigned char));
+			s += tmp32;
 			
-			for (auto &tmp56 : __ammos)
+			for (auto &tmp39 : __ammos)
 			{
 				s += '\x01';
-				char tmp58 = (char) tmp56.first;
-				auto tmp59 = reinterpret_cast<char*>(&tmp58);
-				s += std::string(tmp59, sizeof(char));
+				char tmp41 = (char) tmp39.first;
+				auto tmp42 = reinterpret_cast<char*>(&tmp41);
+				s += std::string(tmp42, sizeof(char));
 				
 				s += '\x01';
-				int tmp61 = tmp56.second;
-				auto tmp62 = reinterpret_cast<char*>(&tmp61);
-				s += std::string(tmp62, sizeof(int));
+				int tmp44 = tmp39.second;
+				auto tmp45 = reinterpret_cast<char*>(&tmp44);
+				s += std::string(tmp45, sizeof(int));
 			}
 		}
 		
@@ -684,32 +641,32 @@ public:
 		offset += sizeof(unsigned char);
 		if (__has_ammos)
 		{
-			unsigned char tmp63;
-			tmp63 = *((unsigned char*) (&s[offset]));
+			unsigned char tmp46;
+			tmp46 = *((unsigned char*) (&s[offset]));
 			offset += sizeof(unsigned char);
-			std::string tmp64 = std::string(&s[offset], tmp63);
-			offset += tmp63;
-			while (tmp64.size() < sizeof(unsigned int))
-				tmp64 += '\x00';
-			unsigned int tmp65;
-			tmp65 = *((unsigned int*) (&tmp64[0]));
+			std::string tmp47 = std::string(&s[offset], tmp46);
+			offset += tmp46;
+			while (tmp47.size() < sizeof(unsigned int))
+				tmp47 += '\x00';
+			unsigned int tmp48;
+			tmp48 = *((unsigned int*) (&tmp47[0]));
 			
 			__ammos.clear();
-			for (unsigned int tmp66 = 0; tmp66 < tmp65; tmp66++)
+			for (unsigned int tmp49 = 0; tmp49 < tmp48; tmp49++)
 			{
-				CommandAmmoType tmp67;
+				CommandAmmoType tmp50;
 				offset++;
-				char tmp69;
-				tmp69 = *((char*) (&s[offset]));
+				char tmp52;
+				tmp52 = *((char*) (&s[offset]));
 				offset += sizeof(char);
-				tmp67 = (CommandAmmoType) tmp69;
+				tmp50 = (CommandAmmoType) tmp52;
 				
-				int tmp68;
+				int tmp51;
 				offset++;
-				tmp68 = *((int*) (&s[offset]));
+				tmp51 = *((int*) (&s[offset]));
 				offset += sizeof(int);
 				
-				__ammos[tmp67] = tmp68;
+				__ammos[tmp50] = tmp51;
 			}
 		}
 		
