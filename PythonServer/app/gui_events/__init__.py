@@ -11,11 +11,11 @@ class GuiEventType(Enum):
     PickAmmo = 3
     PutAmmo = 4
 
-    UnitDied = 5
+    WarehouseReload = 5
 
-    MachineIdle = 6
-    MachineWorking = 7
-    MachineAmmoReady = 8
+    MachineAmmoReady = 6
+
+    UnitDied = 7
 
 
 class GuiEvent(object):
