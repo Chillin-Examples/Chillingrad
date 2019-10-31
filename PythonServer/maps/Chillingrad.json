@@ -17,8 +17,7 @@
     "frontline_delivery": {
         "position": 0,
 
-        "c_delivery_duration": 20,
-        "c_return_duration": 30
+        "c_delivery_duration": 20
     },
 
     "warehouse": {
