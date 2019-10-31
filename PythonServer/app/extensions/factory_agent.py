@@ -54,7 +54,7 @@ class FactoryAgent(Agent):
         machine = base.factory.machines[self.position]
         machine.status = MachineStatus.Working
         machine.current_ammo = desired_ammo
-        machine.construction_rem_time = base.factory.c_construction_durations[desired_ammo]
+        machine.construction_rem_time = base.factory.c_construction_durations[desired_ammo] + 1
 
         return [GuiEvent(GuiEventType.PutMaterial, side=side, agent=self, machine=machine)]
 

@@ -81,6 +81,7 @@ class WarehouseAgent(Agent):
         base.frontline_deliveries.append(frontline_delivery)
         for ammo_type, count in self.ammos_bag.items():
             frontline_delivery.ammos[ammo_type] = count
+            frontline_delivery.delivery_rem_time += 1
             self.ammos_bag[ammo_type] = 0
         return [GuiEvent(GuiEventType.PutAmmo, side=side, agent=self)]
 
