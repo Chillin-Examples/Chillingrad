@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 
+# python imports
+import math
+
 # project imports
-from ..ks.models import World, AgentType, WarehouseAgent, FactoryAgent
+from ..ks.models import World, AgentType, UnitType
 from ..ks.commands import Move, PickMaterial, PutMaterial, PickAmmo, PutAmmo
 from ..gui_events import GuiEvent, GuiEventType
 
@@ -50,6 +53,45 @@ def tick(self):
 
 def _tick_war(self):
     gui_events = []
+    sides = self.bases.keys()
+    total_damage = {side: {ut: 0 for ut in list(UnitType)} for side in sides}
+
+    for side in sides:
+        for unit in self.bases[side].units.values():
+            unit_count = math.ceil(unit.health / unit.c_individual_health)
+            used_ammo_count = min(unit_count, unit.ammo_count)
+            if used_ammo_count <= 0:
+                continue
+
+            unit.reload_rem_time -= 1
+            if unit.reload_rem_time > 0:
+                continue
+
+            unit_damage = used_ammo_count * unit.c_individual_damage
+            unit_distributed_damage = {}
+            for enemy_unit_type, coefficient in unit.c_damage_distribution.items():
+                dmg = math.ceil(unit_damage * coefficient)
+                unit_distributed_damage[enemy_unit_type] = dmg
+                total_damage[side][enemy_unit_type] += dmg
+
+            unit.ammo_count -= used_ammo_count
+            unit.reload_rem_time = unit.c_reload_duration
+            gui_events.append(
+                GuiEvent(GuiEventType.UnitFired, side=side, unit=unit, damage=unit_distributed_damage)
+            )
+
+    for side in sides:
+        enemy_side = [s for s in sides if s != side][0]
+        for unit in self.bases[enemy_side].units.values():
+            damage = total_damage[side][unit.type]
+            if damage > 0 and unit.health > 0:
+                damage = min(damage, unit.health)
+                unit.health -= damage
+                self.total_healths[enemy_side] -= damage
+                gui_events.append(
+                    GuiEvent(GuiEventType.UnitDamaged, side=enemy_side, unit=unit, damage=damage)
+                )
+
     return gui_events
 
 
