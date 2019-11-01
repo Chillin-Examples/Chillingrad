@@ -107,7 +107,21 @@ def _tick_bases(self):
     return gui_events
 
 
+def check_end_game(self, current_cycle):
+    return (current_cycle >= self.max_cycles - 1) or (0 in self.total_healths.values())
+
+
+def get_winner(self):
+    # Check if healths are equal
+    if len(set(self.total_healths.values())) == 1:
+        return None
+    # Find side with maximum health
+    return max(self.total_healths.keys(), key=(lambda key: self.total_healths[key]))
+
+
 World.apply_commands = apply_commands
 World.tick = tick
 World._tick_war = _tick_war
 World._tick_bases = _tick_bases
+World.check_end_game = check_end_game
+World.get_winner = get_winner

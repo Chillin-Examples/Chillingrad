@@ -19,7 +19,7 @@ class LogicHandler:
 
 
     def store_command(self, side_name, command):
-        pass  # TODO: validate and store commands
+        self._last_cycle_commands[side_name][command.agent_type] = command
 
 
     def clear_commands(self):
@@ -28,43 +28,28 @@ class LogicHandler:
 
     def process(self, current_cycle):
         gui_events = []
-
-        for side in self._sides:
-            for agentType in self._last_cycle_commands[side]:
-                command = self._last_cycle_commands[side][agentType]
-
-                gui_events += self.world.apply_command(side, command)
-
-        # TODO: Add other logics
-
+        gui_events.extend(self.world.apply_commands(self._last_cycle_commands))
+        gui_events.extend(self.world.tick())
         return gui_events
 
 
     def get_client_world(self, side_name):
-        return self.world  # TODO: Add fog of war
+        enemy_side = [s for s in self._sides if s != side_name][0]
+        world = deepcopy(self.world)
+        world.bases[enemy_side] = None
+        return self.world
 
 
     def check_end_game(self, current_cycle):
-        end_game = False
-        winner = None
-        details = None
-
-        if current_cycle >= self.world.max_cycles - 1:
-            end_game = True
-
-        # TODO: Add other end game conditions
+        end_game = self.world.check_end_game(current_cycle)
 
         if end_game:
-            if self.world.total_healths['Allies'] > self.world.total_healths['Axis']:
-                winner = 'Allies'
-            elif self.world.total_healths['Axis'] > self.world.total_healths['Allies']:
-                winner = 'Axis'
-
+            winner = self.world.get_winner()
             details = {
                 'Remaining Healths': {
-                    'Allies': str(self.world.total_healths['Allies']),
-                    'Axis': str(self.world.total_healths['Axis'])
+                    side: str(health) for side, health in self.world.total_healths.items()
                 }
             }
+            return end_game, winner, details
 
-        return end_game, winner, details
+        return end_game, None, None
