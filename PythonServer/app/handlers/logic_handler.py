@@ -19,6 +19,25 @@ class LogicHandler:
 
 
     def store_command(self, side_name, command):
+        ### This method should be removed after adding 'import' feature to the koala-serializer ###
+        def convert_command(command):
+            from ..ks.models import MaterialType, AmmoType, AgentType
+            command.agent_type = AgentType(command.agent_type.value)
+
+            materials = command.__dict__.get('materials')
+            if materials:
+                for material_type in list(materials.keys()):
+                    materials[MaterialType(material_type.value)] = materials.pop(material_type)
+
+            ammos = command.__dict__.get('ammos')
+            if ammos:
+                for ammo_type in list(ammos.keys()):
+                    ammos[AmmoType(ammo_type.value)] = ammos.pop(ammo_type)
+
+            if 'desired_ammo' in command.__dict__:
+                command.__dict__['desired_ammo'] = AmmoType(command.__dict__['desired_ammo'].value)
+
+        convert_command(command)
         self._last_cycle_commands[side_name][command.agent_type] = command
 
 
