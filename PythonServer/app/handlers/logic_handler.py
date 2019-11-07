@@ -56,7 +56,7 @@ class LogicHandler:
         enemy_side = [s for s in self._sides if s != side_name][0]
         world = deepcopy(self.world)
         world.bases[enemy_side] = None
-        return self.world
+        return world
 
 
     def check_end_game(self, current_cycle):
