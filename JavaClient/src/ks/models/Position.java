@@ -68,4 +68,25 @@ public class Position extends KSObject
 		
 		return offset;
 	}
+
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (obj instanceof Position)
+			return this.index == ((Position)obj).index;
+		return super.equals(obj);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return index;
+	}
+
+	@Override
+	public String toString()
+	{
+		return String.format("<Index: {0}>", index);
+	}
 }
