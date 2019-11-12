@@ -182,6 +182,49 @@ public:
 		
 		return offset;
 	}
+
+public:
+
+    bool operator <(const ks::models::Position &other) const
+    {
+        return index() < other.index();
+    }
+
+	bool operator ==(const Position &other) const
+	{
+		if (!has_index())
+			return !other.has_index();
+		return index() == other.index();
+	}
+
+	bool operator !=(const Position &other) const
+	{
+		return !((*this) == other);
+	}
+
+	Position operator +(const Position &other) const
+	{
+		Position p;
+		p.index(index() + ((other.has_index()) ? other.index() : 0));
+		return p;
+	}
+
+	void operator +=(const Position &other)
+	{
+		index(index() + ((other.has_index()) ? other.index() : 0));
+	}
+
+	Position operator -(const Position &other) const
+	{
+		Position p;
+		p.index(index() - ((other.has_index()) ? other.index() : 0));
+		return p;
+	}
+
+	void operator -=(const Position &other)
+	{
+		index(index() - ((other.has_index()) ? other.index() : 0));
+	}
 };
 
 
@@ -3266,7 +3309,7 @@ class World : public KSObject
 protected:
 
 	int __maxCycles;
-	std::map<std::string, Base> __bases;
+	std::map<std::string, Base> __bases_;
 	std::map<std::string, int> __totalHealths;
 
 	bool __has_maxCycles;
@@ -3283,7 +3326,7 @@ public: // getters
 	
 	inline std::map<std::string, Base> bases() const
 	{
-		return __bases;
+		return __bases_;
 	}
 	
 	inline std::map<std::string, int> totalHealths() const
@@ -3301,7 +3344,7 @@ public: // reference getters
 	
 	inline std::map<std::string, Base> &ref_bases() const
 	{
-		return (std::map<std::string, Base>&) __bases;
+		return (std::map<std::string, Base>&) __bases_;
 	}
 	
 	inline std::map<std::string, int> &ref_totalHealths() const
@@ -3320,7 +3363,7 @@ public: // setters
 	
 	inline void bases(const std::map<std::string, Base> &bases)
 	{
-		__bases = bases;
+		__bases_ = bases;
 		has_bases(true);
 	}
 	
@@ -3404,7 +3447,7 @@ public:
 		if (__has_bases)
 		{
 			std::string tmp373 = "";
-			unsigned int tmp375 = __bases.size();
+			unsigned int tmp375 = __bases_.size();
 			auto tmp376 = reinterpret_cast<char*>(&tmp375);
 			tmp373 += std::string(tmp376, sizeof(unsigned int));
 			while (tmp373.size() && tmp373.back() == 0)
@@ -3414,7 +3457,7 @@ public:
 			s += std::string(tmp379, sizeof(unsigned char));
 			s += tmp373;
 			
-			for (auto &tmp380 : __bases)
+			for (auto &tmp380 : __bases_)
 			{
 				s += '\x01';
 				std::string tmp381 = "";
@@ -3502,7 +3545,7 @@ public:
 			unsigned int tmp408;
 			tmp408 = *((unsigned int*) (&tmp407[0]));
 			
-			__bases.clear();
+			__bases_.clear();
 			for (unsigned int tmp409 = 0; tmp409 < tmp408; tmp409++)
 			{
 				std::string tmp410;
@@ -3524,7 +3567,7 @@ public:
 				offset++;
 				offset = tmp411.deserialize(s, offset);
 				
-				__bases[tmp410] = tmp411;
+				__bases_[tmp410] = tmp411;
 			}
 		}
 		
