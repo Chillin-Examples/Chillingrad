@@ -58,7 +58,7 @@ def _tick_war(self):
 
     for side in sides:
         for unit in self.bases[side].units.values():
-            unit_count = math.ceil(unit.health / unit.c_individual_health)
+            unit_count = int(math.ceil(unit.health / unit.c_individual_health))
             used_ammo_count = min(unit_count, unit.ammo_count)
             if used_ammo_count <= 0:
                 continue
@@ -70,7 +70,7 @@ def _tick_war(self):
             unit_damage = used_ammo_count * unit.c_individual_damage
             unit_distributed_damage = {}
             for enemy_unit_type, coefficient in unit.c_damage_distribution.items():
-                dmg = math.ceil(unit_damage * coefficient)
+                dmg = int(math.ceil(unit_damage * coefficient))
                 unit_distributed_damage[enemy_unit_type] = dmg
                 total_damage[side][enemy_unit_type] += dmg
 
