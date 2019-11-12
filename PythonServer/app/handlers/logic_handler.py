@@ -4,7 +4,7 @@
 from copy import deepcopy
 
 # project imports
-from ..ks.models import World
+from ..ks.models import World, Base
 
 
 class LogicHandler:
@@ -55,7 +55,10 @@ class LogicHandler:
     def get_client_world(self, side_name):
         enemy_side = [s for s in self._sides if s != side_name][0]
         world = deepcopy(self.world)
-        world.bases[enemy_side] = None
+        world.bases[enemy_side] = Base(
+            units = world.bases[enemy_side].units,
+            frontline_deliveries = world.bases[enemy_side].frontline_deliveries
+        )
         return world
 
 
