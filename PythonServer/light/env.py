@@ -148,8 +148,12 @@ class Env(object):
                     screen.blit(font.render(text, True, WHITE), (x + j*cell_size_x, y + i))
 
             x = fx(width - offset - len(UnitType) * cell_size_x)
+            text = f"warehouse_reload_rt: {w.bases[side].warehouse.materials_reload_rem_time}"
+            screen.blit(font.render(text, True, WHITE), (x - int(1.5 * cell_size_x), y + cell_size_y//3 - 5))
+
+            x = fx(width - offset - len(UnitType) * cell_size_x)
             text = f"total_health: {w.total_healths[side]}"
-            screen.blit(font.render(text, True, WHITE), (x - int(1.5 * cell_size_x), y + cell_size_y//3))
+            screen.blit(font.render(text, True, WHITE), (x - int(1.5 * cell_size_x), y + cell_size_y//3 + 15))
 
             if side == 'Allies':
                 text = f"current_cycle: {w.current_cycle}"
