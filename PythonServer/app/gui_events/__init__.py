@@ -15,8 +15,9 @@ class GuiEventType(Enum):
     MachineAmmoReady = 6
     AmmoDelivered = 7
 
-    UnitFired = 8
-    UnitDamaged = 9
+    UnitReloading = 8
+    UnitFired = 9
+    UnitDamaged = 10
 
 
 class GuiEvent(object):

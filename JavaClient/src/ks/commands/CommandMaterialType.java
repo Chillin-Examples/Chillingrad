@@ -10,12 +10,10 @@ import ks.KSObject;
 public enum CommandMaterialType
 {
 	Powder((byte) 0),
-	Steel((byte) 1),
-	Aluminum((byte) 2),
-	Shell((byte) 3),
-	Nickel((byte) 4),
-	Manganese((byte) 5),
-	Chromium((byte) 6),
+	Iron((byte) 1),
+	Carbon((byte) 2),
+	Gold((byte) 3),
+	Shell((byte) 4),
 	;
 
 	private final byte value;

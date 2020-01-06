@@ -11,9 +11,9 @@ public enum AmmoType
 {
 	RifleBullet((byte) 0),
 	TankShell((byte) 1),
-	Bomb((byte) 2),
-	ArtilleryShell((byte) 3),
-	HMGBullet((byte) 4),
+	HMGBullet((byte) 2),
+	MortarShell((byte) 3),
+	GoldenTankShell((byte) 4),
 	;
 
 	private final byte value;

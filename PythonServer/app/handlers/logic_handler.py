@@ -1,8 +1,5 @@
 # -*- coding: utf-8 -*-
 
-# python imports
-from copy import deepcopy
-
 # project imports
 from ..ks.models import World, Base
 
@@ -54,11 +51,19 @@ class LogicHandler:
 
     def get_client_world(self, side_name):
         enemy_side = [s for s in self._sides if s != side_name][0]
-        world = deepcopy(self.world)
-        world.bases[enemy_side] = Base(
-            units = world.bases[enemy_side].units,
-            frontline_deliveries = world.bases[enemy_side].frontline_deliveries
+
+        world = World(
+            max_cycles = self.world.max_cycles,
+            bases = {
+                side_name: self.world.bases[side_name],
+                enemy_side: Base(
+                    units = self.world.bases[enemy_side].units,
+                    frontline_deliveries = self.world.bases[enemy_side].frontline_deliveries,
+                ),
+            },
+            total_healths = self.world.total_healths,
         )
+
         return world
 
 

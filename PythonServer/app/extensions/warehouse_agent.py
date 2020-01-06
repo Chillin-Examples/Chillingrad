@@ -18,7 +18,7 @@ class WarehouseAgent(Agent):
             self.position.index -= 1
         else:
             return []
-        return [GuiEvent(GuiEventType.Move, side=side, agent=self)]
+        return [GuiEvent(GuiEventType.Move, side=side, agent=self, forward=forward)]
 
 
     def pick_material(self, world, side):
@@ -43,10 +43,11 @@ class WarehouseAgent(Agent):
         if base.c_area[self.position] != ECell.BacklineDelivery:
             return []
 
+        materials = deepcopy(self.materials_bag)
         for material_type, count in self.materials_bag.items():
             base.backline_delivery.materials[material_type] += count
             self.materials_bag[material_type] = 0
-        return [GuiEvent(GuiEventType.PutMaterial, side=side, agent=self)]
+        return [GuiEvent(GuiEventType.PutMaterial, side=side, agent=self, materials=materials)]
 
 
     def pick_ammo(self, world, side, ammos):
@@ -79,11 +80,12 @@ class WarehouseAgent(Agent):
 
         frontline_delivery = deepcopy(base.default_frontline_delivery)
         base.frontline_deliveries.append(frontline_delivery)
+        frontline_delivery.delivery_rem_time += 1
+        ammos = deepcopy(self.ammos_bag)
         for ammo_type, count in self.ammos_bag.items():
             frontline_delivery.ammos[ammo_type] = count
-            frontline_delivery.delivery_rem_time += 1
             self.ammos_bag[ammo_type] = 0
-        return [GuiEvent(GuiEventType.PutAmmo, side=side, agent=self)]
+        return [GuiEvent(GuiEventType.PutAmmo, side=side, agent=self, ammos=ammos, frontline_delivery=frontline_delivery)]
 
 
 models.WarehouseAgent = WarehouseAgent

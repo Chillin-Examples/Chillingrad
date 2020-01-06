@@ -10,20 +10,18 @@ PY3 = sys.version_info > (3,)
 
 class CommandMaterialType(Enum):
 	Powder = 0
-	Steel = 1
-	Aluminum = 2
-	Shell = 3
-	Nickel = 4
-	Manganese = 5
-	Chromium = 6
+	Iron = 1
+	Carbon = 2
+	Gold = 3
+	Shell = 4
 
 
 class CommandAmmoType(Enum):
 	RifleBullet = 0
 	TankShell = 1
-	Bomb = 2
-	ArtilleryShell = 3
-	HMGBullet = 4
+	HMGBullet = 2
+	MortarShell = 3
+	GoldenTankShell = 4
 
 
 class CommandAgentType(Enum):

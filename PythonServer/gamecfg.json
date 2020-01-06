@@ -1,6 +1,6 @@
 {
 	"general": {
-		"game_name": "Chillingrad",
+		"game_name": "Logistics",
 		"command_files": [
 			"app/ks/commands"
 		],
@@ -24,16 +24,16 @@
 		"save_replay": true,
 		"replay_dir": "replays",
 		"replay_filename": null,
-		"cycle_duration": 0.5,
+		"cycle_duration": 1.0,
 		"side_colors": {
-			"Allies": "#FFFF00",
-			"Axis": "#FF0000"
+			"Rebellion": "#707828",
+			"Regular": "#303859"
 		}
 	},
 
 	"sides": {
-		"Allies": ["0"],
-		"Axis": ["0"]
+		"Rebellion": ["0"],
+		"Regular": ["0"]
 	},
 
 	"game_handler": {
@@ -46,6 +46,6 @@
 		"max_team_commands": 100,
 		"max_agent_commands": 100,
 		"": "my configs",
-		"map_path": "maps/Chillingrad.json"
+		"map_path": "maps/Test.json"
 	}
 }

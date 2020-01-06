@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+# python imports
+from copy import deepcopy
+
 # project imports
 from ..ks import models
 from ..ks.models import Agent, AgentType, ECell, MachineStatus
@@ -15,7 +18,7 @@ class FactoryAgent(Agent):
             self.position.index -= 1
         else:
             return []
-        return [GuiEvent(GuiEventType.Move, side=side, agent=self)]
+        return [GuiEvent(GuiEventType.Move, side=side, agent=self, forward=forward)]
 
 
     def pick_material(self, world, side, materials):
@@ -72,8 +75,9 @@ class FactoryAgent(Agent):
         machine = base.factory.machines[self.position]
         self.ammos_bag[machine.current_ammo] += 1
         machine.status = MachineStatus.Idle
+        ammo_type = machine.current_ammo
         machine.current_ammo = None
-        return [GuiEvent(GuiEventType.PickAmmo, side=side, agent=self, machine=machine)]
+        return [GuiEvent(GuiEventType.PickAmmo, side=side, agent=self, machine=machine, ammo_type=ammo_type)]
 
 
     def put_ammo(self, world, side):
@@ -85,10 +89,11 @@ class FactoryAgent(Agent):
         if sum(self.ammos_bag.values()) <= 0:
             return []
 
+        ammos = deepcopy(self.ammos_bag)
         for ammo_type, count in self.ammos_bag.items():
             base.backline_delivery.ammos[ammo_type] += count
             self.ammos_bag[ammo_type] = 0
-        return [GuiEvent(GuiEventType.PutAmmo, side=side, agent=self)]
+        return [GuiEvent(GuiEventType.PutAmmo, side=side, agent=self, ammos=ammos)]
 
 
 models.FactoryAgent = FactoryAgent

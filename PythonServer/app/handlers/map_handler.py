@@ -135,16 +135,13 @@ class MapHandler:
             constants_info = json.loads(constants_file.read())
 
         base = self._create_base(map_info, constants_info)
-        total_healths = sum([unit.health for unit in base.units.values()])
+        total_health = sum([unit.health for unit in base.units.values()])
 
         # Create world
         world = World(
             max_cycles = map_info['max_cycles'],
             bases = {side: deepcopy(base) for side in self._sides},
-            total_healths = {side: total_healths for side in self._sides},
+            total_healths = {side: total_health for side in self._sides},
         )
-
-        # Extra info
-        world.location = map_info['location']
 
         return world

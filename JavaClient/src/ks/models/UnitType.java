@@ -11,9 +11,9 @@ public enum UnitType
 {
 	Soldier((byte) 0),
 	Tank((byte) 1),
-	Aircraft((byte) 2),
-	Artillery((byte) 3),
-	HeavyMachineGunner((byte) 4),
+	HeavyMachineGunner((byte) 2),
+	Mortar((byte) 3),
+	GoldenTank((byte) 4),
 	;
 
 	private final byte value;

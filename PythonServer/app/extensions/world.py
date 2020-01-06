@@ -35,7 +35,15 @@ def apply_commands(self, commands):
     gui_events = []
 
     for side in commands:
+        commands_queue = []
         for command in commands[side].values():
+            if command.agent_type == AgentType.Warehouse and command.name() == PutMaterial.name() or\
+               command.agent_type == AgentType.Factory and command.name() == PutAmmo.name():
+                commands_queue.append(command)
+            else:
+                commands_queue.insert(0, command)
+
+        for command in commands_queue:
             method = METHOD(self, side, command)
             if method is not None:
                 args = ARGS(command)
@@ -58,12 +66,12 @@ def _tick_war(self):
 
     for side in sides:
         for unit in self.bases[side].units.values():
-            unit_count = int(math.ceil(unit.health / unit.c_individual_health))
-            used_ammo_count = min(unit_count, unit.ammo_count)
+            used_ammo_count = min(unit.num_alives(), unit.ammo_count)
             if used_ammo_count <= 0:
                 continue
 
             unit.reload_rem_time -= 1
+            gui_events.append(GuiEvent(GuiEventType.UnitReloading, side=side, unit=unit))
             if unit.reload_rem_time > 0:
                 continue
 
@@ -77,7 +85,8 @@ def _tick_war(self):
             unit.ammo_count -= used_ammo_count
             unit.reload_rem_time = unit.c_reload_duration
             gui_events.append(
-                GuiEvent(GuiEventType.UnitFired, side=side, unit=unit, damage=unit_distributed_damage)
+                GuiEvent(GuiEventType.UnitFired, side=side, unit=unit,
+                         damage=unit_distributed_damage, used_ammo_count=used_ammo_count)
             )
 
     for side in sides:

@@ -43,8 +43,8 @@ class AI(RealtimeAI):
 
         elif self.stage == 1:
             if base.c_area[fagent.position] == ECell.BacklineDelivery:
-                bomb_materials = {MaterialType.Powder: 1, MaterialType.Nickel: 1, MaterialType.Manganese: 1}
-                self.factory_agent_pick_material(materials=bomb_materials)
+                needed_materials = self.world.bases[self.my_side].factory.c_mixture_formulas[AmmoType.RifleBullet]
+                self.factory_agent_pick_material(materials=needed_materials)
                 self.stage += 1
             else:
                 self.factory_agent_move(forward=False)
@@ -52,7 +52,7 @@ class AI(RealtimeAI):
         elif self.stage == 2:
             if (    base.c_area[fagent.position] == ECell.Machine and
                     base.factory.machines[fagent.position].status == MachineStatus.Idle):
-                self.factory_agent_put_material(desired_ammo=AmmoType.Bomb)
+                self.factory_agent_put_material(desired_ammo=AmmoType.RifleBullet)
                 self.stage += 1
             else:
                 self.factory_agent_move(forward=True)
@@ -70,7 +70,7 @@ class AI(RealtimeAI):
                 self.factory_agent_move(forward=False)
 
         elif self.stage == 5:
-            self.warehouse_agent_pick_ammo(ammos={AmmoType.Bomb: 1})
+            self.warehouse_agent_pick_ammo(ammos={AmmoType.RifleBullet: 1})
             self.stage += 1
 
         elif self.stage == 6:
@@ -90,7 +90,7 @@ class AI(RealtimeAI):
         self.send_command(PickMaterial(agent_type=CommandAgentType.Warehouse, materials={}))
 
     def warehouse_agent_put_material(self):
-        self.send_command(PutMaterial(agent_type=CommandAgentType.Warehouse, desired_ammo=CommandAmmoType.Bomb))
+        self.send_command(PutMaterial(agent_type=CommandAgentType.Warehouse, desired_ammo=CommandAmmoType.RifleBullet))
 
     def warehouse_agent_pick_ammo(self, ammos):
         self.send_command(PickAmmo(agent_type=CommandAgentType.Warehouse, ammos=ammos))

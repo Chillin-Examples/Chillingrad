@@ -2,12 +2,10 @@
 _def = enum <byte>
     {
         Powder,
-        Steel,
-        Aluminum,
-        Shell,
-        Nickel,
-        Manganese,
-        Chromium
+        Iron,
+        Carbon,
+        Gold,
+        Shell
     }
 
 
@@ -16,9 +14,9 @@ _def = enum <byte>
     {
         RifleBullet,
         TankShell,
-        Bomb,
-        ArtilleryShell,
-        HMGBullet
+        HMGBullet,
+        MortarShell,
+        GoldenTankShell
     }
 
 

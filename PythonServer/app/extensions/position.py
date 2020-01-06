@@ -24,25 +24,35 @@ def __hash__(self):
 def __add__(self, other):
     if isinstance(other, Position):
         return Position(index = self.index + other.index)
+    if isinstance(other, int):
+        return Position(index = self.index + other)
     return NotImplemented
 
 
 def __iadd__(self, other):
     if isinstance(other, Position):
         self.index += other.index
-    return NotImplemented
+    elif isinstance(other, int):
+        self.index += other
+    else:
+        return NotImplemented
 
 
 def __sub__(self, other):
     if isinstance(other, Position):
         return Position(index = self.index - other.index)
+    if isinstance(other, int):
+        return Position(index = self.index - other)
     return NotImplemented
 
 
 def __isub__(self, other):
     if isinstance(other, Position):
         self.index -= other.index
-    return NotImplemented
+    elif isinstance(other, int):
+        self.index -= other
+    else:
+        return NotImplemented
 
 
 def __repr__(self):
