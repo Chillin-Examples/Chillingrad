@@ -57,14 +57,14 @@ class Env(object):
         width = self._screen_width
         height = self._screen_height
         offset = 5
-        cell_size_x = (width - 2 * offset) // len(w.bases['Allies'].c_area)
+        cell_size_x = (width - 2 * offset) // len(w.bases['Rebellion'].c_area)
         cell_size_y = cell_size_x + 30
 
         screen.fill((0, 0, 0))
 
         for side, base in w.bases.items():
             fx = lambda x: x
-            fy = lambda y: y if side == 'Allies' else height - y - 125
+            fy = lambda y: y if side == 'Rebellion' else height - y - 125
 
             for position, cell in base.c_area.items():
                 i = position.index
@@ -155,7 +155,7 @@ class Env(object):
             text = f"total_health: {w.total_healths[side]}"
             screen.blit(font.render(text, True, WHITE), (x - int(1.5 * cell_size_x), y + cell_size_y//3 + 15))
 
-            if side == 'Allies':
+            if side == 'Rebellion':
                 text = f"current_cycle: {w.current_cycle}"
                 screen.blit(font.render(text, True, WHITE), (x - int(1.5 * cell_size_x), y + cell_size_y - 25))
                 text = f"max_cycles: {w.max_cycles}"

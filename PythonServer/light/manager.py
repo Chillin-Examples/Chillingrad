@@ -5,22 +5,22 @@ from copy import deepcopy
 
 # project imports
 from .env import Env
-from .allies_ai import AlliesAI
-from .axis_ai import AxisAI
+from .rebellion_ai import RebellionAI
+from .regular_ai import RegularAI
 
 
 class Manager:
     
     def __init__(self):
-        self.sides = ['Allies', 'Axis']
+        self.sides = ['Rebellion', 'Regular']
         self.ais = {
-            'Allies': AlliesAI(*self.sides),
-            'Axis': AxisAI(*self.sides[::-1])
+            'Rebellion': RebellionAI(*self.sides),
+            'Regular': RegularAI(*self.sides[::-1])
         }
 
 
     def run(self):
-        maps = ["maps/Chillingrad.json"]
+        maps = ["maps/Test.json"]
 
         for map_path in maps:
             env = Env(sides=self.sides, map_path=map_path)

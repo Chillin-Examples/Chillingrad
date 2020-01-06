@@ -40,7 +40,7 @@ class AI(object):
         self._last_commands.append(PickMaterial(agent_type=AgentType.Warehouse, materials={}))
 
     def warehouse_agent_put_material(self):
-        self._last_commands.append(PutMaterial(agent_type=AgentType.Warehouse, desired_ammo=AmmoType.Bomb))
+        self._last_commands.append(PutMaterial(agent_type=AgentType.Warehouse, desired_ammo=AmmoType.RifleBullet))
 
     def warehouse_agent_pick_ammo(self, ammos):
         self._last_commands.append(PickAmmo(agent_type=AgentType.Warehouse, ammos=ammos))

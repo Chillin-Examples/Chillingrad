@@ -5,7 +5,7 @@ from .ai import AI
 from app.ks.models import ECell, MaterialType, AmmoType, AgentType, MachineStatus
 
 
-class AlliesAI(AI):
+class RebellionAI(AI):
 
     def __init__(self, my_side, other_side):
         super().__init__(my_side, other_side)
@@ -35,8 +35,8 @@ class AlliesAI(AI):
 
         elif self.stage == 1:
             if base.c_area[fagent.position] == ECell.BacklineDelivery:
-                bomb_materials = {MaterialType.Powder: 1, MaterialType.Nickel: 1, MaterialType.Manganese: 1}
-                self.factory_agent_pick_material(materials=bomb_materials)
+                needed_materials = world.bases[self.my_side].factory.c_mixture_formulas[AmmoType.RifleBullet]
+                self.factory_agent_pick_material(materials=needed_materials)
                 self.stage += 1
             else:
                 self.factory_agent_move(forward=False)
@@ -44,7 +44,7 @@ class AlliesAI(AI):
         elif self.stage == 2:
             if (    base.c_area[fagent.position] == ECell.Machine and
                     base.factory.machines[fagent.position].status == MachineStatus.Idle):
-                self.factory_agent_put_material(desired_ammo=AmmoType.Bomb)
+                self.factory_agent_put_material(desired_ammo=AmmoType.RifleBullet)
                 self.stage += 1
             else:
                 self.factory_agent_move(forward=True)
@@ -62,7 +62,7 @@ class AlliesAI(AI):
                 self.factory_agent_move(forward=False)
 
         elif self.stage == 5:
-            self.warehouse_agent_pick_ammo(ammos={AmmoType.Bomb: 1})
+            self.warehouse_agent_pick_ammo(ammos={AmmoType.RifleBullet: 1})
             self.stage += 1
 
         elif self.stage == 6:
