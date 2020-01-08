@@ -55,12 +55,8 @@ void AI::decide()
     {
         if (base.cArea()[fagent.position()] == ECell::BacklineDelivery)
         {
-            map<MaterialType, int> bombMaterials;
-            bombMaterials[MaterialType::Powder] = 1;
-            bombMaterials[MaterialType::Nickel] = 1;
-            bombMaterials[MaterialType::Manganese] = 1;
-
-            factoryAgentPickMaterial(bombMaterials);
+            map<MaterialType, int> requiredMaterials = base.cMixtureFormulas[AmmoType::RifleBullet];
+            factoryAgentPickMaterial(requiredMaterials);
             stage++;
         }
         else
@@ -71,7 +67,7 @@ void AI::decide()
         if (base.cArea()[fagent.position()] == ECell::Machine &&
             base.factory().machines()[fagent.position()].status() == MachineStatus::Idle)
         {
-            factoryAgentPutMaterial(AmmoType::Bomb);
+            factoryAgentPutMaterial(AmmoType::RifleBullet);
             stage++;
         }
         else
@@ -98,7 +94,7 @@ void AI::decide()
     else if (stage == 5)
     {
         map<AmmoType, int> ammos;
-        ammos[AmmoType::Bomb] = 1;
+        ammos[AmmoType::RifleBullet] = 1;
 
         warehouseAgentPickAmmo(ammos);
         stage++;

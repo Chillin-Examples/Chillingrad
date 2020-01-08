@@ -41,7 +41,7 @@ class Env(object):
         os.environ['SDL_VIDEO_WINDOW_POS'] = "10, 35"
         pygame.init()
         pygame.font.init()
-        pygame.display.set_caption('Chillingrad')
+        pygame.display.set_caption('Logistics')
         self._screen_width, self._screen_height = 1400, 770
         self._screen = pygame.display.set_mode((self._screen_width, self._screen_height))
 

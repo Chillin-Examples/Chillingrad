@@ -52,13 +52,8 @@ namespace Game
 			{
 				if (@base.CArea[fagent.Position] == ECell.BacklineDelivery)
 				{
-					var bombMaterials = new Dictionary<MaterialType, int>
-					{
-						{ MaterialType.Powder, 1 },
-						{ MaterialType.Nickel, 1 },
-						{ MaterialType.Manganese, 1 }
-					};
-					FactoryAgentPickMaterial(materials: bombMaterials);
+					var requiredMaterials = @base.Factory.CMixtureFormulas[AmmoType.RifleBullet];
+					FactoryAgentPickMaterial(materials: requiredMaterials);
 					stage++;
 				}
 				else
@@ -69,7 +64,7 @@ namespace Game
 				if (@base.CArea[fagent.Position] == ECell.Machine &&
 					@base.Factory.Machines[fagent.Position].Status == MachineStatus.Idle)
 				{
-					FactoryAgentPutMaterial(desiredAmmo: AmmoType.Bomb);
+					FactoryAgentPutMaterial(desiredAmmo: AmmoType.RifleBullet);
 					stage++;
 				}
 				else
@@ -97,7 +92,7 @@ namespace Game
 			{
 				var ammos = new Dictionary<AmmoType, int>
 				{
-					{ AmmoType.Bomb, 1 }
+					{ AmmoType.RifleBullet, 1 }
 				};
 				WarehouseAgentPickAmmo(ammos: ammos);
 				stage++;
@@ -130,7 +125,7 @@ namespace Game
 
 		public void WarehouseAgentPutMaterial()
 		{
-			this.SendCommand(new PutMaterial() { AgentType = CommandAgentType.Warehouse, DesiredAmmo = CommandAmmoType.Bomb });
+			this.SendCommand(new PutMaterial() { AgentType = CommandAgentType.Warehouse, DesiredAmmo = CommandAmmoType.RifleBullet });
 		}
 
 		public void WarehouseAgentPickAmmo(Dictionary<AmmoType, int> ammos)
@@ -155,7 +150,7 @@ namespace Game
 			this.SendCommand(new Move() { AgentType = CommandAgentType.Factory, Forward = forward });
 		}
 
-		public void FactoryAgentPickMaterial(Dictionary<MaterialType, int> materials)
+		public void FactoryAgentPickMaterial(Dictionary<MaterialType?, int?> materials)
 		{
 			var convertedMaterials = new Dictionary<CommandMaterialType?, int?>();
 			foreach (var entry in materials)

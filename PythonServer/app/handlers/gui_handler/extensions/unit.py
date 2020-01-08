@@ -72,8 +72,8 @@ def gui_reloading(self, world, gui_event):
     if RELOADING_DURATION[self.type] > 0:
         self._gui_update_reload_timer(world, gui_event.side)
 
-        cycles_needed = RELOADING_DURATION[self.type] + (SHOOT_DURATION if HAS_PROJECTILE[self.type] else 0)
-        if self.reload_rem_time == cycles_needed:
+        cycles_required = RELOADING_DURATION[self.type] + (SHOOT_DURATION if HAS_PROJECTILE[self.type] else 0)
+        if self.reload_rem_time == cycles_required:
             ammo_count = self.ammo_count
             for delivery in world.bases[gui_event.side].frontline_deliveries:
                 if delivery.delivery_rem_time < self.reload_rem_time:

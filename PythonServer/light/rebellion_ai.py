@@ -35,8 +35,8 @@ class RebellionAI(AI):
 
         elif self.stage == 1:
             if base.c_area[fagent.position] == ECell.BacklineDelivery:
-                needed_materials = world.bases[self.my_side].factory.c_mixture_formulas[AmmoType.RifleBullet]
-                self.factory_agent_pick_material(materials=needed_materials)
+                required_materials = world.bases[self.my_side].factory.c_mixture_formulas[AmmoType.RifleBullet]
+                self.factory_agent_pick_material(materials=required_materials)
                 self.stage += 1
             else:
                 self.factory_agent_move(forward=False)

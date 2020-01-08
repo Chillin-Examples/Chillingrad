@@ -51,12 +51,8 @@ public class AI extends RealtimeAI<World, KSObject> {
 		{
 			if (base.getCArea().get(fagent.getPosition()) == ECell.BacklineDelivery)
 			{
-				Map<MaterialType, Integer> bombMaterials = Map.of(
-					MaterialType.Powder, 1,
-					MaterialType.Nickel, 1,
-					MaterialType.Manganese, 1
-				);
-				factoryAgentPickMaterial(bombMaterials);
+				Map<MaterialType, Integer> requiredMaterials = base.getFactory().getCMixtureFormulas().get(AmmoType.RifleBullet);
+				factoryAgentPickMaterial(requiredMaterials);
 				stage++;
 			}
 			else
@@ -67,7 +63,7 @@ public class AI extends RealtimeAI<World, KSObject> {
 			if (base.getCArea().get(fagent.getPosition()) == ECell.Machine &&
 				base.getFactory().getMachines().get(fagent.getPosition()).getStatus() == MachineStatus.Idle)
 			{
-				factoryAgentPutMaterial(AmmoType.Bomb);
+				factoryAgentPutMaterial(AmmoType.RifleBullet);
 				stage++;
 			}
 			else
@@ -94,7 +90,7 @@ public class AI extends RealtimeAI<World, KSObject> {
 		else if (stage == 5)
 		{
 			Map<AmmoType, Integer> ammos = Map.of(
-				AmmoType.Bomb, 1
+				AmmoType.RifleBullet, 1
 			);
 			warehouseAgentPickAmmo(ammos);
 			stage++;
@@ -128,7 +124,7 @@ public class AI extends RealtimeAI<World, KSObject> {
 
 	public void warehouseAgentPutMaterial()
 	{
-		this.sendCommand(new PutMaterial() {{ agentType = CommandAgentType.Warehouse; desiredAmmo = CommandAmmoType.Bomb; }});
+		this.sendCommand(new PutMaterial() {{ agentType = CommandAgentType.Warehouse; desiredAmmo = CommandAmmoType.RifleBullet; }});
 	}
 
 	public void warehouseAgentPickAmmo(Map<AmmoType, Integer> ammos)
