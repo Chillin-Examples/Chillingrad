@@ -55,7 +55,7 @@ void AI::decide()
     {
         if (base.cArea()[fagent.position()] == ECell::BacklineDelivery)
         {
-            map<MaterialType, int> requiredMaterials = base.cMixtureFormulas[AmmoType::RifleBullet];
+			map<MaterialType, int> requiredMaterials = base.factory().cMixtureFormulas()[AmmoType::RifleBullet];
             factoryAgentPickMaterial(requiredMaterials);
             stage++;
         }
