@@ -28,8 +28,8 @@ def gui_init(self, world, side, position):
     world.scene.add_action(InstantiateBundleAsset(
         ref = cell_ref,
         parent_ref = world.location.ref,
-        parent_child_ref = f'Support/{side}/CellPivots',
-        asset = Asset(bundle_name = 'main', asset_name = f'{self.name}Cell'),
+        parent_child_ref = 'Support/{}/CellPivots'.format(side),
+        asset = Asset(bundle_name = 'main', asset_name = '{}Cell'.format(self.name)),
     ))
     world.scene.add_action(ChangeTransform(
         ref = cell_ref,
@@ -38,14 +38,14 @@ def gui_init(self, world, side, position):
     ))
 
     # Create panel
-    panel_asset = f'{self.name}Panel'
+    panel_asset = '{}Panel'.format(self.name)
     if self == ECell.BacklineDelivery:
-        panel_asset = f'{side}{self.name}Panel'
+        panel_asset = '{}{}Panel'.format(side, self.name)
 
     world.scene.add_action(InstantiateBundleAsset(
         ref = panel_ref,
         parent_ref = world.location.ref,
-        parent_child_ref = f'Support/{side}/PanelPivots',
+        parent_child_ref = 'Support/{}/PanelPivots'.format(side),
         asset = Asset(bundle_name = 'main', asset_name = panel_asset),
     ))
     panel_extra_offset = self.get_gui_width() * 100 if side == LEFT_SIDE else 0
@@ -56,7 +56,7 @@ def gui_init(self, world, side, position):
         scale = panel_scale,
         change_local = True,
     ))
-    change_text(world, panel_ref, 'CellIndex', f'Position: {position.index}')
+    change_text(world, panel_ref, 'CellIndex', 'Position: {}'.format(position.index))
 
     return cell_ref, panel_ref
 

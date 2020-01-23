@@ -20,7 +20,7 @@ def gui_init(self, world, side):
     world.scene.add_action(InstantiateBundleAsset(
         ref = self._gui_ref,
         parent_ref = world.location.ref,
-        parent_child_ref = f'Support/{side}/AgentPivots',
+        parent_child_ref = 'Support/{}/AgentPivots'.format(side),
         asset = Asset(bundle_name = 'main', asset_name = 'Agent'),
     ))
     world.scene.add_action(ChangeTransform(
@@ -40,8 +40,8 @@ def gui_init(self, world, side):
     world.scene.add_action(InstantiateBundleAsset(
         ref = self._gui_status,
         parent_ref = self._gui_ref,
-        parent_child_ref = f'Status',
-        asset = Asset(bundle_name = 'main', asset_name = f'{side}AgentPanel'),
+        parent_child_ref = 'Status',
+        asset = Asset(bundle_name = 'main', asset_name = '{}AgentPanel'.format(side)),
     ))
 
 
@@ -90,13 +90,13 @@ def gui_update_status(self, world):
 def _gui_update_materials(self, world):
     update_duration = 0.5
     for mat_type, mat_count in self.materials_bag.items():
-        change_blackboard_int(world, self._gui_status, f'Materials/{mat_type.name}/Count', update_duration, mat_count)
+        change_blackboard_int(world, self._gui_status, 'Materials/{}/Count'.format(mat_type.name), update_duration, mat_count)
 
 
 def _gui_update_ammos(self, world):
     update_duration = 0.5
     for ammo_type, ammo_count in self.ammos_bag.items():
-        change_blackboard_int(world, self._gui_status, f'Ammos/{ammo_type.name}/Count', update_duration, ammo_count)
+        change_blackboard_int(world, self._gui_status, 'Ammos/{}/Count'.format(ammo_type.name), update_duration, ammo_count)
 
 
 Agent.gui_init = gui_init

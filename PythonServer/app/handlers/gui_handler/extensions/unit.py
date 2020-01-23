@@ -56,8 +56,8 @@ def gui_init(self, world, side):
         world.scene.add_action(InstantiateBundleAsset(
             ref = self._gui_alive_refs[-1],
             parent_ref = world.location.ref,
-            parent_child_ref = f'Frontline/{side}/{self.type.name}/{i}',
-            asset = Asset(bundle_name = 'main', asset_name = f'{side}{self.type.name}'),
+            parent_child_ref = 'Frontline/{}/{}/{}'.format(side, self.type.name, i),
+            asset = Asset(bundle_name = 'main', asset_name = '{}{}'.format(side, self.type.name)),
         ))
 
     self._gui_update_health(world, side)
@@ -88,7 +88,7 @@ def gui_reloading(self, world, gui_event):
                 self._gui_shooting_refs[ref] = (delay + RELOADING_DURATION[self.type] + SHOOT_DURATION, delay)
 
                 change_animator_state(world, ref, 'Reload', cycle = delay)
-                change_audio(world, ref, clip = f'{self.type.name}Shooting', cycle = delay)
+                change_audio(world, ref, clip = '{}Shooting'.format(self.type.name), cycle = delay)
 
         if HAS_PROJECTILE[self.type] and self.reload_rem_time - SHOOT_DURATION == 0:
            # Fire
@@ -118,7 +118,7 @@ def gui_fired(self, world, gui_event):
     else:
         for ref in self._gui_alive_refs[:gui_event.used_ammo_count]:
             if ref not in self._gui_shooting_refs:
-                change_audio(world, ref, clip = f'{self.type.name}Shooting')
+                change_audio(world, ref, clip = '{}Shooting'.format(self.type.name))
 
             self._gui_shooting_refs[ref] = (1.001, 0)
             change_animator_state(world, ref, 'Shoot')
@@ -141,7 +141,7 @@ def gui_damaged(self, world, gui_event):
                 del self._gui_shooting_refs[ref]
 
             change_animator_state(world, ref, 'Die', cycle = delay)  # Die at end of cycle
-            change_audio(world, ref, clip = f'{self.type.name}Die', cycle = delay)
+            change_audio(world, ref, clip = '{}Die'.format(self.type.name), cycle = delay)
             change_audio(world, ref, play = False, cycle = delay + DIE_SOUND_DURATION[self.type])
 
         self._gui_alive_refs = self._gui_alive_refs[:self.num_alives()]
@@ -165,31 +165,31 @@ def gui_ammo_delivered(self, world, gui_event):
 
 
 def _gui_update_health(self, world, side):
-    change_blackboard_int(world, world.location.ref, f'Frontline/{side}/StatusCanvas/Panel/{self.type.name}/TotalHealth',
+    change_blackboard_int(world, world.location.ref, 'Frontline/{}/StatusCanvas/Panel/{}/TotalHealth'.format(side, self.type.name),
                           STATUS_UPDATE_DURATION, self.health)
-    change_blackboard_int(world, world.location.ref, f'Frontline/{side}/StatusCanvas/Panel/{self.type.name}/UnitsCount',
+    change_blackboard_int(world, world.location.ref, 'Frontline/{}/StatusCanvas/Panel/{}/UnitsCount'.format(side, self.type.name),
                           STATUS_UPDATE_DURATION, self.num_alives())
 
 
 def _gui_update_ammo(self, world, side):
-    change_blackboard_int(world, world.location.ref, f'Frontline/{side}/StatusCanvas/Panel/{self.type.name}/AmmoCount',
+    change_blackboard_int(world, world.location.ref, 'Frontline/{}/StatusCanvas/Panel/{}/AmmoCount'.format(side, self.type.name),
                           STATUS_UPDATE_DURATION, self.ammo_count)
 
 
 def _gui_update_reload_timer(self, world, side):
     text = str(self.reload_rem_time) if self.reload_rem_time > 0 else '-'
-    change_text(world, world.location.ref, f'Frontline/{side}/StatusCanvas/Panel/{self.type.name}/ReloadRemTime', text)
+    change_text(world, world.location.ref, 'Frontline/{}/StatusCanvas/Panel/{}/ReloadRemTime'.format(side, self.type.name), text)
 
 
 def _gui_update_damage_done(self, world, side, damage, cycle = None):
     text = str(damage) if damage > 0 else '-'
-    change_text(world, world.location.ref, f'Frontline/{side}/StatusCanvas/Panel/{self.type.name}/DamageDone',
+    change_text(world, world.location.ref, 'Frontline/{}/StatusCanvas/Panel/{}/DamageDone'.format(side, self.type.name),
                 text, cycle = cycle)
 
 
 def _gui_update_damage_taken(self, world, side, damage, cycle = None):
     text = str(damage) if damage > 0 else '-'
-    change_text(world, world.location.ref, f'Frontline/{side}/StatusCanvas/Panel/{self.type.name}/DamageTaken',
+    change_text(world, world.location.ref, 'Frontline/{}/StatusCanvas/Panel/{}/DamageTaken'.format(side, self.type.name),
                 text, cycle = cycle)
 
 

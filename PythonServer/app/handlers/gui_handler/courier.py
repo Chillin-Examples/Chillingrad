@@ -22,8 +22,8 @@ class Courier:
         world.scene.add_action(InstantiateBundleAsset(
             ref = self._gui_ref,
             parent_ref = world.location.ref,
-            parent_child_ref = f'Support/{side}/{pivot}',
-            asset = Asset(bundle_name = 'main', asset_name = f'{side}Courier'),
+            parent_child_ref = 'Support/{}/{}'.format(side, pivot),
+            asset = Asset(bundle_name = 'main', asset_name = '{}Courier'.format(side)),
         ))
         world.scene.add_action(ChangeTransform(
             ref = self._gui_ref,
@@ -53,7 +53,7 @@ class Courier:
 
         if is_frontline_delivery:
             for ammo_type, ammo_count in ammos.items():
-                change_text(world, self._gui_ref, f'Canvas/Ammos/{ammo_type.name}/Count', str(ammo_count))
+                change_text(world, self._gui_ref, 'Canvas/Ammos/{}/Count'.format(ammo_type.name), str(ammo_count))
         else:
             world.scene.add_action(ChangeIsActive(
                 ref = self._gui_ref,

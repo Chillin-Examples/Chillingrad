@@ -40,13 +40,13 @@ def gui_ammo_delivered(self, world, gui_event):
     change_audio(
         world,
         world.location.ref,
-        child_ref = f'Support/{gui_event.side}/FrontlineDeliveryPivot',
+        child_ref = 'Support/{}/FrontlineDeliveryPivot'.format(gui_event.side),
         play = True,
     )
     change_audio(
         world,
         world.location.ref,
-        child_ref = f'Support/{gui_event.side}/FrontlineDeliveryPivot',
+        child_ref = 'Support/{}/FrontlineDeliveryPivot'.format(gui_event.side),
         play = False,
         cycle = 2,
     )

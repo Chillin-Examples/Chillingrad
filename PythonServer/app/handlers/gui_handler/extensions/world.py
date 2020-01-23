@@ -65,7 +65,7 @@ def _init_objects(self):
     ))
     change_text(self, self._top_status_ref, 'Cycle/MaxCycle', str(self.max_cycles))
     for side in sides:
-        change_text(self, self._top_status_ref, f'{side}TeamName', self._team_nicknames[side])
+        change_text(self, self._top_status_ref, '{}TeamName'.format(side), self._team_nicknames[side])
     self._update_top_status(0)
 
 
@@ -246,7 +246,7 @@ def _update_top_status(self, current_cycle):
     change_text(self, self._top_status_ref, 'Cycle/Counter', str(current_cycle))
 
     for side in self.bases.keys():
-        change_blackboard_int(self, self._top_status_ref, f'TotalHealth/{side}Health', duration_cycles, self.total_healths[side])
+        change_blackboard_int(self, self._top_status_ref, 'TotalHealth/{}Health'.format(side), duration_cycles, self.total_healths[side])
 
     sum_total_healths = sum(self.total_healths.values())
     self.scene.add_action(ChangeSlider(

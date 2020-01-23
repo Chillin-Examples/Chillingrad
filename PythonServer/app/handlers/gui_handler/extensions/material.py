@@ -30,7 +30,7 @@ def gui_init(self, world, side):
     world.scene.add_action(ChangeText(
         ref = self._gui_panel_ref,
         child_ref = 'Capacity',
-        text = f'{self.c_capacity}'
+        text = '{}'.format(self.c_capacity)
     ))
     self._gui_update_count(world)
 

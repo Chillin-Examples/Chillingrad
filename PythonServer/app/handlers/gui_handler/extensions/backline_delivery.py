@@ -21,7 +21,7 @@ def gui_update_materials(self, world, gui_event):
         if mat_count == 0:
             continue
 
-        change_blackboard_int(world, self._gui_panel_ref, f'Materials/{mat_type.name}/Count', UPDATE_DURATION, self.materials[mat_type])
+        change_blackboard_int(world, self._gui_panel_ref, 'Materials/{}/Count'.format(mat_type.name), UPDATE_DURATION, self.materials[mat_type])
 
 
 def gui_update_ammos(self, world, gui_event):
@@ -30,7 +30,7 @@ def gui_update_ammos(self, world, gui_event):
         if ammo_count == 0:
             continue
 
-        change_blackboard_int(world, self._gui_panel_ref, f'Ammos/{ammo_type.name}/Count', UPDATE_DURATION, self.ammos[ammo_type])
+        change_blackboard_int(world, self._gui_panel_ref, 'Ammos/{}/Count'.format(ammo_type.name), UPDATE_DURATION, self.ammos[ammo_type])
 
 
 BacklineDelivery.gui_init = gui_init
