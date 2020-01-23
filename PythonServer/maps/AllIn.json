@@ -8,23 +8,23 @@
         },
 
         "Tank": {
-            "count": 6,
-            "ammo_count": 25
+            "count": 9,
+            "ammo_count": 0
         },
 
         "HeavyMachineGunner": {
-            "count": 3,
+            "count": 5,
             "ammo_count": 75
         },
 
         "Mortar": {
             "count": 15,
-            "ammo_count": 40
+            "ammo_count": 5
         },
 
         "GoldenTank": {
-            "count": 2,
-            "ammo_count": 4
+            "count": 3,
+            "ammo_count": 0
         }
     }
 }

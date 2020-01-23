@@ -14,16 +14,16 @@
     "frontline_delivery": {
         "position": 0,
 
-        "c_delivery_duration": 15
+        "c_delivery_duration": 8
     },
 
     "warehouse": {
         "materials": [
             { "position": 1, "type": "Powder", "c_capacity": 15 },
             { "position": 2, "type": "Iron", "c_capacity": 5 },
-            { "position": 3, "type": "Carbon", "c_capacity": 6 },
+            { "position": 3, "type": "Carbon", "c_capacity": 5 },
             { "position": 4, "type": "Gold", "c_capacity": 2 },
-            { "position": 5, "type": "Shell", "c_capacity": 5 }
+            { "position": 5, "type": "Shell", "c_capacity": 6 }
         ],
 
         "c_materials_reload_duration": 50
@@ -49,7 +49,7 @@
             "TankShell": 10,
             "HMGBullet": 4,
             "MortarShell": 6,
-            "GoldenTankShell": 20
+            "GoldenTankShell": 30
         },
 
         "c_ammo_box_sizes": {
@@ -103,7 +103,7 @@
 
         "Mortar": {
             "c_individual_health": 300,
-            "c_individual_damage": 50,
+            "c_individual_damage": 80,
             "c_damage_distribution": {
                 "Soldier": 0.2,
                 "Tank": 0.3,
@@ -116,13 +116,13 @@
 
         "GoldenTank": {
             "c_individual_health": 1000,
-            "c_individual_damage": 1000,
+            "c_individual_damage": 2000,
             "c_damage_distribution": {
                 "Soldier": 0.1,
                 "Tank": 0.3,
                 "HeavyMachineGunner": 0.1,
-                "Mortar": 0.1,
-                "GoldenTank": 0.4
+                "Mortar": 0.2,
+                "GoldenTank": 0.3
             },
             "c_reload_duration": 25
         }
