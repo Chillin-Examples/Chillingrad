@@ -92,7 +92,7 @@ def _init_camera(self, min_zoom, max_zoom, max_x):
         is_orthographic = True,
         clear_flag = ECameraClearFlag.SolidColor,
         background_color = Vector4(x = 24/255, y = 8/255, z = 0/255, w = 1),
-        orthographic_size = 10,
+        orthographic_size = 11,
         min_position = Vector3(x = -max_x, y = -10, z = -10),
         max_position = Vector3(x = max_x, y = 10, z = -10),
         min_rotation = Vector2(x = 0, y = 0),
@@ -128,6 +128,7 @@ def _init_sounds(self):
         ref = countdown_ref,
         asset = Asset(bundle_name = 'main', asset_name = 'Countdown'),
     ))
+    change_audio(self, countdown_ref, play = True)
     change_audio(self, countdown_ref, play = False, cycle = 4)
     self.scene.add_action(EndCycle())
     self.scene.add_action(EndCycle())
