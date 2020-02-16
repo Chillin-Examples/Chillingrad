@@ -37,6 +37,8 @@ DIE_SOUND_DURATION = {
     UnitType.GoldenTank: 6,
 }
 DIE_DELAY = 0.95
+DISAPPEAR_DELAY = 3
+DISAPPEAR_DURATION = 1
 RELOAD_MAX_DELAY = 0.85
 PROJECTILE_FLY_DURATION = 1
 PROJECTILE_SOUND_DURATION = 3
@@ -141,6 +143,17 @@ def gui_damaged(self, world, gui_event):
                 del self._gui_shooting_refs[ref]
 
             change_animator_state(world, ref, 'Die', cycle = delay)  # Die at end of cycle
+            world.scene.add_action(ChangeTransform(
+                ref = ref,
+                cycle = delay + DISAPPEAR_DELAY,
+                duration_cycles = DISAPPEAR_DURATION,
+                rotation = Vector3(x=90),
+            ))
+            world.scene.add_action(ChangeTransform(
+                ref = ref,
+                cycle = delay + DISAPPEAR_DELAY + DISAPPEAR_DURATION,
+                position = Vector3(z=10),
+            ))
             change_audio(world, ref, clip = '{}Die'.format(self.type.name), cycle = delay)
             change_audio(world, ref, play = False, cycle = delay + DIE_SOUND_DURATION[self.type])
 
