@@ -53,9 +53,11 @@ class WarehouseAgent(Agent):
     def pick_ammo(self, world, side, ammos):
         base = world.bases[side]
 
-        for ammo_type, count in ammos.items():
+        for ammo_type, count in list(ammos.items()):
             if count <= 0 or count > base.backline_delivery.ammos[ammo_type]:
-                return []
+                del ammos[ammo_type]
+        if len(ammos) == 0:
+            return []
 
         if base.c_area[self.position] != ECell.BacklineDelivery:
             return []

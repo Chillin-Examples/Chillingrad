@@ -24,9 +24,11 @@ class FactoryAgent(Agent):
     def pick_material(self, world, side, materials):
         base = world.bases[side]
 
-        for material_type, count in materials.items():
+        for material_type, count in list(materials.items()):
             if count <= 0 or count > base.backline_delivery.materials[material_type]:
-                return []
+                del materials[material_type]
+        if len(materials) == 0:
+            return []
 
         if base.c_area[self.position] != ECell.BacklineDelivery:
             return []
